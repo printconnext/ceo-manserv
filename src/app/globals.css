@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --color-brand-blue: #0033A0;
+  /* Man Serv Blue approx */
+  --color-brand-red: #E11D48;
+  /* Accent Red */
+}
+
+/* Custom Utilities */
+@layer utilities {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .text-brand {
+    @apply text-brand-blue;
+  }
+
+  .bg-brand {
+    @apply bg-brand-blue;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
