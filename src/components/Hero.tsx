@@ -16,7 +16,7 @@ interface HeroProps {
 
 export default function Hero({ data }: HeroProps) {
     return (
-        <section className="relative isolate pt-14 bg-brand-blue text-white overflow-hidden min-h-[90vh] flex items-center">
+        <section className="relative isolate pt-32 bg-brand-blue text-white overflow-hidden min-h-[90vh] flex items-center">
             <div className="container-custom mx-auto relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                     {/* Text Content */}
@@ -96,7 +96,7 @@ export default function Hero({ data }: HeroProps) {
                                 {/* Name on image */}
                                 <div className="absolute bottom-6 left-6">
                                     <p className="text-white text-lg font-bold">{data.name}</p>
-                                    <p className="text-blue-200 text-xs uppercase tracking-wider">{data.role}</p>
+                                    <p className="text-blue-200 text-xs tracking-wider">{data.role}</p>
                                 </div>
                             </div>
                         </div>

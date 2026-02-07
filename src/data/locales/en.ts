@@ -16,7 +16,7 @@ export const en = {
         quote: "\"We are leading experts in executive road travel, providing executive chauffeur services and rental cars with a driver, backed by over 20 years of experience.\"",
         contactButton: "Contact Me",
         standardButton: "Our Standard",
-        role: "Executive Director",
+        role: "Chief Executive Officer",
     },
     about: {
         visionBadge: "My Vision",
