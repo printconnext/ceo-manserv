@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Outfit, Prompt, Sarabun } from "next/font/google";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -7,13 +7,22 @@ const outfit = Outfit({
   variable: "--font-outfit",
 });
 
+const prompt = Prompt({
+  weight: ['400', '500', '600', '700'],
+  subsets: ["thai", "latin"],
+  variable: "--font-prompt",
+});
+
+const sarabun = Sarabun({
+  weight: ['400', '500', '600', '700'],
+  subsets: ["thai", "latin"],
+  variable: "--font-sarabun",
+});
+
 export const metadata: Metadata = {
   title: "CEO Profile | Visionary Leadership",
   description: "Personal portfolio and professional background of a forward-thinking CEO.",
 };
-
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 export default function RootLayout({
   children,
@@ -23,15 +32,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${outfit.variable} antialiased font-sans bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300`}
+        className={`${outfit.variable} ${prompt.variable} ${sarabun.variable} antialiased font-sans bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300`}
       >
-        <div className="flex flex-col min-h-screen">
-          <Header />
-          <main className="flex-grow pt-20">
-            {children}
-          </main>
-          <Footer />
-        </div>
+        {children}
       </body>
     </html>
   );

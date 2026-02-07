@@ -2,6 +2,8 @@
 
 @theme {
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-prompt: var(--font-prompt), sans-serif;
+  --font-sarabun: var(--font-sarabun), sans-serif;
   --color-brand-blue: #0033A0;
   /* Man Serv Blue approx */
   --color-brand-red: #E11D48;
@@ -21,8 +23,31 @@
   .bg-brand {
     @apply bg-brand-blue;
   }
+
+  .lang-th {
+    font-family: var(--font-sarabun);
+  }
+
+  .lang-th h1,
+  .lang-th h2,
+  .lang-th h3,
+  .lang-th h4,
+  .lang-th h5,
+  .lang-th h6 {
+    font-family: var(--font-prompt);
+  }
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+@layer utilities {
+  .bg-brand-gradient {
+    @apply bg-gradient-to-r from-brand-blue to-blue-600;
+  }
+
+  .text-brand-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-blue to-blue-500;
+  }
 }

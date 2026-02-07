@@ -1,10 +1,16 @@
-export default function Footer() {
+interface FooterProps {
+    data: {
+        rights: string;
+    }
+}
+
+export default function Footer({ data }: FooterProps) {
     return (
         <footer className="bg-white dark:bg-black border-t border-gray-200 dark:border-gray-800">
             <div className="container-custom py-8 md:py-12">
                 <div className="flex flex-col items-center justify-between md:flex-row">
                     <p className="text-sm text-gray-500 dark:text-gray-400 text-center md:text-left">
-                        &copy; {new Date().getFullYear()} CEO Profile. All rights reserved.
+                        &copy; {new Date().getFullYear()} {data.rights}
                     </p>
                     <div className="flex gap-6 mt-4 md:mt-0 justify-center">
                         {/* Social Placeholders */}
