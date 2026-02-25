@@ -29,11 +29,11 @@ export default function Contact({ data }: ContactProps) {
                     <div className="grid grid-cols-1 gap-8 text-center sm:grid-cols-2 lg:grid-cols-2 mb-12">
                         <div className="flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
                             <h3 className="text-lg font-bold text-brand-blue mb-2">{data.office}</h3>
-                            <a href="tel:0219252712" className="text-gray-600 dark:text-gray-300 hover:text-brand-red transition-colors">02 192 5271-2</a>
+                            <a href="tel:0219252712" className="text-gray-600 dark:text-gray-300 hover:text-brand-red transition-colors"><span className="text-red-500 text-xs font-semibold">(กดเพื่อโทร)</span> 02 192 5271-2</a>
                         </div>
                         <div className="flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
                             <h3 className="text-lg font-bold text-brand-blue mb-2">{data.mobile}</h3>
-                            <a href="tel:0937893259" className="text-gray-600 dark:text-gray-300 hover:text-brand-red transition-colors">093 789 3259</a>
+                            <a href="tel:0937893259" className="text-gray-600 dark:text-gray-300 hover:text-brand-red transition-colors"><span className="text-red-500 text-xs font-semibold">(กดเพื่อโทร)</span> 093 789 3259</a>
                         </div>
                         <div className="flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
                             <h3 className="text-lg font-bold text-brand-blue mb-2">{data.email}</h3>
