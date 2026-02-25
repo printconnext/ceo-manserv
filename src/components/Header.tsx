@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 
 interface HeaderProps {
@@ -18,16 +18,30 @@ interface HeaderProps {
 }
 
 const allLanguages = [
-    { code: 'EN', label: 'EN', href: '/' },
-    { code: 'TH', label: 'TH', href: '/th' },
-    { code: 'JA', label: 'JA', href: '/ja' },
-    { code: 'ZH', label: 'ZH', href: '/zh' },
-    { code: 'HI', label: 'HI', href: '/hi' },
+    { code: 'EN', label: '🇬🇧 English', href: '/' },
+    { code: 'TH', label: '🇹🇭 ไทย', href: '/th' },
+    { code: 'JA', label: '🇯🇵 日本語', href: '/ja' },
+    { code: 'ZH', label: '🇨🇳 中文', href: '/zh' },
+    { code: 'HI', label: '🇮🇳 हिंदी', href: '/hi' },
 ];
 
 export default function Header({ data }: HeaderProps) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [langMenuOpen, setLangMenuOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setLangMenuOpen(false);
+            }
+        }
+        if (langMenuOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [langMenuOpen]);
 
     const navigation = [
         { name: data.about, href: "#about" },
@@ -38,6 +52,7 @@ export default function Header({ data }: HeaderProps) {
     ];
 
     const currentLang = data.language;
+    const currentLangData = allLanguages.find(l => l.code === currentLang);
     const otherLanguages = allLanguages.filter(l => l.code !== currentLang);
 
     return (
@@ -81,10 +96,9 @@ export default function Header({ data }: HeaderProps) {
                         </Link>
                     ))}
                     {/* Language Dropdown */}
-                    <div className="relative">
+                    <div className="relative" ref={dropdownRef}>
                         <button
                             onClick={() => setLangMenuOpen(!langMenuOpen)}
-                            onBlur={() => setTimeout(() => setLangMenuOpen(false), 150)}
                             className="text-sm font-bold leading-6 text-brand-blue dark:text-brand-blue border border-brand-blue/30 px-3 py-1 rounded-full hover:bg-brand-blue hover:text-white transition-all flex items-center gap-1"
                         >
                             🌐 {currentLang}
@@ -93,16 +107,24 @@ export default function Header({ data }: HeaderProps) {
                             </svg>
                         </button>
                         {langMenuOpen && (
-                            <div className="absolute right-0 mt-2 w-28 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden z-50">
-                                {otherLanguages.map((lang) => (
-                                    <Link
-                                        key={lang.code}
-                                        href={lang.href}
-                                        className="block px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:bg-brand-blue hover:text-white transition-colors"
-                                    >
-                                        {lang.label}
-                                    </Link>
-                                ))}
+                            <div className="absolute right-0 mt-2 w-36 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden z-50">
+                                {/* Current language (disabled) */}
+                                {currentLangData && (
+                                    <div className="px-4 py-2.5 text-sm font-bold text-brand-blue bg-blue-50 dark:bg-blue-900/30">
+                                        {currentLangData.label}
+                                    </div>
+                                )}
+                                <div className="border-t border-gray-100 dark:border-gray-700">
+                                    {otherLanguages.map((lang) => (
+                                        <a
+                                            key={lang.code}
+                                            href={lang.href}
+                                            className="block px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:bg-brand-blue hover:text-white transition-colors"
+                                        >
+                                            {lang.label}
+                                        </a>
+                                    ))}
+                                </div>
                             </div>
                         )}
                     </div>
@@ -126,14 +148,13 @@ export default function Header({ data }: HeaderProps) {
                             <p className="text-xs text-gray-400 mb-2 uppercase tracking-wider">🌐 Language</p>
                             <div className="flex flex-wrap gap-2">
                                 {otherLanguages.map((lang) => (
-                                    <Link
+                                    <a
                                         key={lang.code}
                                         href={lang.href}
                                         className="px-3 py-1.5 text-sm font-bold text-brand-blue border border-brand-blue/30 rounded-full hover:bg-brand-blue hover:text-white transition-all"
-                                        onClick={() => setMobileMenuOpen(false)}
                                     >
                                         {lang.label}
-                                    </Link>
+                                    </a>
                                 ))}
                             </div>
                         </div>
