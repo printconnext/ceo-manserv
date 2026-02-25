@@ -85,6 +85,7 @@ export const zh = {
         website: "网站",
         lineTitle: "添加LINE好友",
         clickToAdd: "点击添加好友",
+        clickToCall: "点击拨打",
         preferEmail: "更喜欢邮件联系？",
     },
     footer: {

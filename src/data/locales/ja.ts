@@ -85,6 +85,7 @@ export const ja = {
         website: "ウェブサイト",
         lineTitle: "LINEで友達追加",
         clickToAdd: "クリックして友達追加",
+        clickToCall: "タップして電話",
         preferEmail: "メールをご希望ですか？",
     },
     footer: {

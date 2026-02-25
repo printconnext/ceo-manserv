@@ -85,6 +85,7 @@ export const th = {
         website: "เว็บไซต์",
         lineTitle: "เพิ่มเพื่อนใน LINE",
         clickToAdd: "คลิกเพื่อเพิ่มเพื่อน",
+        clickToCall: "กดเพื่อโทร",
         preferEmail: "สะดวกทางอีเมล?",
     },
     footer: {

@@ -85,6 +85,7 @@ export const hi = {
         website: "वेबसाइट",
         lineTitle: "LINE पर जोड़ें",
         clickToAdd: "मित्र जोड़ने के लिए क्लिक करें",
+        clickToCall: "कॉल करने के लिए टैप करें",
         preferEmail: "ईमेल पसंद करते हैं?",
     },
     footer: {

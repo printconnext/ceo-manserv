@@ -85,6 +85,7 @@ export const en = {
         website: "Website",
         lineTitle: "Add me on LINE",
         clickToAdd: "Click to Add Friend",
+        clickToCall: "Click to Call",
         preferEmail: "Prefer email?",
     },
     footer: {
