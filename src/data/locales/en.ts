@@ -6,8 +6,8 @@ export const en = {
         keyCustomers: "Key Customers",
         lookingFor: "Looking For",
         contact: "Contact",
-        language: "TH",
-        langLink: "/th",
+        language: "EN",
+        langLink: "/",
     },
     hero: {
         badge: "Founder & CEO",

@@ -6,8 +6,8 @@ export const th = {
         keyCustomers: "ลูกค้าสำคัญ",
         lookingFor: "กลุ่มเป้าหมาย",
         contact: "ติดต่อ",
-        language: "EN",
-        langLink: "/",
+        language: "TH",
+        langLink: "/th",
     },
     hero: {
         badge: "ผู้ก่อตั้งและซีอีโอ",
