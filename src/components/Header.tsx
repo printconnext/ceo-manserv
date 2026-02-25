@@ -37,7 +37,7 @@ export default function Header({ data }: HeaderProps) {
                     <Link href="/" className="-m-1.5 p-1.5">
                         <span className="sr-only">Man Serv</span>
                         <Image
-                            src="/ceo-manserv/images/manserv-logo.png"
+                            src="/images/manserv-logo.png"
                             alt="Man Serv Logo"
                             width={200}
                             height={60}

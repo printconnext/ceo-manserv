@@ -37,7 +37,7 @@ export default function Clients({ data }: ClientsProps) {
                             <div key={idx} className="w-full h-full flex items-center justify-center p-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all duration-300 group">
                                 <div className="relative w-[100px] h-[50px]">
                                     <Image
-                                        src={`/ceo-manserv/images/customers/${name.toLowerCase().replace(/ /g, '-').replace(/&/g, 'and')}.png`}
+                                        src={`/images/customers/${name.toLowerCase().replace(/ /g, '-').replace(/&/g, 'and')}.png`}
                                         alt={name}
                                         fill
                                         className="object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
@@ -83,7 +83,7 @@ export default function Clients({ data }: ClientsProps) {
                     <div className="mt-8 pt-8 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <div className="relative h-12 w-48 opacity-90">
                             <Image
-                                src="/ceo-manserv/images/bni-logo.png"
+                                src="/images/bni-logo.png"
                                 alt="BNI Everest"
                                 fill
                                 className="object-contain object-left"

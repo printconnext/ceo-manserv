@@ -50,7 +50,7 @@ export default function Hero({ data }: HeroProps) {
                             <div className="hidden sm:block w-px h-10 bg-white/20 mx-2"></div>
                             <div className="flex items-center gap-6 mt-4 sm:mt-0">
                                 <Image
-                                    src="/ceo-manserv/images/logo-sha.png"
+                                    src="/images/logo-sha.png"
                                     alt="SHA Plus"
                                     width={0}
                                     height={0}
@@ -59,7 +59,7 @@ export default function Hero({ data }: HeroProps) {
                                     unoptimized
                                 />
                                 <Image
-                                    src="/ceo-manserv/images/logo-iso.png"
+                                    src="/images/logo-iso.png"
                                     alt="ISO 9001"
                                     width={0}
                                     height={0}
@@ -82,7 +82,7 @@ export default function Hero({ data }: HeroProps) {
                             {/* Image Container */}
                             <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-gray-800 to-black ring-1 ring-white/10">
                                 <Image
-                                    src="/ceo-manserv/images/ceo-portrait.png"
+                                    src="/images/ceo-portrait.png"
                                     alt={data.name}
                                     fill
                                     className="object-cover"
@@ -107,7 +107,7 @@ export default function Hero({ data }: HeroProps) {
                     {['hero-gallery-1.png', 'hero-gallery-2.png', 'hero-gallery-3.png', 'hero-gallery-4.png'].map((img, idx) => (
                         <div key={idx} className="relative h-32 sm:h-40 rounded-xl overflow-hidden shadow-lg border border-white/10 group cursor-pointer bg-white/5">
                             <Image
-                                src={`/ceo-manserv/images/${img}`}
+                                src={`/images/${img}`}
                                 alt={`Service ${idx + 1}`}
                                 fill
                                 className="object-cover transition-transform duration-500 group-hover:scale-110"

@@ -102,7 +102,7 @@ export default function Services({ data }: ServicesProps) {
                                 {/* Service Image */}
                                 <div className="relative h-48 w-full bg-gray-200">
                                     <Image
-                                        src={`/ceo-manserv/images/${service.image}`}
+                                        src={`/images/${service.image}`}
                                         alt={service.title}
                                         fill
                                         className="object-cover group-hover:scale-105 transition-transform duration-500"

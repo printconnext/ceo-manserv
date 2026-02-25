@@ -1,4 +1,5 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app)..
+Token Permission: ใน Settings > Actions > General > Workflow permissions อาจจะไม่ได้ติ๊ก Read and write permissions
+Environment: อาจมีการตั้งค่า Environment Protection RULES ค้างไว้This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app)..
 
 ## Getting Started
 

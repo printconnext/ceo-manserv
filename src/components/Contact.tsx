@@ -56,7 +56,7 @@ export default function Contact({ data }: ContactProps) {
                         >
                             <div className="relative w-40 h-40">
                                 <Image
-                                    src="/ceo-manserv/images/line-qr.png"
+                                    src="/images/line-qr.png"
                                     alt="LINE QR Code"
                                     fill
                                     className="object-contain"
