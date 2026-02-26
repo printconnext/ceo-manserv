@@ -69,8 +69,8 @@ export default async function ProfilePage({ params }: PageProps) {
         name: translation.heroName || profile.fullName,
         title: translation.heroTitle || profile.organization.name,
         quote: translation.heroQuote || "",
-        contactMe: translation.heroContact || "Contact",
-        ourStandard: translation.heroStandard || "Our Standard",
+        contactButton: translation.heroContact || "Contact",
+        standardButton: translation.heroStandard || "Our Standard",
         role: translation.heroRole || profile.title || "CEO",
     };
 
