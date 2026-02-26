@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  name          String?
+  password      String?
+  plan          String         @default("free")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  organizations Organization[]
+}
+
+model Organization {
+  id        String    @id @default(cuid())
+  slug      String    @unique
+  name      String
+  logoUrl   String?
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  profiles  Profile[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model Profile {
+  id           String               @id @default(cuid())
+  slug         String
+  orgId        String
+  organization Organization         @relation(fields: [orgId], references: [id])
+  fullName     String
+  title        String?
+  portraitUrl   String?
+  phone1       String?
+  phone2       String?
+  email        String?
+  website      String?
+  lineUrl      String?
+  lineQrUrl    String?
+  isPublished  Boolean              @default(true)
+  translations ProfileTranslation[]
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+
+  @@unique([orgId, slug])
+  @@index([orgId])
+}
+
+model ProfileTranslation {
+  id          String  @id @default(cuid())
+  profileId   String
+  profile     Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  lang        String
+  // Hero section
+  heroBadge   String?
+  heroName    String?
+  heroTitle   String?
+  heroQuote   String?
+  heroContact String?
+  heroStandard String?
+  heroRole    String?
+  // Navigation
+  navAbout      String?
+  navServices   String?
+  navCustomers  String?
+  navLookingFor String?
+  navContact    String?
+  // About section
+  aboutData   Json?
+  // Services section
+  servicesData Json?
+  // Clients section
+  clientsData Json?
+  // Contact section
+  contactData Json?
+  // Footer
+  footerData  Json?
+
+  @@unique([profileId, lang])
+  @@index([profileId])
+}
