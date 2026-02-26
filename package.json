@@ -5,10 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
-    "lint": "eslint",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d out --dotfiles"
+    "lint": "eslint"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
