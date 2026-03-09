@@ -4,10 +4,29 @@
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-prompt: var(--font-prompt), sans-serif;
   --font-sarabun: var(--font-sarabun), sans-serif;
-  --color-brand-blue: #0033A0;
-  /* Man Serv Blue approx */
-  --color-brand-red: #E11D48;
-  /* Accent Red */
+
+  /* Dynamic CSS Variables for Theming */
+  --color-primary: var(--color-primary, #0F766E);
+  --color-secondary: var(--color-secondary, #1E293B);
+  --color-accent: var(--color-accent, #F59E0B);
+  --color-bg: var(--color-bg, #ffffff);
+  --color-text: var(--color-text, #111827);
+
+  /* Backward compatibility for existing hardcoded utility classes */
+  --color-brand-blue: var(--color-primary, #0F766E);
+  --color-brand-red: var(--color-accent, #F59E0B);
+}
+
+@layer base {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-prompt), sans-serif;
+  }
 }
 
 /* Custom Utilities */
@@ -24,6 +43,7 @@
     @apply bg-brand-blue;
   }
 
+  /* 
   .lang-th {
     font-family: var(--font-sarabun);
   }
@@ -35,6 +55,20 @@
   .lang-th h5,
   .lang-th h6 {
     font-family: var(--font-prompt);
+  }
+  */
+
+  /* Dynamic Font Selection Classes */
+  .font-outfit {
+    font-family: var(--font-outfit), sans-serif;
+  }
+
+  .font-prompt {
+    font-family: var(--font-prompt), sans-serif;
+  }
+
+  .font-sarabun {
+    font-family: var(--font-sarabun), sans-serif;
   }
 }
 

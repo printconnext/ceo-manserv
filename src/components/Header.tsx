@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 
-
 interface HeaderProps {
     data: {
         about: string;
@@ -14,18 +13,40 @@ interface HeaderProps {
         contact: string;
         language: string;
         langLink: string;
+        logo: string;
+        companyName: string;
+        plan?: string;
+        orgSlug?: string;
+        profileSlug?: string;
+        availableLanguages?: Array<{ code: string, langCode: string, slug: string, isCurrent: boolean }>;
     }
 }
 
-const allLanguages = [
-    { code: 'EN', label: '🇬🇧 English', href: '/' },
-    { code: 'TH', label: '🇹🇭 ไทย', href: '/th' },
-    { code: 'JA', label: '🇯🇵 日本語', href: '/ja' },
-    { code: 'ZH', label: '🇨🇳 中文', href: '/zh' },
-    { code: 'HI', label: '🇮🇳 हिंदी', href: '/hi' },
-];
-
 export default function Header({ data }: HeaderProps) {
+    const { orgSlug, availableLanguages = [] } = data;
+
+    const allLanguagesData = [
+        { code: 'TH', label: '🇹🇭 ไทย' },
+        { code: 'EN', label: '🇬🇧 English' },
+        { code: 'CH', label: '🇨🇳 中文' },
+        { code: 'JP', label: '🇯🇵 日本語' },
+        { code: 'HI', label: '🇮🇳 Hindi' },
+        { code: 'FR', label: '🇫🇷 Français' },
+        { code: 'IT', label: '🇮🇹 Italiano' },
+        { code: 'ES', label: '🇪🇸 Español' },
+        { code: 'DE', label: '🇩🇪 Deutsch' },
+        { code: 'RU', label: '🇷🇺 Русский' },
+        { code: 'FA', label: '🇮🇷 فارسی' },
+        { code: 'PT', label: '🇵🇹 Português' },
+        { code: 'BR', label: '🇧🇷 Brasil' },
+        { code: 'VI', label: '🇻🇳 Tiếng Việt' },
+        { code: 'LO', label: '🇱🇦 ລາວ' },
+        { code: 'MY', label: '🇲🇲 ဗမာ' },
+        { code: 'PH', label: '🇵🇭 Filipino' },
+        { code: 'ID', label: '🇮🇩 Indonesia' },
+    ];
+
+
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [langMenuOpen, setLangMenuOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -52,18 +73,17 @@ export default function Header({ data }: HeaderProps) {
     ];
 
     const currentLang = data.language;
-    const currentLangData = allLanguages.find(l => l.code === currentLang);
-    const otherLanguages = allLanguages.filter(l => l.code !== currentLang);
+    const hasSiblings = availableLanguages.length > 1;
 
     return (
         <header className="fixed inset-x-0 top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-black/70 border-b border-gray-200/20 dark:border-gray-800/20">
             <nav className="container-custom flex items-center justify-between p-4 lg:px-8" aria-label="Global">
                 <div className="flex lg:flex-1 items-center gap-2">
                     <Link href="/" className="-m-1.5 p-1.5">
-                        <span className="sr-only">Man Serv</span>
+                        <span className="sr-only">{data.companyName}</span>
                         <Image
-                            src="/images/manserv-logo.png"
-                            alt="Man Serv Logo"
+                            src={data.logo}
+                            alt={`${data.companyName} Logo`}
                             width={200}
                             height={60}
                             className="h-14 w-auto object-contain"
@@ -95,39 +115,49 @@ export default function Header({ data }: HeaderProps) {
                             {item.name}
                         </Link>
                     ))}
-                    {/* Language Dropdown */}
-                    <div className="relative" ref={dropdownRef}>
-                        <button
-                            onClick={() => setLangMenuOpen(!langMenuOpen)}
-                            className="text-sm font-bold leading-6 text-brand-blue dark:text-brand-blue border border-brand-blue/30 px-3 py-1 rounded-full hover:bg-brand-blue hover:text-white transition-all flex items-center gap-1"
-                        >
-                            🌐 {currentLang}
-                            <svg className={`w-3 h-3 transition-transform ${langMenuOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-                        {langMenuOpen && (
-                            <div className="absolute right-0 mt-2 w-36 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden z-50">
-                                {/* Current language (disabled) */}
-                                {currentLangData && (
-                                    <div className="px-4 py-2.5 text-sm font-bold text-brand-blue bg-blue-50 dark:bg-blue-900/30">
-                                        {currentLangData.label}
-                                    </div>
-                                )}
-                                <div className="border-t border-gray-100 dark:border-gray-700">
-                                    {otherLanguages.map((lang) => (
-                                        <a
-                                            key={lang.code}
-                                            href={lang.href}
-                                            className="block px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:bg-brand-blue hover:text-white transition-colors"
-                                        >
-                                            {lang.label}
-                                        </a>
-                                    ))}
+
+                    {/* Language Dropdown (Only show if siblings exist) */}
+                    {hasSiblings ? (
+                        <div className="relative" ref={dropdownRef}>
+                            <button
+                                onClick={() => setLangMenuOpen(!langMenuOpen)}
+                                className="text-sm font-bold leading-6 text-[var(--color-primary)] dark:text-[var(--color-primary)] border border-[var(--color-primary)]/30 px-3 py-1 rounded-full hover:bg-[var(--color-primary)] hover:text-white transition-all flex items-center gap-1"
+                            >
+                                🌐 {currentLang}
+                                <svg className={`w-3 h-3 transition-transform ${langMenuOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            {langMenuOpen && (
+                                <div className="absolute right-0 mt-2 w-36 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden z-50">
+                                    {availableLanguages.map((lang) => {
+                                        const label = allLanguagesData.find(l => l.code === lang.code)?.label || lang.code;
+                                        if (lang.isCurrent) {
+                                            return (
+                                                <div key={lang.code} className="px-4 py-2.5 text-sm font-bold text-[var(--color-primary)] bg-[var(--color-primary)]/10 dark:bg-[var(--color-primary)]/20">
+                                                    {label}
+                                                </div>
+                                            );
+                                        }
+                                        return (
+                                            <Link
+                                                key={lang.code}
+                                                href={`/${orgSlug}/${lang.slug}`}
+                                                className="block px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:bg-[var(--color-primary)] hover:text-white transition-colors flex items-center justify-between"
+                                                onClick={() => setLangMenuOpen(false)}
+                                            >
+                                                <span>{label}</span>
+                                            </Link>
+                                        );
+                                    })}
                                 </div>
-                            </div>
-                        )}
-                    </div>
+                            )}
+                        </div>
+                    ) : (
+                        <div className="text-sm font-bold leading-6 text-gray-400 border border-gray-100 px-3 py-1 rounded-full flex items-center gap-1 opacity-60">
+                            🌐 {currentLang}
+                        </div>
+                    )}
                 </div>
             </nav>
             {/* Mobile Menu */}
@@ -144,20 +174,33 @@ export default function Header({ data }: HeaderProps) {
                                 {item.name}
                             </Link>
                         ))}
-                        <div className="pt-2 border-t border-gray-100 dark:border-gray-800">
-                            <p className="text-xs text-gray-400 mb-2 uppercase tracking-wider">🌐 Language</p>
-                            <div className="flex flex-wrap gap-2">
-                                {otherLanguages.map((lang) => (
-                                    <a
-                                        key={lang.code}
-                                        href={lang.href}
-                                        className="px-3 py-1.5 text-sm font-bold text-brand-blue border border-brand-blue/30 rounded-full hover:bg-brand-blue hover:text-white transition-all"
-                                    >
-                                        {lang.label}
-                                    </a>
-                                ))}
+                        {hasSiblings && (
+                            <div className="pt-2 border-t border-gray-100 dark:border-gray-800">
+                                <p className="text-xs text-gray-400 mb-2 uppercase tracking-wider">🌐 Language</p>
+                                <div className="flex flex-wrap gap-2">
+                                    {availableLanguages.map((lang) => {
+                                        const label = allLanguagesData.find(l => l.code === lang.code)?.label || lang.code;
+                                        if (lang.isCurrent) {
+                                            return (
+                                                <span key={lang.code} className="px-3 py-1.5 text-sm font-bold text-white bg-[var(--color-primary)] rounded-full">
+                                                    {label}
+                                                </span>
+                                            );
+                                        }
+                                        return (
+                                            <Link
+                                                key={lang.code}
+                                                href={`/${orgSlug}/${lang.slug}`}
+                                                className="px-3 py-1.5 text-sm font-bold text-[var(--color-primary)] border border-[var(--color-primary)]/30 rounded-full hover:bg-[var(--color-primary)] hover:text-white transition-all flex items-center"
+                                                onClick={() => setMobileMenuOpen(false)}
+                                            >
+                                                {label}
+                                            </Link>
+                                        );
+                                    })}
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             )}

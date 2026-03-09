@@ -1,0 +1,272 @@
+{
+    "nav": {
+        "about": "เกี่ยวกับเรา",
+        "services": "บริการ",
+        "keyCustomers": "ลูกค้าคนสำคัญ",
+        "lookingFor": "กำลังมองหา",
+        "contact": "ติดต่อ",
+        "language": "TH"
+    },
+    "hero": {
+        "badge": "ผู้ก่อตั้งและซีอีโอ",
+        "name": "สามารถ ไชยะ",
+        "title": "บริษัท แมน แมนเนจเม้นท์ เซอร์วิส จำกัด",
+        "quote": "\"เราคือ ผู้นำเชี่ยวชาญด้านการเดินทางด้วยรถยนต์ ให้กับผู้บริหาร โดยให้บริการพนักงานขับรถผู้บริหาร และรถเช่าพร้อมคนขับ ด้วยประสบการณ์กว่า 20 ปี บริการมากกว่า 4,00,000 เที่ยว มีพนักงานขับรถกว่า 300 คน ลูกค้ามากกว่า 100 ราย\"",
+        "contactButton": "ติดต่อฉัน",
+        "standardButton": "มาตรฐานของเรา",
+        "role": "ประธานเจ้าหน้าที่บริหาร"
+    },
+    "about": {
+        "visionBadge": "VISION & MISSION",
+        "visionTitle": "\"บริการมาตรฐานสากล สำหรับการเดินทางระดับผู้บริหาร\"",
+        "visionDesc1": "ผมก่อตั้ง แมน แมนเนจเม้นท์ เซอร์วิส ด้วยเป้าหมายเดียว: ยกระดับมาตรฐานการเดินทางของผู้บริหารในประเทศไทย เราไม่ได้แค่ให้บริการรถยนต์ แต่เรามอบความอุ่นใจ",
+        "visionDesc2": "เราคือผู้เชี่ยวชาญด้านการเดินทางสำหรับผู้บริหารระดับสูง บริษัท และโรงงานชั้นนำ ด้วยมาตรฐานความปลอดภัยสูงสุดและการฝึกอบรมที่เข้มข้น เราจึงมั่นใจว่าทุกการเดินทางจะราบรื่นและปลอดภัย",
+        "signature": "สามารถ ไชยะ",
+        "trustText": "ได้รับความไว้วางใจจากองค์กรชั้นนำทั่วภูมิภาค",
+        "stats": [
+            {
+                "label": "ประสบการณ์ (ปี)",
+                "value": "20+"
+            },
+            {
+                "label": "เที่ยววิ่งให้บริการ",
+                "value": "4M+"
+            },
+            {
+                "label": "พนักงานขับรถ",
+                "value": "300+"
+            },
+            {
+                "label": "ลูกค้าองค์กร",
+                "value": "100+"
+            }
+        ]
+    },
+    "services": {
+        "title": "บริการของเรา",
+        "subtitle": "โซลูชั่นด้านการเดินทางที่ครบวงจรสำหรับธุรกิจของคุณ",
+        "items": [
+            {
+                "title": "พนักงานขับรถผู้บริหาร",
+                "description": "พนักงานขับรถมืออาชีพ ผ่านการฝึกอบรมอย่างดี มีมารยาทและชำนาญเส้นทาง"
+            },
+            {
+                "title": "รถเช่าลีมูซีน",
+                "description": "รถเก๋งและรถตู้ VIP พร้อมคนขับ สำหรับการเดินทางระดับผู้บริหารและองค์กร"
+            }
+        ]
+    },
+    "experience": {
+        "title": "ประสบการณ์ระดับมืออาชีพ",
+        "items": []
+    },
+    "clients": {
+        "keyCustomersBadge": "KEY CUSTOMERS",
+        "keyCustomersTitle": "ได้รับความไว้วางใจจากบริษัทชั้นนำ",
+        "lookingForBadge": "LOOKING FOR",
+        "lookingForTitle": "พันธมิตรที่เรามองหา",
+        "lookingForDesc": "เราพร้อมที่จะร่วมมือกับองค์กรของคุณ เพื่อยกระดับมาตรฐานการเดินทางระดับองค์กร",
+        "lookingForItems": [
+            "บริษัท,โรงงานที่ใช้คนขับรถผู้บริหาร คนขับส่วนกลาง",
+            "บริษัท,โรงงานที่ใช้รถเช่า รถเก๋ง รถตู้ รายวัน รายเดือน"
+        ],
+        "growingTogether": "เติบโตไปพร้อมกัน",
+        "items": [
+            {
+                "name": "KUBOTA",
+                "image": "kubota.png"
+            },
+            {
+                "name": "SATI",
+                "image": "sati.png"
+            },
+            {
+                "name": "ATTG",
+                "image": "attg.png"
+            },
+            {
+                "name": "HITACHI",
+                "image": "hitachi.png"
+            },
+            {
+                "name": "OGIHARA",
+                "image": "ogihara.png"
+            },
+            {
+                "name": "DONKI",
+                "image": "donki.png"
+            },
+            {
+                "name": "YAMAHA",
+                "image": "yamaha.png"
+            },
+            {
+                "name": "HINO",
+                "image": "hino.png"
+            },
+            {
+                "name": "ICHIKOH",
+                "image": "ichikoh.png"
+            },
+            {
+                "name": "TRA",
+                "image": "tra.png"
+            },
+            {
+                "name": "IDAKA",
+                "image": "idaka.png"
+            },
+            {
+                "name": "THK",
+                "image": "thk.png"
+            },
+            {
+                "name": "THAI NAKANO",
+                "image": "thai-nakano.png"
+            },
+            {
+                "name": "UNIC",
+                "image": "unic.png"
+            },
+            {
+                "name": "TOR",
+                "image": "tor.png"
+            },
+            {
+                "name": "PTS",
+                "image": "pts.png"
+            },
+            {
+                "name": "NISSINBO",
+                "image": "nissinbo.png"
+            },
+            {
+                "name": "DID",
+                "image": "did.png"
+            },
+            {
+                "name": "TDK",
+                "image": "tdk.png"
+            },
+            {
+                "name": "HAS",
+                "image": "has.png"
+            },
+            {
+                "name": "SKMT",
+                "image": "skmt.png"
+            },
+            {
+                "name": "BTKK",
+                "image": "btkk.png"
+            },
+            {
+                "name": "BEW",
+                "image": "bew.png"
+            },
+            {
+                "name": "FUKOKU",
+                "image": "fukoku.png"
+            },
+            {
+                "name": "TRANSTEC",
+                "image": "transtec.png"
+            },
+            {
+                "name": "SHOWA",
+                "image": "showa.png"
+            },
+            {
+                "name": "IDAC",
+                "image": "idac.png"
+            },
+            {
+                "name": "ENPLA",
+                "image": "enpla.png"
+            },
+            {
+                "name": "Y_AND_R",
+                "image": "y_and_r.png"
+            },
+            {
+                "name": "KANG YONG",
+                "image": "kang-yong.png"
+            },
+            {
+                "name": "NISSAN",
+                "image": "nissan.png"
+            },
+            {
+                "name": "AKESONO",
+                "image": "akesono.png"
+            },
+            {
+                "name": "TAIHO",
+                "image": "taiho.png"
+            },
+            {
+                "name": "E_AND_C",
+                "image": "e_and_c.png"
+            },
+            {
+                "name": "CPR",
+                "image": "cpr.png"
+            },
+            {
+                "name": "NIPPON EXPRSS",
+                "image": "nippon-exprss.png"
+            },
+            {
+                "name": "TOSHIBA",
+                "image": "toshiba.png"
+            },
+            {
+                "name": "IKEA",
+                "image": "ikea.png"
+            },
+            {
+                "name": "INDARAMA",
+                "image": "indarama.png"
+            },
+            {
+                "name": "DUSIT",
+                "image": "dusit.png"
+            },
+            {
+                "name": "AMCOGROUP",
+                "image": "amcogroup.png"
+            },
+            {
+                "name": "ALPHA GROUP",
+                "image": "alpha-group.png"
+            },
+            {
+                "name": "CENTRAL",
+                "image": "central.png"
+            },
+            {
+                "name": "GREEN SPOT",
+                "image": "green-spot.png"
+            },
+            {
+                "name": "HISAMITSU",
+                "image": "hisamitsu.png"
+            }
+        ]
+    },
+    "contact": {
+        "title": "ติดต่อเรา",
+        "subtitle": "ช่องทางการติดต่อ",
+        "office": "สำนักงานใหญ่",
+        "mobile": "08x-xxx-xxxx",
+        "email": "contact@manserv.co.th",
+        "website": "www.manserv.co.th",
+        "lineTitle": "LINE Official",
+        "clickToAdd": "Click to Add",
+        "clickToCall": "Click to Call",
+        "preferEmail": "Email Preferred"
+    },
+    "footer": {
+        "rights": "© 2026 CEO Profile. All rights reserved."
+    }
+}

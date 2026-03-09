@@ -1,5 +1,6 @@
 import Image from "next/image";
-
+import React from 'react';
+import { ServiceIcons, defaultServiceIconOrder } from "./IconLibrary";
 
 interface ServicesProps {
     data: {
@@ -8,76 +9,32 @@ interface ServicesProps {
         items: {
             title: string;
             description: string;
+            icon?: string;
         }[];
     }
 }
 
 export default function Services({ data }: ServicesProps) {
-    // Map icons to the data items by index, or keep the structure but pull text from props
-    // Better approach: Re-construct the services array using the props data and local static assets (icons/images)
 
-    const serviceIcons = [
-        // Executive Chauffeur
-        {
-            image: 'service-1.png',
-            icon: (props: any) => (
-                <svg fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" {...props}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                </svg>
-            ),
-        },
-        // Limousine Rental
-        {
-            image: 'service-2.png',
-            icon: (props: any) => (
-                <svg fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" {...props}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
-                </svg>
-            ),
-        },
-        // Valet Parking
-        {
-            image: 'service-4.png',
-            icon: (props: any) => (
-                <svg fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" {...props}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                </svg>
-            ),
-        },
-        // Airport Transfer
-        {
-            image: 'service-3.png',
-            icon: (props: any) => (
-                <svg fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" {...props}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
-                </svg>
-            ),
-        },
-        // Driver Training
-        {
-            image: 'service-5.png',
-            icon: (props: any) => (
-                <svg fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" {...props}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
-                </svg>
-            ),
-        },
-        // Lady Chauffeur
-        {
-            image: 'service-6.png',
-            icon: (props: any) => (
-                <svg fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" {...props}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                </svg>
-            ),
-        },
-    ];
+    // Fallback mapping for older saved profiles using incorrect icon names
+    const legacyIconMap: Record<string, string> = {
+        car: 'user',
+        crown: 'van',
+        shield: 'location',
+        plane: 'globe'
+    };
 
-    const services = data.items.map((item, index) => ({
-        ...item,
-        ...serviceIcons[index]
-    }));
+    const services = data.items.map((item, index) => {
+        let rawIconKey = item.icon || defaultServiceIconOrder[index % defaultServiceIconOrder.length];
+        const iconKey = legacyIconMap[rawIconKey] || rawIconKey;
+        const IconComponent = ServiceIcons[iconKey] || ServiceIcons.star;
+
+        return {
+            ...item,
+            icon: IconComponent,
+            displayImage: (item as any).image || 'service-1.png'
+        };
+    });
 
     return (
         <section id="services" className="py-24 bg-gray-50 dark:bg-gray-900/50 relative overflow-hidden">
@@ -89,7 +46,7 @@ export default function Services({ data }: ServicesProps) {
 
             <div className="container-custom">
                 <div className="mx-auto max-w-2xl text-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-brand-blue dark:text-blue-300 sm:text-4xl">{data.title}</h2>
+                    <h2 className="text-3xl font-bold tracking-tight text-[var(--color-primary)] dark:text-[var(--color-primary)] sm:text-4xl">{data.title}</h2>
                     <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
                         {data.subtitle}
                     </p>
@@ -97,12 +54,12 @@ export default function Services({ data }: ServicesProps) {
                 <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
                     <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
                         {services.map((service) => (
-                            <div key={service.title} className="flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-sm ring-1 ring-gray-200 dark:ring-gray-700 hover:ring-brand-blue/50 hover:shadow-xl hover:shadow-blue-900/10 hover:-translate-y-2 transition-all duration-300 group overflow-hidden">
+                            <div key={service.title} className="flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-sm ring-1 ring-gray-200 dark:ring-gray-700 hover:ring-[var(--color-primary)] hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group overflow-hidden">
 
                                 {/* Service Image */}
                                 <div className="relative h-48 w-full bg-gray-200">
                                     <Image
-                                        src={`/images/${service.image}`}
+                                        src={service.displayImage?.startsWith('http') ? service.displayImage : `/images/${service.displayImage}`}
                                         alt={service.title}
                                         fill
                                         className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -110,14 +67,14 @@ export default function Services({ data }: ServicesProps) {
                                     />
                                 </div>
 
-                                <div className="p-8 flex flex-col flex-auto">
-                                    <dt className="flex items-center gap-x-3 text-2xl font-bold leading-7 text-gray-900 dark:text-white mb-4">
-                                        <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 group-hover:bg-brand-blue group-hover:text-white transition-colors duration-300">
-                                            <service.icon className="h-6 w-6 flex-none text-brand-blue group-hover:text-white" aria-hidden="true" />
+                                <div className="p-6 md:p-8 flex flex-col flex-auto">
+                                    <dt className="flex items-center gap-x-4 text-xl md:text-2xl font-bold leading-7 text-gray-900 dark:text-white mb-4">
+                                        <div className="p-2.5 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex-shrink-0">
+                                            <service.icon className="h-6 w-6 flex-none" aria-hidden="true" />
                                         </div>
                                         {service.title}
                                     </dt>
-                                    <dd className="flex flex-auto flex-col text-base leading-7 text-gray-600 dark:text-gray-300">
+                                    <dd className="flex flex-auto flex-col text-sm md:text-base leading-7 text-gray-500 dark:text-gray-400">
                                         <p className="flex-auto">{service.description}</p>
                                     </dd>
                                 </div>

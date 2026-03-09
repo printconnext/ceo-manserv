@@ -9,8 +9,11 @@ interface ClientsProps {
         lookingForDesc: string;
         lookingForItems: string[];
         growingTogether: string;
+        items?: any[];
+        associations?: any[];
     }
 }
+
 
 export default function Clients({ data }: ClientsProps) {
     return (
@@ -27,25 +30,27 @@ export default function Clients({ data }: ClientsProps) {
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 items-center justify-items-center">
-                        {[
-                            "KUBOTA", "SATI", "ATTG", "HITACHI", "OGIHARA", "DONKI", "YAMAHA", "HINO", "ICHIKOH", "TRA",
-                            "IDAKA", "THK", "THAI NAKANO", "UNIC", "TOR", "PTS", "NISSINBO", "DID", "TDK", "HAS",
-                            "SKMT", "BTKK", "BEW", "FUKOKU", "TRANSTEC", "SHOWA", "IDAC", "ENPLA", "Y_AND_R", "KANG YONG",
-                            "NISSAN", "AKESONO", "TAIHO", "E_AND_C", "CPR", "NIPPON EXPRSS", "TOSHIBA", "IKEA", "INDARAMA", "DUSIT",
-                            "AMCOGROUP", "ALPHA GROUP", "CENTRAL", "GREEN SPOT", "HISAMITSU"
-                        ].map((name, idx) => (
-                            <div key={idx} className="w-full h-full flex items-center justify-center p-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all duration-300 group">
-                                <div className="relative w-[100px] h-[50px]">
-                                    <Image
-                                        src={`/images/customers/${name.toLowerCase().replace(/ /g, '-').replace(/&/g, 'and')}.png`}
-                                        alt={name}
-                                        fill
-                                        className="object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
-                                        unoptimized
-                                    />
+                        {(data as any).items?.map((item: any, idx: number) => {
+                            // Support legacy string names or structured {name, image} objects
+                            const name = typeof item === 'string' ? item : item.name;
+                            const imagePath = (typeof item === 'object' && item.image)
+                                ? (item.image.startsWith('http') ? item.image : `/images/customers/${item.image}`)
+                                : `/images/customers/${name.toLowerCase().replace(/ /g, '-').replace(/&/g, 'and')}.png`;
+
+                            return (
+                                <div key={idx} className="w-full h-full flex items-center justify-center p-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all duration-300 group">
+                                    <div className="relative w-[100px] h-[50px]">
+                                        <Image
+                                            src={imagePath}
+                                            alt={name || "Client Logo"}
+                                            fill
+                                            className="object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                                            unoptimized
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
 
@@ -80,16 +85,21 @@ export default function Clients({ data }: ClientsProps) {
                         </div>
                     </div>
 
-                    <div className="mt-8 pt-8 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <div className="relative h-12 w-48 opacity-90">
-                            <Image
-                                src="/images/bni-logo.png"
-                                alt="BNI Everest"
-                                fill
-                                className="object-contain object-left"
-                            />
+                    <div className="mt-8 pt-8 border-t border-white/20 sm:flex-row items-center justify-between gap-4">
+                        <div className="flex flex-wrap items-center gap-6 mb-4 sm:mb-0">
+                            {(data.associations || []).map((assoc: any, idx: number) => (
+                                <div key={idx} className="relative h-20 w-40 sm:w-56 opacity-90 transition-opacity hover:opacity-100">
+                                    <Image
+                                        src={assoc.image ? (assoc.image.startsWith('http') ? assoc.image : `/images/${assoc.image}`) : "/images/bni-logo.png"}
+                                        alt={assoc.name || "Association Logo"}
+                                        fill
+                                        className="object-contain object-left"
+                                        unoptimized
+                                    />
+                                </div>
+                            ))}
                         </div>
-                        <div className="text-blue-100 text-sm">{data.growingTogether}</div>
+                        <div className="text-blue-100 text-sm text-right mt-4">{data.growingTogether}</div>
                     </div>
                 </div>
 

@@ -6,39 +6,77 @@ datasource db {
   provider = "postgresql"
 }
 
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model User {
   id            String         @id @default(cuid())
-  email         String         @unique
+  email         String?        @unique
   name          String?
   password      String?
   plan          String         @default("free")
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
   organizations Organization[]
+  sessions      Session[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
 
 model Organization {
   id        String    @id @default(cuid())
-  slug      String    @unique
+  slug      String
   name      String
   logoUrl   String?
   userId    String
-  user      User      @relation(fields: [userId], references: [id])
-  profiles  Profile[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  user      User      @relation(fields: [userId], references: [id])
+  profiles  Profile[]
 
   @@index([userId])
+  @@index([slug])
 }
 
 model Profile {
   id           String               @id @default(cuid())
   slug         String
   orgId        String
-  organization Organization         @relation(fields: [orgId], references: [id])
   fullName     String
   title        String?
-  portraitUrl   String?
+  portraitUrl  String?
   phone1       String?
   phone2       String?
   email        String?
@@ -46,43 +84,42 @@ model Profile {
   lineUrl      String?
   lineQrUrl    String?
   isPublished  Boolean              @default(true)
-  translations ProfileTranslation[]
   createdAt    DateTime             @default(now())
   updatedAt    DateTime             @updatedAt
+  themeConfig  Json?
+  mediaConfig  Json?
+  organization Organization         @relation(fields: [orgId], references: [id])
+  translations ProfileTranslation[]
 
   @@unique([orgId, slug])
   @@index([orgId])
 }
 
 model ProfileTranslation {
-  id          String  @id @default(cuid())
-  profileId   String
-  profile     Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  lang        String
-  // Hero section
-  heroBadge   String?
-  heroName    String?
-  heroTitle   String?
-  heroQuote   String?
-  heroContact String?
-  heroStandard String?
-  heroRole    String?
-  // Navigation
-  navAbout      String?
-  navServices   String?
-  navCustomers  String?
-  navLookingFor String?
-  navContact    String?
-  // About section
-  aboutData   Json?
-  // Services section
-  servicesData Json?
-  // Clients section
-  clientsData Json?
-  // Contact section
-  contactData Json?
-  // Footer
-  footerData  Json?
+  id              String  @id @default(cuid())
+  profileId       String
+  lang            String
+  heroBadge       String?
+  heroName        String?
+  heroTitle       String?
+  heroQuote       String?
+  heroContact     String?
+  heroStandard    String?
+  heroRole        String?
+  navAbout        String?
+  navServices     String?
+  navCustomers    String?
+  navLookingFor   String?
+  navContact      String?
+  aboutData       Json?
+  servicesData    Json?
+  clientsData     Json?
+  contactData     Json?
+  footerData      Json?
+  experienceData  Json?
+  heroContactBtn  String?
+  heroStandardBtn String?
+  profile         Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   @@unique([profileId, lang])
   @@index([profileId])

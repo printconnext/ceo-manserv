@@ -28,16 +28,20 @@ async function main() {
     console.log("✅ User created:", user.email);
 
     // Create organization
-    const org = await prisma.organization.upsert({
-        where: { slug: "manserv" },
-        update: {},
-        create: {
-            slug: "manserv",
-            name: "Man Management Service Co., Ltd.",
-            logoUrl: "/images/manserv-logo.png",
-            userId: user.id,
-        },
+    let org = await prisma.organization.findFirst({
+        where: { slug: "manserv" }
     });
+
+    if (!org) {
+        org = await prisma.organization.create({
+            data: {
+                slug: "manserv",
+                name: "Man Management Service Co., Ltd.",
+                logoUrl: "/images/manserv-logo.png",
+                userId: user.id,
+            }
+        });
+    }
     console.log("✅ Organization created:", org.slug);
 
     // Create profile
