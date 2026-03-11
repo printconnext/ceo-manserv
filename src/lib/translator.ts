@@ -1,60 +1,70 @@
 
 import { LOCALES } from "@/data/locales";
 
-// Dictionary of standard labels to translate between languages
-// Key is the "Label Name", value is an object mapping lang -> translated string
-const DICTIONARY: Record<string, Record<string, string>> = {
-    "ติดต่อเรา": { th: "ติดต่อเรา", en: "Contact Us" },
-    "Contact Us": { th: "ติดต่อเรา", en: "Contact Us" },
-    "ช่องทางการติดต่อ": { th: "ช่องทางการติดต่อ", en: "Get in touch" },
-    "Get in touch": { th: "ช่องทางการติดต่อ", en: "Get in touch" },
-    "ที่ตั้งสำนักงาน": { th: "ที่ตั้งสำนักงาน", en: "Office Address" },
-    "Office Address": { th: "ที่ตั้งสำนักงาน", en: "Office Address" },
-    "อีเมล": { th: "อีเมล", en: "Email" },
-    "Email": { th: "อีเมล", en: "Email" },
-    "เบอร์โทรศัพท์": { th: "เบอร์โทรศัพท์", en: "Phone Number" },
-    "Phone Number": { th: "เบอร์โทรศัพท์", en: "Phone Number" },
-    "เว็บไซต์": { th: "เว็บไซต์", en: "Website" },
-    "Website": { th: "เว็บไซต์", en: "Website" },
-    "เกี่ยวกับ": { th: "เกี่ยวกับ", en: "About" },
-    "About": { th: "เกี่ยวกับ", en: "About" },
-    "บริการ": { th: "บริการ", en: "Services" },
-    "Services": { th: "บริการ", en: "Services" },
-    "ลูกค้า": { th: "ลูกค้า", en: "Key Customers" },
-    "Key Customers": { th: "ลูกค้า", en: "Key Customers" },
-    "กำลังมองหา": { th: "กำลังมองหา", en: "Looking For" },
-    "Looking For": { th: "กำลังมองหา", en: "Looking For" },
-    "ติดต่อ": { th: "ติดต่อ", en: "Contact" },
-    "Contact": { th: "ติดต่อ", en: "Contact" },
-    "มาตรฐานของเรา": { th: "มาตรฐานของเรา", en: "Our Standard" },
-    "Our Standard": { th: "มาตรฐานของเรา", en: "Our Standard" },
-};
+/**
+ * Builds a bi-directional map of strings to their paths for a given locale.
+ * Example: "พนักงานขับรถผู้บริหาร" -> "services.items[0].title"
+ */
+function buildStringMap(obj: any, prefix = ""): Record<string, string> {
+    const map: Record<string, string> = {};
+
+    if (typeof obj === 'string') {
+        map[obj] = prefix;
+    } else if (Array.isArray(obj)) {
+        obj.forEach((item, index) => {
+            Object.assign(map, buildStringMap(item, `${prefix}[${index}]`));
+        });
+    } else if (typeof obj === 'object' && obj !== null) {
+        for (const key in obj) {
+            const newPrefix = prefix ? `${prefix}.${key}` : key;
+            Object.assign(map, buildStringMap(obj[key], newPrefix));
+        }
+    }
+
+    return map;
+}
 
 /**
- * Recursively iterates through an object or array and translates strings
- * if they match keys in our DICTIONARY.
+ * Retrieves a value from an object given a dot-notated/array-indexed path.
  */
-function deepTranslate(obj: any, targetLang: string): any {
+function getValueByPath(obj: any, path: string): any {
+    const parts = path.split(/[.\[\]]+/).filter(Boolean);
+    let current = obj;
+    for (const part of parts) {
+        if (current === undefined || current === null) return undefined;
+        current = current[part];
+    }
+    return current;
+}
+
+/**
+ * Smart translator that uses path-based mapping.
+ * If a string in source matches a string in the 'th' mockup, 
+ * it swaps it for the string at the same path in 'targetLang'.
+ */
+function smartTranslate(obj: any, targetLang: string, sourceMap: Record<string, string>): any {
+    const targetLocale = LOCALES[targetLang] || LOCALES.th;
+
     if (typeof obj === 'string') {
-        // Find if this string exists in our dictionary
-        for (const key in DICTIONARY) {
-            const entry = DICTIONARY[key];
-            // If the current string matches ANY of the translations in the entry
-            if (Object.values(entry).includes(obj)) {
-                return entry[targetLang] || obj;
+        const path = sourceMap[obj];
+        if (path) {
+            const translatedValue = getValueByPath(targetLocale, path);
+            if (typeof translatedValue === 'string') {
+                return translatedValue;
             }
         }
         return obj;
     }
 
     if (Array.isArray(obj)) {
-        return obj.map(item => deepTranslate(item, targetLang));
+        return obj.map(item => smartTranslate(item, targetLang, sourceMap));
     }
 
     if (typeof obj === 'object' && obj !== null) {
+        // Special handling for common JSON objects to avoid deep recursion on weird objects
         const newObj: any = {};
         for (const key in obj) {
-            newObj[key] = deepTranslate(obj[key], targetLang);
+            newObj[key] = smartTranslate(obj[key], targetLang, sourceMap);
         }
         return newObj;
     }
@@ -63,18 +73,19 @@ function deepTranslate(obj: any, targetLang: string): any {
 }
 
 /**
- * Translates profile content (translations record) by deep-cloning and
- * recursively applying translation to all string fields.
+ * Translates profile content by deep-cloning and applying smart translation.
  */
 export function translateProfileContent(content: any, targetLang: string) {
-    // 1. First, deep clone the entire content
+    // 1. Build map of the Thai mockup (source of truth for translation)
+    const thMap = buildStringMap(LOCALES.th);
+
+    // 2. First, deep clone the entire content
     const result = JSON.parse(JSON.stringify(content));
 
-    // 2. Apply deep translation recursively to the whole object
-    // This will handle headers, badges, button labels, and items in services/clients/experience
-    const translated = deepTranslate(result, targetLang);
+    // 3. Apply smart translation recursively
+    const translated = smartTranslate(result, targetLang, thMap);
 
-    // 3. Force specific core navigation items from LOCALES for accuracy
+    // 4. Force specific core navigation items from LOCALES for absolute accuracy
     const targetLocale = LOCALES[targetLang] || LOCALES.th;
     translated.navAbout = targetLocale.header?.about || translated.navAbout;
     translated.navServices = targetLocale.header?.services || translated.navServices;
