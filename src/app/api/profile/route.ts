@@ -296,18 +296,9 @@ export async function POST(req: NextRequest) {
             // 2. If NO profile exists for this person at all, we use the global MASTER profile (samart-TH)
             if (!latestProfile) {
                 latestProfile = await prisma.profile.findFirst({
-                    where: { slug: 'samart-th' }, // The master template slug
+                    where: { slug: { in: ['samart-th-TH', 'samarth-th', 'samart'] } }, // The master template slugs
                     include: { translations: true }
                 });
-
-                // If master template is missing (e.g. dev environment), fallback to any latest profile in this org
-                if (!latestProfile) {
-                    latestProfile = await prisma.profile.findFirst({
-                        where: { orgId: organization.id },
-                        orderBy: { createdAt: 'desc' },
-                        include: { translations: true }
-                    });
-                }
             }
 
             const inheritedThemeConfig = latestProfile?.themeConfig;
