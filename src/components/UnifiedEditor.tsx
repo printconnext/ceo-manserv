@@ -111,6 +111,12 @@ export default function UnifiedEditor({
                 const contentRes = await fetch(contentUrl);
                 if (contentRes.ok) {
                     const contentData = await contentRes.json();
+
+                    // CRITICAL FIX: Ensure editor tracks the ACTUAL ID loaded, preventing cross-profile overwrites
+                    if (contentData.profileData?.id) {
+                        setProfileId(contentData.profileData.id);
+                    }
+
                     setProfileMetadata(contentData.profileMetadata); // Store slugs for URL generation
                     setExistingLangs(contentData.existingLangs || []);
                     const fetchedContent = contentData.content || {};

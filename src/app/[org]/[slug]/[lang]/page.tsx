@@ -49,7 +49,7 @@ export default async function ProfilePage({ params }: PageProps) {
 
     const profile = await prisma.profile.findFirst({
         where: {
-            slug: dbSlug,
+            slug: { equals: dbSlug, mode: 'insensitive' },
             organization: { slug: org },
         },
         include: {

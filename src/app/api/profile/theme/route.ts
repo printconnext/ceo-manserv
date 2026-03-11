@@ -11,7 +11,8 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const profileId = req.nextUrl.searchParams.get("id");
+    let profileId = req.nextUrl.searchParams.get("id");
+    if (profileId === "undefined") profileId = null;
 
     try {
         let profile;
@@ -50,7 +51,8 @@ export async function POST(req: NextRequest) {
 
     try {
         const body = await req.json();
-        const { themeConfig, mediaConfig, id: profileId } = body;
+        let { themeConfig, mediaConfig, id: profileId } = body;
+        if (profileId === "undefined") profileId = null;
 
         if (!themeConfig && !mediaConfig) {
             return NextResponse.json({ error: "No configuration provided" }, { status: 400 });

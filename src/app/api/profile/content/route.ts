@@ -11,7 +11,8 @@ export async function GET(req: NextRequest) {
     }
 
     const lang = req.nextUrl.searchParams.get("lang") || "th";
-    const profileId = req.nextUrl.searchParams.get("id");
+    let profileId = req.nextUrl.searchParams.get("id");
+    if (profileId === "undefined") profileId = null;
 
     try {
         let profile;
@@ -94,7 +95,8 @@ export async function POST(req: NextRequest) {
 
     try {
         const body = await req.json();
-        const { lang, content, id: profileId } = body;
+        let { lang, content, id: profileId } = body;
+        if (profileId === "undefined") profileId = null;
 
         console.log("[API/Content] POST request received", { lang, profileId });
 

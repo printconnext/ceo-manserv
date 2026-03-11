@@ -72,8 +72,11 @@ export async function POST(req: NextRequest) {
                 }
             });
 
-            // Clone and Translate first found translation
-            const sourceTrans = sourceProfile.translations[0];
+            // Clone and Translate priority logic: TH -> EN -> First available
+            const sourceTrans = sourceProfile.translations.find(t => t.lang === 'th') ||
+                sourceProfile.translations.find(t => t.lang === 'en') ||
+                sourceProfile.translations[0];
+
             if (sourceTrans) {
                 const translatedData = translateProfileContent(sourceTrans, targetLang.toLowerCase());
 
