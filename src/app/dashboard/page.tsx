@@ -27,10 +27,10 @@ export default async function DashboardPage() {
             include: {
                 profiles: {
                     include: { translations: { select: { lang: true } } },
-                    orderBy: { createdAt: 'desc' }
+                    orderBy: { createdAt: 'asc' }
                 }
             },
-            orderBy: { createdAt: 'desc' }
+            orderBy: { createdAt: 'asc' }
         });
     }
 
