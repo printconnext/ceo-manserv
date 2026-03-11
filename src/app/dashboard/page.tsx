@@ -70,69 +70,75 @@ export default async function DashboardPage() {
                         </div>
                     </div>
 
-                    {organizations.length > 0 ? (
+                    {organizations.filter(org => (org.profiles?.length || 0) > 0).length > 0 ? (
                         <div className="space-y-8">
-                            {organizations.map((org) => (
-                                <div key={org.id} className="space-y-4">
-                                    {currentPlan.canMultiOrg && (
-                                        <div className="flex items-center gap-2 px-1">
-                                            <div className="h-px flex-grow bg-gray-100"></div>
-                                            <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{org.name}</span>
+                            {organizations.filter(org => (org.profiles?.length || 0) > 0).map((org) => {
+                                // Logic to cleanup name display
+                                let displayName = org.name;
+                                if (org.slug === 'convey-care' && displayName.includes('แมน')) {
+                                    displayName = 'Convey Care';
+                                }
+
+                                return (
+                                    <div key={org.id} className="space-y-4">
+                                        <div className="flex items-center gap-3 pt-4 first:pt-0">
+                                            <div className="w-1.5 h-6 bg-brand-blue rounded-full"></div>
+                                            <h2 className="text-lg font-black text-gray-900 uppercase tracking-tight">{displayName}</h2>
                                             <div className="h-px flex-grow bg-gray-100"></div>
                                         </div>
-                                    )}
-                                    <div className="grid grid-cols-1 gap-4">
-                                        {org.profiles?.map((p: any) => {
-                                            // Each profile record now represents exactly ONE language
-                                            const pageLang = p.translations?.[0]?.lang?.toUpperCase() || "TH";
+                                        <div className="grid grid-cols-1 gap-4">
+                                            {org.profiles?.map((p: any) => {
+                                                // Each profile record now represents exactly ONE language
+                                                const pageLang = p.translations?.[0]?.lang?.toUpperCase() || "TH";
 
-                                            return (
-                                                <div key={p.id} className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-blue-200 transition-colors">
-                                                    <div className="flex items-center gap-4">
-                                                        <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-brand-blue font-bold text-lg">
-                                                            {p.fullName?.charAt(0) || "P"}
-                                                        </div>
-                                                        <div>
-                                                            <div className="flex items-center gap-2">
-                                                                <h3 className="font-bold text-gray-900">{p.fullName}</h3>
-                                                                <span className="px-1.5 py-0.5 rounded-md bg-blue-50 border border-blue-100 text-blue-600 text-[8px] font-black uppercase tracking-tighter flex items-center gap-0.5">
-                                                                    {pageLang}
-                                                                </span>
+                                                return (
+                                                    <div key={p.id} className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-blue-200 transition-colors">
+                                                        <div className="flex items-center gap-4">
+                                                            <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-brand-blue font-bold text-lg">
+                                                                {p.fullName?.charAt(0) || "P"}
                                                             </div>
-                                                            <p className="text-xs text-gray-500">/{org.slug}/{p.slug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/{p.translations?.[0]?.lang || 'th'}</p>
+                                                            <div>
+                                                                <div className="flex items-center gap-2">
+                                                                    <h3 className="font-bold text-gray-900">{p.fullName}</h3>
+                                                                    <span className="px-1.5 py-0.5 rounded-md bg-blue-50 border border-blue-100 text-blue-600 text-[8px] font-black uppercase tracking-tighter flex items-center gap-0.5">
+                                                                        {pageLang}
+                                                                    </span>
+                                                                </div>
+                                                                <p className="text-xs text-gray-500">/{org.slug}/{p.slug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/{p.translations?.[0]?.lang || 'th'}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex items-center gap-2">
+                                                            <Link
+                                                                href={`/dashboard/profile?id=${p.id}`}
+                                                                className="p-2 border border-gray-200 text-gray-500 rounded-lg hover:bg-gray-50 transition-colors"
+                                                                title="ตั้งค่าโปรไฟล์ (ชื่อ/URL/องค์กร)"
+                                                            >
+                                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1-2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                                                            </Link>
+                                                            <Link
+                                                                href={`/dashboard/vcard?id=${p.id}`}
+                                                                className="p-2 border border-gray-200 text-gray-500 rounded-lg hover:bg-gray-50 transition-colors"
+                                                                title="ดู QR Code นามบัตร"
+                                                            >
+                                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><rect x="7" y="7" width="3" height="3"></rect><rect x="14" y="7" width="3" height="3"></rect><rect x="7" y="14" width="3" height="3"></rect><rect x="14" y="14" width="3" height="3"></rect></svg>
+                                                            </Link>
+                                                            <div className="w-px h-6 bg-gray-100 mx-1"></div>
+                                                            <DeleteProfileButton profileId={p.id} profileName={p.fullName} />
+                                                            <DuplicateProfileButton profileId={p.id} profileName={p.fullName} />
+                                                            <Link href={`/dashboard/settings?id=${p.id}&lang=${p.translations?.[0]?.lang || 'th'}`} className="px-3 py-2 bg-brand-blue text-white rounded-lg text-xs font-bold hover:bg-blue-800 transition-colors">
+                                                                แก้ไขเนื้อหา
+                                                            </Link>
+                                                            <a href={`/${org.slug}/${p.slug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/${p.translations?.[0]?.lang || 'th'}`} target="_blank" rel="noopener noreferrer" className="px-3 py-2 bg-gray-900 text-white rounded-lg text-xs font-bold hover:bg-black transition-colors">
+                                                                เปิดเว็บ
+                                                            </a>
                                                         </div>
                                                     </div>
-                                                    <div className="flex items-center gap-2">
-                                                        <Link
-                                                            href={`/dashboard/profile?id=${p.id}`}
-                                                            className="p-2 border border-gray-200 text-gray-500 rounded-lg hover:bg-gray-50 transition-colors"
-                                                            title="ตั้งค่าโปรไฟล์ (ชื่อ/URL/องค์กร)"
-                                                        >
-                                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1-2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                                                        </Link>
-                                                        <Link
-                                                            href={`/dashboard/vcard?id=${p.id}`}
-                                                            className="p-2 border border-gray-200 text-gray-500 rounded-lg hover:bg-gray-50 transition-colors"
-                                                            title="ดู QR Code นามบัตร"
-                                                        >
-                                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><rect x="7" y="7" width="3" height="3"></rect><rect x="14" y="7" width="3" height="3"></rect><rect x="7" y="14" width="3" height="3"></rect><rect x="14" y="14" width="3" height="3"></rect></svg>
-                                                        </Link>
-                                                        <div className="w-px h-6 bg-gray-100 mx-1"></div>
-                                                        <DeleteProfileButton profileId={p.id} profileName={p.fullName} />
-                                                        <DuplicateProfileButton profileId={p.id} profileName={p.fullName} />
-                                                        <Link href={`/dashboard/settings?id=${p.id}&lang=${p.translations?.[0]?.lang || 'th'}`} className="px-3 py-2 bg-brand-blue text-white rounded-lg text-xs font-bold hover:bg-blue-800 transition-colors">
-                                                            แก้ไขเนื้อหา
-                                                        </Link>
-                                                        <a href={`/${org.slug}/${p.slug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/${p.translations?.[0]?.lang || 'th'}`} target="_blank" rel="noopener noreferrer" className="px-3 py-2 bg-gray-900 text-white rounded-lg text-xs font-bold hover:bg-black transition-colors">
-                                                            เปิดเว็บ
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
+                                                );
+                                            })}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     ) : (
                         <div className="bg-white p-12 rounded-2xl border-2 border-dashed border-gray-200 text-center">
