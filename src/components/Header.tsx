@@ -142,7 +142,7 @@ export default function Header({ data }: HeaderProps) {
                                         return (
                                             <Link
                                                 key={lang.code}
-                                                href={`/${orgSlug}/${lang.slug}`}
+                                                href={`/${orgSlug}/${lang.slug}/${lang.langCode}`}
                                                 className="block px-4 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:bg-[var(--color-primary)] hover:text-white transition-colors flex items-center justify-between"
                                                 onClick={() => setLangMenuOpen(false)}
                                             >
@@ -190,7 +190,7 @@ export default function Header({ data }: HeaderProps) {
                                         return (
                                             <Link
                                                 key={lang.code}
-                                                href={`/${orgSlug}/${lang.slug}`}
+                                                href={`/${orgSlug}/${lang.slug}/${lang.langCode}`}
                                                 className="px-3 py-1.5 text-sm font-bold text-[var(--color-primary)] border border-[var(--color-primary)]/30 rounded-full hover:bg-[var(--color-primary)] hover:text-white transition-all flex items-center"
                                                 onClick={() => setMobileMenuOpen(false)}
                                             >

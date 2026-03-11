@@ -454,7 +454,7 @@ export default function UnifiedEditor({
 
                     {profileMetadata?.orgSlug && profileMetadata?.profileSlug && (
                         <a
-                            href={`/${profileMetadata.orgSlug}/${profileMetadata.profileSlug}`}
+                            href={`/${profileMetadata.orgSlug}/${profileMetadata.profileSlug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/${lang}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-full rounded-2xl border-2 border-brand-blue py-3.5 text-sm font-bold text-brand-blue hover:bg-blue-50 transition-all uppercase tracking-widest flex items-center justify-center gap-2"

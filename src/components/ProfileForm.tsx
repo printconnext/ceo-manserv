@@ -220,12 +220,8 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
     const getPreviewUrl = () => {
         if (!form.orgSlug || !form.fullName) return "";
         let slug = form.profileSlug || slugify(form.fullName);
-        slug = slug.replace(/-(TH|EN|CH|JP)$/i, "");
-        const langSuffix = `-${uiLang.toUpperCase()}`;
-        if (!slug.endsWith(langSuffix)) {
-            slug = `${slug}${langSuffix}`;
-        }
-        return `/${form.orgSlug}/${slug}`;
+        slug = slug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "");
+        return `/${form.orgSlug}/${slug}/${uiLang.toLowerCase()}`;
     };
 
     const previewUrl = getPreviewUrl();
