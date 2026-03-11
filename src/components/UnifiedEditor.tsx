@@ -911,17 +911,17 @@ export default function UnifiedEditor({
                                 <div className="space-y-6">
                                     <h4 className="text-sm font-bold text-gray-900 border-l-4 border-brand-blue pl-3 uppercase tracking-widest">{labels.clientsKeyTitleLabel || "Key Customers Text"}</h4>
                                     <div className="p-8 bg-gray-50 rounded-[2.5rem] space-y-4 border border-gray-100">
-                                        <input type="text" value={content.clientsData?.keyCustomersBadge || ""} onChange={(e) => handleNestedChange("clientsData", "keyCustomersBadge", e.target.value)} className="w-full rounded-2xl border-none p-4 text-sm font-bold shadow-sm text-brand-blue" placeholder={labels.clientsKeyBadgeLabel || "Badge e.g. KEY CUSTOMERS"} />
-                                        <input type="text" value={content.clientsData?.keyCustomersTitle || ""} onChange={(e) => handleNestedChange("clientsData", "keyCustomersTitle", e.target.value)} className="w-full rounded-2xl border-none p-4 text-sm font-bold shadow-sm" placeholder="Title" />
+                                        <input type="text" value={content.clientsData?.keyCustomersBadge || ""} onChange={(e) => handleNestedChange("clientsData", "keyCustomersBadge", e.target.value)} className="w-full rounded-2xl border-none p-4 text-sm font-bold shadow-sm text-brand-blue bg-white" placeholder={labels.clientsKeyBadgeLabel || "Badge e.g. KEY CUSTOMERS"} />
+                                        <input type="text" value={content.clientsData?.keyCustomersTitle || ""} onChange={(e) => handleNestedChange("clientsData", "keyCustomersTitle", e.target.value)} className="w-full rounded-2xl border-none p-4 text-sm font-bold shadow-sm text-gray-900 bg-white" placeholder="Title" />
                                     </div>
                                 </div>
 
                                 <div className="space-y-6">
                                     <h4 className="text-sm font-bold text-gray-900 border-l-4 border-brand-blue pl-3 uppercase tracking-widest">{labels.clientsLookTitleLabel || "Looking For Text"}</h4>
                                     <div className="p-8 bg-gray-50 rounded-[2.5rem] space-y-4 border border-gray-100">
-                                        <input type="text" value={content.clientsData?.lookingForBadge || ""} onChange={(e) => handleNestedChange("clientsData", "lookingForBadge", e.target.value)} className="w-full rounded-2xl border-none p-4 text-sm font-bold shadow-sm text-brand-blue" placeholder={labels.clientsLookBadgeLabel || "Badge e.g. LOOKING FOR"} />
-                                        <input type="text" value={content.clientsData?.lookingForTitle || ""} onChange={(e) => handleNestedChange("clientsData", "lookingForTitle", e.target.value)} className="w-full rounded-2xl border-none p-4 text-sm font-bold shadow-sm" placeholder="Title" />
-                                        <textarea value={content.clientsData?.lookingForDesc || ""} onChange={(e) => handleNestedChange("clientsData", "lookingForDesc", e.target.value)} className="w-full rounded-xl border-none bg-white p-4 text-xs shadow-sm" rows={2} placeholder={labels.clientsLookDescLabel || "Description..."} />
+                                        <input type="text" value={content.clientsData?.lookingForBadge || ""} onChange={(e) => handleNestedChange("clientsData", "lookingForBadge", e.target.value)} className="w-full rounded-2xl border-none p-4 text-sm font-bold shadow-sm text-brand-blue bg-white" placeholder={labels.clientsLookBadgeLabel || "Badge e.g. LOOKING FOR"} />
+                                        <input type="text" value={content.clientsData?.lookingForTitle || ""} onChange={(e) => handleNestedChange("clientsData", "lookingForTitle", e.target.value)} className="w-full rounded-2xl border-none p-4 text-sm font-bold shadow-sm text-gray-900 bg-white" placeholder="Title" />
+                                        <textarea value={content.clientsData?.lookingForDesc || ""} onChange={(e) => handleNestedChange("clientsData", "lookingForDesc", e.target.value)} className="w-full rounded-xl border-none bg-white p-4 text-xs shadow-sm text-gray-900 font-medium" rows={2} placeholder={labels.clientsLookDescLabel || "Description..."} />
 
                                         <div className="pt-4 space-y-3">
                                             <div className="text-xs font-bold text-gray-400 uppercase tracking-widest">{labels.itemsList || "Items List"}</div>
@@ -931,7 +931,7 @@ export default function UnifiedEditor({
                                                         type="text"
                                                         value={itemStr}
                                                         onChange={(e) => handleArrayStringChange("clientsData", "lookingForItems", idx, e.target.value)}
-                                                        className="flex-grow rounded-xl border-none p-3 text-xs shadow-sm"
+                                                        className="flex-grow rounded-xl border-none p-3 text-xs shadow-sm text-gray-900 bg-white font-semibold"
                                                     />
                                                     <button onClick={() => removeArrayStringItem("clientsData", "lookingForItems", idx)} className="px-3 bg-red-50 text-red-500 rounded-xl font-bold hover:bg-red-100">✖</button>
                                                 </div>
