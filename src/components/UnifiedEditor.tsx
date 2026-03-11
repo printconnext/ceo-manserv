@@ -749,7 +749,7 @@ export default function UnifiedEditor({
                                 <div className="grid grid-cols-1 gap-6 p-8 bg-gray-50 rounded-[2rem] border border-gray-100 shadow-inner">
                                     <div className="space-y-4">
                                         <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.officeAddress || "Office Address"}</label>
-                                        <textarea value={content.contactData?.address || ""} onChange={(e) => handleNestedChange("contactData", "address", e.target.value)} className="w-full rounded-2xl border-none p-6 text-sm font-medium shadow-sm focus:ring-2 focus:ring-brand-blue leading-relaxed" rows={2} placeholder="Address..." />
+                                        <textarea value={content.contactData?.office || ""} onChange={(e) => handleNestedChange("contactData", "office", e.target.value)} className="w-full rounded-2xl border-none p-6 text-sm font-medium shadow-sm focus:ring-2 focus:ring-brand-blue leading-relaxed" rows={2} placeholder="Address..." />
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div className="space-y-4">
