@@ -17,20 +17,41 @@ export async function GET(req: NextRequest) {
     const profileId = req.nextUrl.searchParams.get("id");
 
     try {
-        const organization = await prisma.organization.findFirst({
-            where: { userId: session.user.id },
-            include: {
-                profiles: {
-                    orderBy: { createdAt: 'desc' }, // Get latest first
+        let organization: any = null;
+
+        if (profileId) {
+            // When editing a specific profile, find the org it belongs to
+            const targetProfile = await prisma.profile.findUnique({
+                where: { id: profileId },
+                select: { orgId: true, organization: { select: { userId: true } } }
+            });
+
+            if (targetProfile && targetProfile.organization.userId === session.user.id) {
+                organization = await prisma.organization.findUnique({
+                    where: { id: targetProfile.orgId },
                     include: {
-                        translations: true,
+                        profiles: {
+                            orderBy: { createdAt: 'desc' },
+                            include: { translations: true },
+                        },
+                        user: { select: { plan: true } }
                     },
+                });
+            }
+        }
+
+        if (!organization) {
+            organization = await prisma.organization.findFirst({
+                where: { userId: session.user.id },
+                include: {
+                    profiles: {
+                        orderBy: { createdAt: 'desc' },
+                        include: { translations: true },
+                    },
+                    user: { select: { plan: true } }
                 },
-                user: {
-                    select: { plan: true }
-                }
-            },
-        });
+            });
+        }
 
         if (!organization) {
             return NextResponse.json({ organization: null });
