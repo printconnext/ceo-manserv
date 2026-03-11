@@ -505,27 +505,27 @@ export default function UnifiedEditor({
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-12 bg-gray-50 rounded-[3rem] border border-gray-100 shadow-sm">
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.heroBadgeLabel || "Badge"}</label>
-                                            <input type="text" value={content.heroBadge || ""} onChange={(e) => handleContentChange("heroBadge", e.target.value)} className="w-full rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroBadgePlace || "เช่น ผู้ก่อตั้งและซีอีโอ"} />
+                                            <input type="text" value={content.heroBadge || ""} onChange={(e) => handleContentChange("heroBadge", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroBadgePlace || "เช่น ผู้ก่อตั้งและซีอีโอ"} />
                                         </div>
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.heroNameLabel || "ชื่อ-นามสกุล"}</label>
-                                            <input type="text" value={content.heroName || ""} onChange={(e) => handleContentChange("heroName", e.target.value)} className="w-full rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroNamePlace || "เช่น สามารถ ไชยะ"} />
+                                            <input type="text" value={content.heroName || ""} onChange={(e) => handleContentChange("heroName", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroNamePlace || "เช่น สามารถ ไชยะ"} />
                                         </div>
                                         <div className="col-span-full space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.heroOrgLabel || "ชื่อองค์กร/บริษัท"}</label>
-                                            <input type="text" value={content.heroTitle || ""} onChange={(e) => handleContentChange("heroTitle", e.target.value)} className="w-full rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroOrgPlace || "เช่น บริษัท แมน แมนเนจเม้นท์ เซอร์วิส จำกัด"} />
+                                            <input type="text" value={content.heroTitle || ""} onChange={(e) => handleContentChange("heroTitle", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroOrgPlace || "เช่น บริษัท แมน แมนเนจเม้นท์ เซอร์วิส จำกัด"} />
                                         </div>
                                         <div className="col-span-full space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.heroQuoteLabel || "คำคม/สโลแกน (Quote)"}</label>
-                                            <textarea value={content.heroQuote || ""} onChange={(e) => handleContentChange("heroQuote", e.target.value)} className="w-full rounded-2xl border-none p-6 text-sm font-medium shadow-sm focus:ring-2 focus:ring-brand-blue leading-relaxed" rows={3} placeholder={labels.heroQuotePlace || "เช่น \"เราคือ ผู้นำเชี่ยวชาญด้านการเดินทาง...\""} />
+                                            <textarea value={content.heroQuote || ""} onChange={(e) => handleContentChange("heroQuote", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-6 text-sm font-medium shadow-sm focus:ring-2 focus:ring-brand-blue leading-relaxed" rows={3} placeholder={labels.heroQuotePlace || "เช่น \"เราคือ ผู้นำเชี่ยวชาญด้านการเดินทาง...\""} />
                                         </div>
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.heroContactBtnLabel || "ปุ่มติดต่อเรา"}</label>
-                                            <input type="text" value={content.heroContactBtn || ""} onChange={(e) => handleContentChange("heroContactBtn", e.target.value)} className="w-full rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroContactBtnPlace || "เช่น Contact Us"} />
+                                            <input type="text" value={content.heroContactBtn || ""} onChange={(e) => handleContentChange("heroContactBtn", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroContactBtnPlace || "เช่น Contact Us"} />
                                         </div>
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.heroStandardBtnLabel || "ปุ่มมาตรฐานของเรา"}</label>
-                                            <input type="text" value={content.heroStandardBtn || ""} onChange={(e) => handleContentChange("heroStandardBtn", e.target.value)} className="w-full rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroStandardBtnPlace || "เช่น Our Standard"} />
+                                            <input type="text" value={content.heroStandardBtn || ""} onChange={(e) => handleContentChange("heroStandardBtn", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroStandardBtnPlace || "เช่น Our Standard"} />
                                         </div>
                                     </div>
                                 </div>
@@ -588,21 +588,21 @@ export default function UnifiedEditor({
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">{labels.visionBadge || "Vision Badge"}</label>
-                                        <input type="text" value={content.aboutData?.visionBadge || ""} onChange={(e) => handleNestedChange("aboutData", "visionBadge", e.target.value)} className="w-full rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" placeholder="เช่น VISION & MISSION" />
+                                        <input type="text" value={content.aboutData?.visionBadge || ""} onChange={(e) => handleNestedChange("aboutData", "visionBadge", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" placeholder="เช่น VISION & MISSION" />
                                     </div>
                                     <div>
                                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">{labels.visionTitle || "Vision Title"}</label>
-                                        <input type="text" value={content.aboutData?.visionTitle || ""} onChange={(e) => handleNestedChange("aboutData", "visionTitle", e.target.value)} className="w-full rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" />
+                                        <input type="text" value={content.aboutData?.visionTitle || ""} onChange={(e) => handleNestedChange("aboutData", "visionTitle", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" />
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">{labels.desc1 || "Description 1 (ข้อความเน้น)"}</label>
-                                        <textarea value={content.aboutData?.visionDesc1 || ""} onChange={(e) => handleNestedChange("aboutData", "visionDesc1", e.target.value)} className="w-full rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" rows={4} />
+                                        <textarea value={content.aboutData?.visionDesc1 || ""} onChange={(e) => handleNestedChange("aboutData", "visionDesc1", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" rows={4} />
                                     </div>
                                     <div>
                                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">{labels.desc2 || "Description 2 (รายละเอียดสมทบ)"}</label>
-                                        <textarea value={content.aboutData?.visionDesc2 || ""} onChange={(e) => handleNestedChange("aboutData", "visionDesc2", e.target.value)} className="w-full rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" rows={4} />
+                                        <textarea value={content.aboutData?.visionDesc2 || ""} onChange={(e) => handleNestedChange("aboutData", "visionDesc2", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" rows={4} />
                                     </div>
                                 </div>
 
@@ -649,11 +649,11 @@ export default function UnifiedEditor({
                                 <div className="grid grid-cols-2 gap-6">
                                     <div>
                                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2">{labels.servicesTitleLabel || "Section Title"}</label>
-                                        <input type="text" value={content.servicesData?.title || ""} onChange={(e) => handleNestedChange("servicesData", "title", e.target.value)} className="w-full rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm font-bold" />
+                                        <input type="text" value={content.servicesData?.title || ""} onChange={(e) => handleNestedChange("servicesData", "title", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm font-bold" />
                                     </div>
                                     <div>
                                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2">{labels.servicesSubtitleLabel || "Section Subtitle"}</label>
-                                        <input type="text" value={content.servicesData?.subtitle || ""} onChange={(e) => handleNestedChange("servicesData", "subtitle", e.target.value)} className="w-full rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" />
+                                        <input type="text" value={content.servicesData?.subtitle || ""} onChange={(e) => handleNestedChange("servicesData", "subtitle", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" />
                                     </div>
                                 </div>
 
@@ -679,7 +679,7 @@ export default function UnifiedEditor({
                                                     type="text"
                                                     value={content.servicesData?.items?.[idx]?.title || ""}
                                                     onChange={(e) => handleArrayItemChange("servicesData", idx, "title", e.target.value)}
-                                                    className="flex-grow rounded-xl border-none bg-white p-2 text-sm font-bold shadow-sm"
+                                                    className="flex-grow text-gray-900 rounded-xl border-none bg-white p-2 text-sm font-bold shadow-sm"
                                                     placeholder={labels.serviceTitle || "Service Title"}
                                                 />
                                             </div>
@@ -722,7 +722,7 @@ export default function UnifiedEditor({
                                             <textarea
                                                 value={content.servicesData?.items?.[idx]?.description || ""}
                                                 onChange={(e) => handleArrayItemChange("servicesData", idx, "description", e.target.value)}
-                                                className="w-full rounded-xl border-none bg-white p-3 text-xs text-gray-500 shadow-sm"
+                                                className="w-full text-gray-900 rounded-xl border-none bg-white p-3 text-xs shadow-sm"
                                                 rows={3}
                                                 placeholder={labels.descriptionPlace || "Description..."}
                                             />
@@ -742,34 +742,34 @@ export default function UnifiedEditor({
                                 <div className="space-y-6">
                                     <div>
                                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2">{labels.servicesTitleLabel || "Section Title"}</label>
-                                        <input type="text" value={content.contactData?.title || ""} onChange={(e) => handleNestedChange("contactData", "title", e.target.value)} className="w-full rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" />
+                                        <input type="text" value={content.contactData?.title || ""} onChange={(e) => handleNestedChange("contactData", "title", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" />
                                     </div>
                                     <div>
                                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2">{labels.servicesSubtitleLabel || "Section Subtitle"}</label>
-                                        <input type="text" value={content.contactData?.subtitle || ""} onChange={(e) => handleNestedChange("contactData", "subtitle", e.target.value)} className="w-full rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" />
+                                        <input type="text" value={content.contactData?.subtitle || ""} onChange={(e) => handleNestedChange("contactData", "subtitle", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" />
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 gap-6 p-8 bg-gray-50 rounded-[2rem] border border-gray-100 shadow-inner">
                                     <div className="space-y-4">
                                         <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.officeAddress || "Office Address"}</label>
-                                        <textarea value={content.contactData?.office || content.contactData?.officeValue || ""} onChange={(e) => handleNestedChange("contactData", "office", e.target.value)} className="w-full rounded-2xl border-none p-6 text-sm font-medium shadow-sm focus:ring-2 focus:ring-brand-blue leading-relaxed" rows={2} placeholder="Address..." />
+                                        <textarea value={content.contactData?.office || content.contactData?.officeValue || ""} onChange={(e) => handleNestedChange("contactData", "office", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-6 text-sm font-medium shadow-sm focus:ring-2 focus:ring-brand-blue leading-relaxed" rows={2} placeholder="Address..." />
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.mobilePhone || "Mobile Phone"}</label>
-                                            <input type="text" value={content.contactData?.mobile || content.contactData?.mobileValue || ""} onChange={(e) => handleNestedChange("contactData", "mobile", e.target.value)} className="w-full rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Phone..." />
+                                            <input type="text" value={content.contactData?.mobile || content.contactData?.mobileValue || ""} onChange={(e) => handleNestedChange("contactData", "mobile", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Phone..." />
                                         </div>
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.email || "Email"}</label>
-                                            <input type="text" value={content.contactData?.email || content.contactData?.emailValue || ""} onChange={(e) => handleNestedChange("contactData", "email", e.target.value)} className="w-full rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Email..." />
+                                            <input type="text" value={content.contactData?.email || content.contactData?.emailValue || ""} onChange={(e) => handleNestedChange("contactData", "email", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Email..." />
                                         </div>
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.website || "Website"}</label>
-                                            <input type="text" value={content.contactData?.website || content.contactData?.websiteValue || ""} onChange={(e) => handleNestedChange("contactData", "website", e.target.value)} className="w-full rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Website URL..." />
+                                            <input type="text" value={content.contactData?.website || content.contactData?.websiteValue || ""} onChange={(e) => handleNestedChange("contactData", "website", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Website URL..." />
                                         </div>
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.lineId || "Line ID / Add Line Link"}</label>
-                                            <input type="text" value={content.contactData?.lineTitle || content.contactData?.lineValue || ""} onChange={(e) => handleNestedChange("contactData", "lineTitle", e.target.value)} className="w-full rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Line Link..." />
+                                            <input type="text" value={content.contactData?.lineTitle || content.contactData?.lineValue || ""} onChange={(e) => handleNestedChange("contactData", "lineTitle", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Line Link..." />
                                         </div>
                                     </div>
                                 </div>
