@@ -130,6 +130,7 @@ export default function UnifiedEditor({
 
                     // Normalize old DB keys (officeValue, mobileValue, etc.) to editor keys
                     if (!cd.office && cd.officeValue) cd.office = cd.officeValue;
+                    if (!cd.office && cd.address) cd.office = cd.address;
                     if (!cd.mobile && cd.mobileValue) cd.mobile = cd.mobileValue;
                     if (!cd.email && cd.emailValue) cd.email = cd.emailValue;
                     if (!cd.website && cd.websiteValue) cd.website = cd.websiteValue;
