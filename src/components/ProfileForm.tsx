@@ -312,7 +312,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                                 onBlur={handleFullNameBlur}
                                 placeholder={labels.fullNamePlace}
                                 required
-                                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
+                                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
                             />
                         </div>
                         <div>
@@ -323,7 +323,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                                 value={form.title}
                                 onChange={handleChange}
                                 placeholder={labels.titlePlace}
-                                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
+                                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
                             />
                         </div>
                         <div>
@@ -334,7 +334,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                                 value={form.email}
                                 onChange={handleChange}
                                 placeholder={labels.emailPlace}
-                                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
+                                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
                             />
                         </div>
                         <div>
@@ -345,7 +345,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                                 value={form.website}
                                 onChange={handleChange}
                                 placeholder={labels.websitePlace}
-                                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
+                                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
                             />
                         </div>
                     </div>
@@ -366,7 +366,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                                 value={form.phone1}
                                 onChange={handleChange}
                                 placeholder="0812345678"
-                                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
+                                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
                             />
                         </div>
                         <div>
@@ -377,7 +377,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                                 value={form.phone2}
                                 onChange={handleChange}
                                 placeholder="0898765432"
-                                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
+                                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
                             />
                         </div>
                         <div className="md:col-span-2">
@@ -388,7 +388,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                                 value={form.lineUrl}
                                 onChange={handleChange}
                                 placeholder="https://line.me/ti/p/..."
-                                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
+                                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
                             />
                         </div>
                     </div>
@@ -411,7 +411,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                                     onChange={handleChange}
                                     onBlur={handleOrgNameBlur}
                                     placeholder={labels.orgNamePlace}
-                                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
+                                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
                                 />
                             </div>
                             <div>
@@ -422,7 +422,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                                     value={form.orgSlug}
                                     onChange={handleChange}
                                     placeholder="e.g., abc-company"
-                                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
+                                    className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
                                 />
                             </div>
                         </div>
@@ -436,7 +436,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                                 value={form.profileSlug}
                                 onChange={handleChange}
                                 placeholder="e.g., john-d"
-                                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
+                                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm text-gray-900 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
                             />
                         </div>
 
