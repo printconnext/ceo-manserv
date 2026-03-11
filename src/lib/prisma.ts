@@ -1,17 +1,19 @@
 import { PrismaClient } from "@prisma/client";
-import { Pool, neonConfig } from "@neondatabase/serverless";
-import { PrismaNeon } from "@prisma/adapter-neon";
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
 
-neonConfig.webSocketConstructor = typeof WebSocket !== 'undefined' ? WebSocket : null as any;
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
+const globalForPrisma = global as unknown as { prisma: PrismaClient | undefined };
 
 function createPrismaClient() {
-    const pool = new Pool({ connectionString: process.env.DATABASE_URL as string });
-    const adapter = new PrismaNeon(pool as any);
+    // Vercel NextAuth runtime doesn't properly pass process.env.DATABASE_URL to Neon pooler
+    // So we use standard pg pool which reads it natively
+    const connectionString = `${process.env.DATABASE_URL}`;
+    const pool = new Pool({ connectionString });
+    const adapter = new PrismaPg(pool);
     return new PrismaClient({ adapter });
 }
 
-export const prisma = globalForPrisma.prisma || createPrismaClient();
+export const prisma = globalForPrisma.prisma ?? createPrismaClient();
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
