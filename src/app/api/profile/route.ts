@@ -282,12 +282,33 @@ export async function POST(req: NextRequest) {
                 organization.slug
             );
 
-            // Inherit from last profile of the same person if possible, or just last profile in org
+            // 1. If this person already has a profile in another language in this org, inherit from that.
+            //    (e.g., they have NAT MEDHEE TH, now creating NAT MEDHEE JP)
             let latestProfile = await prisma.profile.findFirst({
-                where: { orgId: organization.id },
+                where: {
+                    orgId: organization.id,
+                    slug: { startsWith: baseProfileSlug.split('-')[0] } // Find any profile of this person (starts with same base name)
+                },
                 orderBy: { createdAt: 'desc' },
                 include: { translations: true }
             });
+
+            // 2. If NO profile exists for this person at all, we use the global MASTER profile (samart-TH)
+            if (!latestProfile) {
+                latestProfile = await prisma.profile.findFirst({
+                    where: { slug: 'samart-th' }, // The master template slug
+                    include: { translations: true }
+                });
+
+                // If master template is missing (e.g. dev environment), fallback to any latest profile in this org
+                if (!latestProfile) {
+                    latestProfile = await prisma.profile.findFirst({
+                        where: { orgId: organization.id },
+                        orderBy: { createdAt: 'desc' },
+                        include: { translations: true }
+                    });
+                }
+            }
 
             const inheritedThemeConfig = latestProfile?.themeConfig;
             const inheritedMediaConfig = latestProfile?.mediaConfig;
@@ -310,10 +331,13 @@ export async function POST(req: NextRequest) {
                 },
             });
 
-            // Smart Inheritance: If we have a latest translation for THIS target language (from another profile)
-            // or just the generic translation data to copy.
+            // Smart Inheritance (Copy exactly as mockup)
             if (latestProfile) {
-                const sourceTranslation = latestProfile.translations.find(t => t.lang === targetLang) || latestProfile.translations[0];
+                // If the user already has a TH profile and is making an EN profile, grab their TH profile.
+                // If it's a completely new user getting the master template (samart-th), grab its TH profile.
+                const sourceTranslation = latestProfile.translations.find(t => t.lang === 'th')
+                    || latestProfile.translations.find(t => t.lang === 'en')
+                    || latestProfile.translations[0];
 
                 if (sourceTranslation) {
                     const {
@@ -325,10 +349,10 @@ export async function POST(req: NextRequest) {
                     await prisma.profileTranslation.create({
                         data: {
                             profileId: profile.id,
-                            lang: targetLang,
-                            heroName: profile.fullName,
-                            heroTitle: profile.title || heroTitle,
-                            heroRole: profile.title || heroRole || "",
+                            lang: targetLang, // Save under the NEW language target
+                            heroName: profileData.fullName || heroName, // Always use their chosen name
+                            heroTitle: profileData.title || heroTitle, // Always use their chosen org title
+                            heroRole: profileData.title || heroRole || "",
                             heroBadge: heroBadge || "",
                             heroQuote: heroQuote || "",
                             heroContact: heroContact || (targetLang === 'th' ? 'ติดต่อ' : 'Contact'),
@@ -340,17 +364,17 @@ export async function POST(req: NextRequest) {
                             navContact: navContact || (targetLang === 'th' ? 'ติดต่อ' : 'Contact'),
                             aboutData: aboutData || Prisma.JsonNull,
                             servicesData: servicesData || Prisma.JsonNull,
-                            experienceData: experienceData || (experience ? { items: experience } : Prisma.JsonNull),
+                            experienceData: experienceData || Prisma.JsonNull,
                             clientsData: clientsData || Prisma.JsonNull,
-                            contactData: contactData || {
-                                title: targetLang === 'th' ? "ติดต่อเรา" : "Contact Us",
-                                subtitle: targetLang === 'th' ? "ช่องทางการติดต่อ" : "Get in touch",
-                                mobile: profile.phone1 || "",
-                                email: profile.email || "",
-                                website: profile.website || "",
+                            contactData: {
+                                ...(contactData || {}),
+                                mobile: profileData.phone1 || contactData?.mobile || "",
+                                email: profileData.email || contactData?.email || "",
+                                website: profileData.website || contactData?.website || "",
+                                lineTitle: profileData.lineUrl || contactData?.lineTitle || contactData?.lineValue || "",
                             },
                             footerData: footerData || {
-                                rights: `© ${new Date().getFullYear()} ${profile.fullName}. All rights reserved.`,
+                                rights: `© ${new Date().getFullYear()} ${profileData.fullName || heroName}. All rights reserved.`,
                             },
                         }
                     });
