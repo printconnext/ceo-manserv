@@ -314,7 +314,6 @@ export default function ThemeSettings() {
                         { key: "showAbout", label: "About Section (วิสัยทัศน์/ประวัติ)" },
                         { key: "showServices", label: "Services Section (บริการ/ความเชี่ยวชาญ)" },
                         { key: "showClients", label: "Clients Section (ลูกค้า/พาร์ทเนอร์)" },
-                        { key: "showExperience", label: "Experience Section (ประวัติการทำงาน)" },
                         { key: "showContact", label: "Contact Section (ช่องทางติดต่อ)" }
                     ].map((item) => (
                         <div key={item.key} className="flex items-center justify-between py-2">

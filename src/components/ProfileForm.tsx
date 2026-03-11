@@ -15,12 +15,7 @@ interface ProfileData {
     email: string;
     website: string;
     lineUrl: string;
-    experience: {
-        role: string;
-        company: string;
-        period: string;
-        description: string;
-    }[];
+
     id?: string;
 }
 
@@ -48,7 +43,7 @@ function mapResponseToForm(data: any): ProfileData | null {
         email: profile?.email || "",
         website: profile?.website || "",
         lineUrl: profile?.lineUrl || "",
-        experience: profile?.translations?.[0]?.experienceData?.items || [],
+
         id: profile?.id,
     };
 }
@@ -64,7 +59,7 @@ export const emptyForm: ProfileData = {
     email: "",
     website: "",
     lineUrl: "",
-    experience: [],
+
     id: "",
 };
 
@@ -143,7 +138,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                         email: lp.email || "",
                         website: lp.website || "",
                         lineUrl: lp.lineUrl || "",
-                        experience: lastTrans?.experienceData?.items || [],
+
                     });
                 } else {
                     const mapped = mapResponseToForm(data);
@@ -183,33 +178,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
         }
     };
 
-    const addExperienceItem = () => {
-        setForm(prev => ({
-            ...prev,
-            experience: [
-                ...prev.experience,
-                { role: "", company: "", period: "", description: "" }
-            ]
-        }));
-        setSaved(false);
-    };
 
-    const removeExperienceItem = (index: number) => {
-        setForm(prev => ({
-            ...prev,
-            experience: prev.experience.filter((_, i) => i !== index)
-        }));
-        setSaved(false);
-    };
-
-    const handleExperienceChange = (index: number, field: string, value: string) => {
-        setForm(prev => {
-            const newExp = [...prev.experience];
-            newExp[index] = { ...newExp[index], [field]: value };
-            return { ...prev, experience: newExp };
-        });
-        setSaved(false);
-    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -483,95 +452,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                     </div>
                 </div>
 
-                {/* Experience Section */}
-                <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                    <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
-                        <div>
-                            <h3 className="text-base font-bold text-gray-900">{labels.expTitle}</h3>
-                            <p className="text-sm text-gray-500 mt-0.5">{labels.expDesc}</p>
-                        </div>
-                        <button
-                            type="button"
-                            onClick={addExperienceItem}
-                            className="text-sm font-medium text-brand-blue bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5"
-                        >
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                            {labels.addExp}
-                        </button>
-                    </div>
 
-                    <div className="p-6 space-y-6">
-                        {form.experience.length === 0 ? (
-                            <div className="text-center py-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
-                                <p className="text-sm text-gray-500">{labels.noExp}</p>
-                                <button
-                                    type="button"
-                                    onClick={addExperienceItem}
-                                    className="mt-2 text-sm font-medium text-brand-blue hover:text-blue-700"
-                                >
-                                    {labels.firstExp}
-                                </button>
-                            </div>
-                        ) : (
-                            form.experience.map((item, index) => (
-                                <div key={index} className="relative bg-gray-50 rounded-xl p-5 border border-gray-200 group">
-                                    <button
-                                        type="button"
-                                        onClick={() => removeExperienceItem(index)}
-                                        className="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors bg-white hover:bg-red-50 p-1.5 rounded-full shadow-sm opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                        title="Delete"
-                                    >
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                    </button>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4 pr-8 md:pr-0">
-                                        <div>
-                                            <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">{labels.role}</label>
-                                            <input
-                                                type="text"
-                                                value={item.role}
-                                                onChange={(e) => handleExperienceChange(index, 'role', e.target.value)}
-                                                placeholder="..."
-                                                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
-                                            />
-                                        </div>
-                                        <div className="hidden md:block"></div>
-                                        <div>
-                                            <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">{labels.company}</label>
-                                            <input
-                                                type="text"
-                                                value={item.company}
-                                                onChange={(e) => handleExperienceChange(index, 'company', e.target.value)}
-                                                placeholder="..."
-                                                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">{labels.period}</label>
-                                            <input
-                                                type="text"
-                                                value={item.period}
-                                                onChange={(e) => handleExperienceChange(index, 'period', e.target.value)}
-                                                placeholder="..."
-                                                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all"
-                                            />
-                                        </div>
-                                        <div className="md:col-span-2">
-                                            <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">{labels.desc}</label>
-                                            <textarea
-                                                value={item.description}
-                                                onChange={(e) => handleExperienceChange(index, 'description', e.target.value)}
-                                                placeholder="..."
-                                                rows={2}
-                                                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none transition-all resize-none"
-                                            ></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))
-                        )}
-                    </div>
-                </div>
 
                 {/* Save Button & Status */}
                 <div className="flex flex-wrap items-center gap-4">

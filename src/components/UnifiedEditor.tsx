@@ -34,7 +34,7 @@ const getSections = (lang: string) => {
         { id: "hero", label: labels.heroSection || "Hero Section" },
         { id: "about", label: labels.aboutSection || "About Section" },
         { id: "services", label: labels.servicesSection || "Services Section" },
-        { id: "experience", label: labels.experienceSection || "Experience Section" },
+
         { id: "clients", label: labels.clientsSection || "Clients Section" },
         { id: "contact", label: labels.contactSection || "Contact Section" },
         { id: "aesthetics", label: labels.aestheticsSection || "Aesthetics" },
@@ -825,25 +825,7 @@ export default function UnifiedEditor({
                         </div>
                     )}
 
-                    {/* Simple Text Fallback for Experience */}
-                    {activeSection === "experience" && (
-                        <div className="space-y-8 animate-in fade-in duration-500">
-                            <SectionHeader title={labels.experienceSection || "Experience Section"} desc={labels.experienceSectionDesc || "จัดการประวัติการทำงานและผลงาน"} layoutKey="showExperience" />
-                            <div className="p-12 bg-gray-50 rounded-[3rem] border border-gray-100 text-center space-y-6">
-                                <div className="w-20 h-20 bg-white shadow-xl rounded-full flex items-center justify-center mx-auto text-3xl">🧩</div>
-                                <div className="bg-blue-50/50 p-8 rounded-[2.5rem] border border-blue-100 flex items-start gap-4">
-                                    <div className="p-3 bg-white rounded-2xl shadow-sm text-brand-blue">
-                                        ⚙️
-                                    </div>
-                                    <p className="text-sm font-bold text-blue-900 leading-relaxed pt-1 italic">
-                                        {labels.expListTune || "ส่วนการจัดการรายการแบบละเอียด (Items List) สำหรับ Experience กำลังอยู่ในช่วงปรับจูนเพื่อให้ใช้งานง่ายที่สุด"}
-                                        <br /><br />
-                                        <span className="text-brand-blue font-bold">{labels.expInst1 || "ระหว่างนี้คุณสามารถใช้ข้อมูลตั้งต้นจาก Samarth Profile ได้ทันที"}</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+
 
                     {activeSection === "clients" && (
                         <div className="space-y-12 animate-in fade-in slide-in-from-bottom-6 duration-700">
