@@ -144,6 +144,18 @@ export default function UnifiedEditor({
 
                     // Fallback to profile-level data if still empty
                     if (profileData) {
+                        // Hero Fallbacks
+                        if (!fetchedContent.heroName && profileData.fullName) fetchedContent.heroName = profileData.fullName;
+                        if (!fetchedContent.heroTitle && profileData.organizationName) fetchedContent.heroTitle = profileData.organizationName;
+                        if (!fetchedContent.heroQuote && profileData.title) fetchedContent.heroQuote = profileData.title;
+                        if (!fetchedContent.heroRole && profileData.title) fetchedContent.heroRole = profileData.title;
+
+                        // About Fallbacks
+                        if (!fetchedContent.aboutData) fetchedContent.aboutData = {};
+                        if (!fetchedContent.aboutData.visionDesc1 && profileData.title) fetchedContent.aboutData.visionDesc1 = profileData.title;
+                        if (!fetchedContent.aboutData.signature && profileData.fullName) fetchedContent.aboutData.signature = profileData.fullName;
+
+                        // Contact Fallbacks
                         if (!cd.lineTitle && profileData.lineUrl) cd.lineTitle = profileData.lineUrl;
                         if (!cd.mobile && profileData.phone1) cd.mobile = profileData.phone1;
                         if (!cd.email && profileData.email) cd.email = profileData.email;

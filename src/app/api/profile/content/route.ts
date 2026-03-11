@@ -62,6 +62,9 @@ export async function GET(req: NextRequest) {
                     phone1: profile.phone1,
                     email: profile.email,
                     website: profile.website,
+                    fullName: profile.fullName,
+                    title: profile.title,
+                    organizationName: (profile as any).organization?.name,
                 }
             });
         }
@@ -78,6 +81,9 @@ export async function GET(req: NextRequest) {
                 phone1: profile.phone1,
                 email: profile.email,
                 website: profile.website,
+                fullName: profile.fullName,
+                title: profile.title,
+                organizationName: (profile as any).organization?.name,
             }
         });
     } catch (error) {
