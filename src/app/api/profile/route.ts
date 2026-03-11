@@ -437,7 +437,7 @@ export async function POST(req: NextRequest) {
         });
 
         // Return the clean URL structure
-        const profileUrl = `/${organization.slug}/${profile.slug}`;
+        const profileUrl = `/${organization.slug}/${profile.slug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/${targetLang}`;
 
         return NextResponse.json({
             organization,

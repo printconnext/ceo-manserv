@@ -98,7 +98,7 @@ export default async function DashboardPage() {
                                                                     {pageLang}
                                                                 </span>
                                                             </div>
-                                                            <p className="text-xs text-gray-500">/{org.slug}/{p.slug}</p>
+                                                            <p className="text-xs text-gray-500">/{org.slug}/{p.slug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/{p.translations?.[0]?.lang || 'th'}</p>
                                                         </div>
                                                     </div>
                                                     <div className="flex items-center gap-2">

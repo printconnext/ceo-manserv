@@ -58,7 +58,7 @@ export default async function VCardPage({
         phone2: profile.phone2 || "",
         email: profile.email || "",
         website: profile.website || "",
-        profileUrl: `https://www.ceoprofile.site/${organization.slug}/${profile.slug}/th`
+        profileUrl: `https://www.ceoprofile.site/${organization.slug}/${profile.slug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/th`
     });
 
     return (

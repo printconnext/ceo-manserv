@@ -485,7 +485,7 @@ export default function UnifiedEditor({
                                 phone1: content.contactData?.mobile || "",
                                 email: content.contactData?.email || "",
                                 website: content.contactData?.website || "",
-                                profileUrl: profileMetadata ? `https://www.ceoprofile.site/${profileMetadata.orgSlug}/${profileMetadata.profileSlug}/th` : ""
+                                profileUrl: profileMetadata ? `https://www.ceoprofile.site/${profileMetadata.orgSlug}/${profileMetadata.profileSlug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/th` : ""
                             })}
                         />
                     </div>

@@ -108,7 +108,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                         const mapped = mapResponseToForm({ organization: { ...data.organization, profiles: [specific] } });
                         if (mapped) {
                             setForm(mapped);
-                            setProfileUrl(`/${mapped.orgSlug}/${mapped.profileSlug}`);
+                            setProfileUrl(`/${mapped.orgSlug}/${mapped.profileSlug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/${specific.translations?.[0]?.lang || "th"}`);
 
                             // SYNC LANGUAGE: Set the UI language based on the profile's translation
                             const profileLang = specific.translations?.[0]?.lang;
@@ -138,7 +138,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                     if (mapped) {
                         setForm(mapped);
                         if (mapped.orgSlug && mapped.profileSlug) {
-                            setProfileUrl(`/${mapped.orgSlug}/${mapped.profileSlug}`);
+                            setProfileUrl(`/${mapped.orgSlug}/${mapped.profileSlug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/${uiLang}`);
                         }
                     }
                 }
