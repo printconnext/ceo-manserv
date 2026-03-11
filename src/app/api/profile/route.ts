@@ -388,6 +388,28 @@ export async function POST(req: NextRequest) {
             }
         }
 
+        // Get existing translation if any (to preserve editor-set fields like address)
+        const existingTranslation = await prisma.profileTranslation.findUnique({
+            where: {
+                profileId_lang: {
+                    profileId: profile.id,
+                    lang: targetLang,
+                },
+            },
+        });
+        const existingContactData = (existingTranslation as any)?.contactData || {};
+        const existingExperienceData = (existingTranslation as any)?.experienceData;
+
+        // Merge contactData: keep editor-set fields (like office/address), update phone/email/website from profile form
+        const mergedContactData = {
+            ...existingContactData,
+            title: existingContactData.title || (targetLang === 'th' ? "ติดต่อเรา" : "Contact Us"),
+            subtitle: existingContactData.subtitle || (targetLang === 'th' ? "ช่องทางการติดต่อ" : "Get in touch"),
+            mobile: profile.phone1 || existingContactData.mobile || "",
+            email: profile.email || existingContactData.email || "",
+            website: profile.website || existingContactData.website || "",
+        };
+
         // Update translation for the profile (only ONE translation per profile record now)
         await prisma.profileTranslation.upsert({
             where: {
@@ -410,13 +432,7 @@ export async function POST(req: NextRequest) {
                 navLookingFor: targetLang === 'th' ? 'กำลังมองหา' : 'Looking For',
                 navContact: targetLang === 'th' ? 'ติดต่อ' : 'Contact',
                 experienceData: experience ? { items: experience } : Prisma.JsonNull,
-                contactData: {
-                    title: targetLang === 'th' ? "ติดต่อเรา" : "Contact Us",
-                    subtitle: targetLang === 'th' ? "ช่องทางการติดต่อ" : "Get in touch",
-                    mobile: profile.phone1 || "",
-                    email: profile.email || "",
-                    website: profile.website || "",
-                },
+                contactData: mergedContactData,
                 footerData: {
                     rights: `© ${new Date().getFullYear()} ${profile.fullName}. All rights reserved.`,
                 },
@@ -426,13 +442,7 @@ export async function POST(req: NextRequest) {
                 heroTitle: profile.title || "",
                 heroRole: profile.title || "",
                 experienceData: experience ? { items: experience } : undefined,
-                contactData: {
-                    title: targetLang === 'th' ? "ติดต่อเรา" : "Contact Us",
-                    subtitle: targetLang === 'th' ? "ช่องทางการติดต่อ" : "Get in touch",
-                    mobile: profile.phone1 || "",
-                    email: profile.email || "",
-                    website: profile.website || "",
-                },
+                contactData: mergedContactData,
             },
         });
 

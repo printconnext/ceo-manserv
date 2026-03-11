@@ -224,7 +224,7 @@ export default async function ProfilePage({ params }: PageProps) {
         title: pick(contactData.title, baseContent.contact?.contactUs || baseContent.contact?.title),
         subtitle: pick(contactData.subtitle, baseContent.contact?.getInTouch || baseContent.contact?.subtitle),
         officeLabel: baseContent.contact?.officeLabel || "Office Address",
-        officeValue: pick(contactData.office, contactData.officeValue, contactData.address, profile.organization.name),
+        officeValue: pick(contactData.office, contactData.officeValue, contactData.address),
         mobileLabel: baseContent.contact?.mobileLabel || "Mobile Phone",
         mobileValue: pick(contactData.mobile, contactData.mobileValue, profile.phone1),
         emailLabel: baseContent.contact?.emailLabel || "Email",
