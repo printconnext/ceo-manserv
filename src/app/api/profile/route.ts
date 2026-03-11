@@ -170,7 +170,11 @@ export async function POST(req: NextRequest) {
         const finalOrgSlug = slugify(orgSlug || orgName || "my-org");
         let baseProfileSlug = slugify(profileSlug || fullName || "profile");
 
-        // Ensure slug ends with -LANG (e.g., nat-medhee-TH)
+        // CLEANUP: Remove any trailing language suffix the user might have accidentally typed
+        // so we don't end up with duplicate suffixes like samart-th-TH
+        baseProfileSlug = baseProfileSlug.replace(/(?:-[a-z]{2})+$/i, '');
+
+        // Ensure slug ends with proper uppercase -LANG (e.g., nat-medhee-TH)
         if (!baseProfileSlug.endsWith(`-${langSuffix}`)) {
             baseProfileSlug = `${baseProfileSlug}-${langSuffix}`;
         }
@@ -296,7 +300,7 @@ export async function POST(req: NextRequest) {
             // 2. If NO profile exists for this person at all, we use the global MASTER profile (samart-TH)
             if (!latestProfile) {
                 latestProfile = await prisma.profile.findFirst({
-                    where: { slug: { in: ['samart-th-TH', 'samarth-th', 'samart'] } }, // The master template slugs
+                    where: { slug: { in: ['samart-TH', 'samart-th-TH', 'samarth-th', 'samart'] } }, // The master template slugs
                     include: { translations: true }
                 });
             }
