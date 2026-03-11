@@ -54,7 +54,7 @@ export default function Services({ data }: ServicesProps) {
                 <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
                     <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
                         {services.map((service) => (
-                            <div key={service.title} className="flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-sm ring-1 ring-gray-200 dark:ring-gray-700 hover:ring-[var(--color-primary)] hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group overflow-hidden">
+                            <div key={service.title} className="flex flex-col bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 hover:ring-[var(--color-primary)] hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group overflow-hidden">
 
                                 {/* Service Image */}
                                 <div className="relative h-48 w-full bg-gray-200">
@@ -68,13 +68,13 @@ export default function Services({ data }: ServicesProps) {
                                 </div>
 
                                 <div className="p-6 md:p-8 flex flex-col flex-auto">
-                                    <dt className="flex items-center gap-x-4 text-xl md:text-2xl font-bold leading-7 text-gray-900 dark:text-white mb-4">
+                                    <dt className="flex items-center gap-x-4 text-xl md:text-2xl font-bold leading-7 text-gray-900 mb-4">
                                         <div className="p-2.5 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] flex-shrink-0">
                                             <service.icon className="h-6 w-6 flex-none" aria-hidden="true" />
                                         </div>
                                         {service.title}
                                     </dt>
-                                    <dd className="flex flex-auto flex-col text-sm md:text-base leading-7 text-gray-500 dark:text-gray-400">
+                                    <dd className="flex flex-auto flex-col text-sm md:text-base leading-7 text-gray-500">
                                         <p className="flex-auto">{service.description}</p>
                                     </dd>
                                 </div>

@@ -41,16 +41,16 @@ export default function Contact({ data }: ContactProps) {
                 <div className="mx-auto mt-16 max-w-xl sm:mt-20">
                     <div className="grid grid-cols-1 gap-8 text-center sm:grid-cols-2 lg:grid-cols-2 mb-12">
                         {/* Office Address */}
-                        <div className="flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                            <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">{data.officeLabel || "Office Address"}</h3>
-                            <p className="text-lg font-semibold text-brand-blue dark:text-brand-orange text-center">{data.officeValue || "-"}</p>
+                        <div className="flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                            <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest mb-2">{data.officeLabel || "Office Address"}</h3>
+                            <p className="text-lg font-semibold text-brand-blue text-center">{data.officeValue || "-"}</p>
                         </div>
 
                         {/* Mobile Phone */}
-                        <div className="flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                            <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">{data.mobileLabel || "Mobile Phone"}</h3>
+                        <div className="flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                            <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest mb-2">{data.mobileLabel || "Mobile Phone"}</h3>
                             {data.mobileValue ? (
-                                <a href={`tel:${data.mobileValue.replace(/[^0-9+]/g, '')}`} className="text-lg font-semibold text-brand-blue dark:text-brand-orange hover:text-brand-red transition-colors flex items-center justify-center gap-2">
+                                <a href={`tel:${data.mobileValue.replace(/[^0-9+]/g, '')}`} className="text-lg font-semibold text-brand-blue hover:text-brand-red transition-colors flex items-center justify-center gap-2">
                                     <span>{data.mobileValue}</span>
                                 </a>
                             ) : (
@@ -59,10 +59,10 @@ export default function Contact({ data }: ContactProps) {
                         </div>
 
                         {/* Email */}
-                        <div className="flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                            <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">{data.emailLabel || "Email"}</h3>
+                        <div className="flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                            <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest mb-2">{data.emailLabel || "Email"}</h3>
                             {data.emailValue ? (
-                                <a href={`mailto:${data.emailValue}`} className="text-lg font-semibold text-brand-blue dark:text-brand-orange hover:text-brand-red transition-colors text-center break-all">
+                                <a href={`mailto:${data.emailValue}`} className="text-lg font-semibold text-brand-blue hover:text-brand-red transition-colors text-center break-all">
                                     {data.emailValue}
                                 </a>
                             ) : (
@@ -71,10 +71,10 @@ export default function Contact({ data }: ContactProps) {
                         </div>
 
                         {/* Website */}
-                        <div className="flex flex-col items-center justify-center p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                            <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">{data.websiteLabel || "Website"}</h3>
+                        <div className="flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                            <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest mb-2">{data.websiteLabel || "Website"}</h3>
                             {data.websiteValue ? (
-                                <a href={data.websiteValue.startsWith('http') ? data.websiteValue : `https://${data.websiteValue}`} target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-brand-blue dark:text-brand-orange hover:text-brand-red transition-colors text-center break-all">
+                                <a href={data.websiteValue.startsWith('http') ? data.websiteValue : `https://${data.websiteValue}`} target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-brand-blue hover:text-brand-red transition-colors text-center break-all">
                                     {data.websiteValue}
                                 </a>
                             ) : (
@@ -91,7 +91,7 @@ export default function Contact({ data }: ContactProps) {
                                 href={data.lineValue.startsWith('http') ? data.lineValue : `https://line.me/ti/p/~${data.lineValue.replace('@', '')}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 group flex flex-col items-center"
+                                className="bg-white p-6 rounded-3xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 group flex flex-col items-center"
                             >
                                 <div className="bg-white p-2 rounded-xl">
                                     <QRCodeSVG
