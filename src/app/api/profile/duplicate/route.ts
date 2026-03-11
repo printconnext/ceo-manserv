@@ -50,61 +50,53 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: `Profile for ${targetLang.toUpperCase()} already exists.` }, { status: 409 });
         }
 
-        // 3. Create new profile record (metadata clone)
-        const newProfile = await prisma.profile.create({
-            data: {
-                orgId: sourceProfile.orgId,
-                slug: newSlug,
-                fullName: sourceProfile.fullName,
-                title: sourceProfile.title,
-                phone1: sourceProfile.phone1,
-                phone2: sourceProfile.phone2,
-                email: sourceProfile.email,
-                website: sourceProfile.website,
-                lineUrl: sourceProfile.lineUrl,
-                themeConfig: sourceProfile.themeConfig || {},
-                mediaConfig: sourceProfile.mediaConfig || {},
-            }
-        });
-
-        // 4. Clone and Translate first found translation
-        const sourceTrans = sourceProfile.translations[0];
-        if (sourceTrans) {
-            const translatedData = translateProfileContent(sourceTrans, targetLang.toLowerCase());
-
-            await prisma.profileTranslation.create({
+        // 3. Perform duplication in a transaction
+        const result = await prisma.$transaction(async (tx) => {
+            // Create new profile record (Full metadata clone)
+            const newProfile = await tx.profile.create({
                 data: {
-                    profileId: newProfile.id,
-                    lang: targetLang.toLowerCase(),
-                    heroBadge: translatedData.heroBadge || "",
-                    heroName: translatedData.heroName || "",
-                    heroTitle: translatedData.heroTitle || "",
-                    heroQuote: translatedData.heroQuote || "",
-                    heroContact: translatedData.heroContact || "",
-                    heroContactBtn: translatedData.heroContactBtn || "",
-                    heroStandard: translatedData.heroStandard || "",
-                    heroStandardBtn: translatedData.heroStandardBtn || "",
-                    heroRole: translatedData.heroRole || "",
-                    navAbout: translatedData.navAbout || "",
-                    navServices: translatedData.navServices || "",
-                    navCustomers: translatedData.navCustomers || "",
-                    navLookingFor: translatedData.navLookingFor || "",
-                    navContact: translatedData.navContact || "",
-                    aboutData: translatedData.aboutData || {},
-                    servicesData: translatedData.servicesData || {},
-                    experienceData: translatedData.experienceData || {},
-                    clientsData: translatedData.clientsData || {},
-                    contactData: translatedData.contactData || {},
-                    footerData: translatedData.footerData || {},
+                    orgId: sourceProfile.orgId,
+                    slug: newSlug,
+                    fullName: sourceProfile.fullName,
+                    title: sourceProfile.title,
+                    portraitUrl: sourceProfile.portraitUrl, // Copy portrait!
+                    phone1: sourceProfile.phone1,
+                    phone2: sourceProfile.phone2,
+                    email: sourceProfile.email,
+                    website: sourceProfile.website,
+                    lineUrl: sourceProfile.lineUrl,
+                    lineQrUrl: sourceProfile.lineQrUrl, // Copy Line QR!
+                    isPublished: sourceProfile.isPublished,
+                    themeConfig: sourceProfile.themeConfig || {},
+                    mediaConfig: sourceProfile.mediaConfig || {},
                 }
             });
-        }
+
+            // Clone and Translate first found translation
+            const sourceTrans = sourceProfile.translations[0];
+            if (sourceTrans) {
+                const translatedData = translateProfileContent(sourceTrans, targetLang.toLowerCase());
+
+                // Remove database-specific fields from the clone target
+                const { id, profileId, createdAt, updatedAt, lang, ...contentToClone } = translatedData;
+
+                await tx.profileTranslation.create({
+                    data: {
+                        ...contentToClone,
+                        profileId: newProfile.id,
+                        lang: targetLang.toLowerCase(),
+                    }
+                });
+            }
+
+            return newProfile;
+        });
 
         const profileUrl = `/${sourceProfile.organization.slug}/${baseSlug}/${targetLang.toLowerCase()}`;
 
         return NextResponse.json({
             success: true,
-            profile: newProfile,
+            profile: result,
             profileUrl
         });
 
