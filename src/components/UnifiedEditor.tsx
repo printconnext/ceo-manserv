@@ -125,20 +125,22 @@ export default function UnifiedEditor({
 
                     // Pre-fill contact data from profile if empty
                     const profileData = contentData.profileData;
+                    if (!fetchedContent.contactData) fetchedContent.contactData = {};
+                    const cd = fetchedContent.contactData;
+
+                    // Normalize old DB keys (officeValue, mobileValue, etc.) to editor keys
+                    if (!cd.office && cd.officeValue) cd.office = cd.officeValue;
+                    if (!cd.mobile && cd.mobileValue) cd.mobile = cd.mobileValue;
+                    if (!cd.email && cd.emailValue) cd.email = cd.emailValue;
+                    if (!cd.website && cd.websiteValue) cd.website = cd.websiteValue;
+                    if (!cd.lineTitle && cd.lineValue) cd.lineTitle = cd.lineValue;
+
+                    // Fallback to profile-level data if still empty
                     if (profileData) {
-                        if (!fetchedContent.contactData) fetchedContent.contactData = {};
-                        if (!fetchedContent.contactData.lineTitle && profileData.lineUrl) {
-                            fetchedContent.contactData.lineTitle = profileData.lineUrl;
-                        }
-                        if (!fetchedContent.contactData.mobile && profileData.phone1) {
-                            fetchedContent.contactData.mobile = profileData.phone1;
-                        }
-                        if (!fetchedContent.contactData.email && profileData.email) {
-                            fetchedContent.contactData.email = profileData.email;
-                        }
-                        if (!fetchedContent.contactData.website && profileData.website) {
-                            fetchedContent.contactData.website = profileData.website;
-                        }
+                        if (!cd.lineTitle && profileData.lineUrl) cd.lineTitle = profileData.lineUrl;
+                        if (!cd.mobile && profileData.phone1) cd.mobile = profileData.phone1;
+                        if (!cd.email && profileData.email) cd.email = profileData.email;
+                        if (!cd.website && profileData.website) cd.website = profileData.website;
                     }
 
                     setContent(fetchedContent);
