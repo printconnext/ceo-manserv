@@ -749,24 +749,24 @@ export default function UnifiedEditor({
                                 <div className="grid grid-cols-1 gap-6 p-8 bg-gray-50 rounded-[2rem] border border-gray-100 shadow-inner">
                                     <div className="space-y-4">
                                         <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.officeAddress || "Office Address"}</label>
-                                        <textarea value={content.contactData?.office || ""} onChange={(e) => handleNestedChange("contactData", "office", e.target.value)} className="w-full rounded-2xl border-none p-6 text-sm font-medium shadow-sm focus:ring-2 focus:ring-brand-blue leading-relaxed" rows={2} placeholder="Address..." />
+                                        <textarea value={content.contactData?.office || content.contactData?.officeValue || ""} onChange={(e) => handleNestedChange("contactData", "office", e.target.value)} className="w-full rounded-2xl border-none p-6 text-sm font-medium shadow-sm focus:ring-2 focus:ring-brand-blue leading-relaxed" rows={2} placeholder="Address..." />
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.mobilePhone || "Mobile Phone"}</label>
-                                            <input type="text" value={content.contactData?.mobile || ""} onChange={(e) => handleNestedChange("contactData", "mobile", e.target.value)} className="w-full rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Phone..." />
+                                            <input type="text" value={content.contactData?.mobile || content.contactData?.mobileValue || ""} onChange={(e) => handleNestedChange("contactData", "mobile", e.target.value)} className="w-full rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Phone..." />
                                         </div>
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.email || "Email"}</label>
-                                            <input type="text" value={content.contactData?.email || ""} onChange={(e) => handleNestedChange("contactData", "email", e.target.value)} className="w-full rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Email..." />
+                                            <input type="text" value={content.contactData?.email || content.contactData?.emailValue || ""} onChange={(e) => handleNestedChange("contactData", "email", e.target.value)} className="w-full rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Email..." />
                                         </div>
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.website || "Website"}</label>
-                                            <input type="text" value={content.contactData?.website || ""} onChange={(e) => handleNestedChange("contactData", "website", e.target.value)} className="w-full rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Website URL..." />
+                                            <input type="text" value={content.contactData?.website || content.contactData?.websiteValue || ""} onChange={(e) => handleNestedChange("contactData", "website", e.target.value)} className="w-full rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Website URL..." />
                                         </div>
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.lineId || "Line ID / Add Line Link"}</label>
-                                            <input type="text" value={content.contactData?.lineTitle || ""} onChange={(e) => handleNestedChange("contactData", "lineTitle", e.target.value)} className="w-full rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Line Link..." />
+                                            <input type="text" value={content.contactData?.lineTitle || content.contactData?.lineValue || ""} onChange={(e) => handleNestedChange("contactData", "lineTitle", e.target.value)} className="w-full rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Line Link..." />
                                         </div>
                                     </div>
                                 </div>
