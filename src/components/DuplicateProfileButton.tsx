@@ -29,7 +29,8 @@ export default function DuplicateProfileButton({ profileId, profileName }: Dupli
             if (res.ok) {
                 alert(`ทำสำเนาเป็นภาษา ${LANG_NAMES[targetLang]} เรียบร้อยแล้ว!`);
                 setIsOpen(false);
-                router.refresh();
+                // Redirect to the new profile's editor
+                router.push(`/dashboard/settings?id=${data.profileId}&lang=${targetLang.toLowerCase()}`);
             } else {
                 alert(`Error: ${data.error}`);
             }
