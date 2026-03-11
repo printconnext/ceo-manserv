@@ -38,7 +38,7 @@ export default function Clients({ data }: ClientsProps) {
                                 : `/images/customers/${name.toLowerCase().replace(/ /g, '-').replace(/&/g, 'and')}.png`;
 
                             return (
-                                <div key={idx} className="w-full h-full flex items-center justify-center p-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all duration-300 group">
+                                <div key={idx} className="w-full h-full flex items-center justify-center p-2 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 group">
                                     <div className="relative w-[100px] h-[50px]">
                                         <Image
                                             src={imagePath}
