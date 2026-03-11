@@ -68,10 +68,12 @@ export default function DuplicateProfileButton({ profileId, profileName }: Dupli
                             <select
                                 value={targetLang}
                                 onChange={(e) => setTargetLang(e.target.value)}
-                                className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue outline-none"
+                                className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue outline-none text-gray-900 bg-white"
                             >
                                 {Object.entries(LANG_NAMES).map(([code, name]) => (
-                                    <option key={code} value={code}>{name} ({code.toUpperCase()})</option>
+                                    <option key={code} value={code} className="text-gray-900 bg-white">
+                                        {name} ({code.toUpperCase()})
+                                    </option>
                                 ))}
                             </select>
                         </div>
