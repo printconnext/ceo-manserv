@@ -29,11 +29,11 @@ interface ContactProps {
 
 export default function Contact({ data }: ContactProps) {
     return (
-        <section id="contact" className="py-24 sm:py-32 bg-gray-50 dark:bg-gray-900/50">
+        <section id="contact" className="py-24 sm:py-32 bg-gray-50">
             <div className="container-custom">
                 <div className="mx-auto max-w-2xl text-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">{data.title}</h2>
-                    <p className="mt-2 text-lg leading-8 text-gray-600 dark:text-gray-300">
+                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{data.title}</h2>
+                    <p className="mt-2 text-lg leading-8 text-gray-600">
                         {data.subtitle}
                     </p>
                 </div>
@@ -86,7 +86,7 @@ export default function Contact({ data }: ContactProps) {
                     {/* LINE QR Code */}
                     {data.lineValue && (
                         <div className="flex flex-col items-center justify-center mb-12">
-                            <p className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{data.lineLabel}</p>
+                            <p className="text-lg font-semibold text-gray-900 mb-4">{data.lineLabel}</p>
                             <a
                                 href={data.lineValue.startsWith('http') ? data.lineValue : `https://line.me/ti/p/~${data.lineValue.replace('@', '')}`}
                                 target="_blank"
@@ -110,7 +110,7 @@ export default function Contact({ data }: ContactProps) {
                     )}
 
                     {data.emailValue && (
-                        <div className="mt-10 text-center text-sm text-gray-500 dark:text-gray-400">
+                        <div className="mt-10 text-center text-sm text-gray-500">
                             {data.preferEmail} <a href={`mailto:${data.emailValue}`} className="font-semibold text-blue-600 hover:text-blue-500">{data.emailValue}</a>
                         </div>
                     )}

@@ -37,7 +37,7 @@ export default function Services({ data }: ServicesProps) {
     });
 
     return (
-        <section id="services" className="py-24 bg-gray-50 dark:bg-gray-900/50 relative overflow-hidden">
+        <section id="services" className="py-24 bg-gray-50 relative overflow-hidden">
             {/* Decorative background blob */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 opacity-30 pointer-events-none">
                 <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-blue-200 blur-3xl mix-blend-multiply"></div>
@@ -47,7 +47,7 @@ export default function Services({ data }: ServicesProps) {
             <div className="container-custom">
                 <div className="mx-auto max-w-2xl text-center">
                     <h2 className="text-3xl font-bold tracking-tight text-[var(--color-primary)] dark:text-[var(--color-primary)] sm:text-4xl">{data.title}</h2>
-                    <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
+                    <p className="mt-6 text-lg leading-8 text-gray-600">
                         {data.subtitle}
                     </p>
                 </div>

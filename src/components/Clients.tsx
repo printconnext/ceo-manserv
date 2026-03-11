@@ -17,7 +17,7 @@ interface ClientsProps {
 
 export default function Clients({ data }: ClientsProps) {
     return (
-        <section className="py-24 bg-white dark:bg-black">
+        <section className="py-24 bg-white">
             <div className="container-custom">
 
                 {/* Key Customers */}
@@ -26,7 +26,7 @@ export default function Clients({ data }: ClientsProps) {
                         <span className="inline-block rounded-full bg-brand-blue px-4 py-2 text-sm font-semibold text-white shadow-sm">
                             {data.keyCustomersBadge}
                         </span>
-                        <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">{data.keyCustomersTitle}</h2>
+                        <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">{data.keyCustomersTitle}</h2>
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 items-center justify-items-center">
