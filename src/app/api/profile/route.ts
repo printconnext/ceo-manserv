@@ -60,8 +60,8 @@ export async function GET(req: NextRequest) {
         // Tier-based logic for available languages
         const plan = organization.user?.plan || "free";
         const maxProfiles = plan === "free" ? 1 : (plan === "pro" ? 10 : 100); // Rough limits
-        const existingLangs = organization.profiles.flatMap(p => p.translations.map(t => t.lang));
-        const uniqueLangs = Array.from(new Set(existingLangs));
+        const existingLangs = organization.profiles.flatMap((p: any) => p.translations.map((t: any) => t.lang));
+        const uniqueLangs: string[] = Array.from(new Set(existingLangs));
 
         // Define fallback/available languages based on tier
         const standardLangs = ["th", "en", "ch", "jp", "hi", "fr", "it", "es", "de", "ru", "fa", "pt", "br", "vi", "lo", "my", "ph", "id"];
