@@ -123,9 +123,9 @@ export default function Hero({ data }: HeroProps) {
                 </div>
 
                 {/* Business Gallery Section - Optimized for up to 4 images */}
-                <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 opacity-95 pb-10 relative z-10 w-full">
+                <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4 opacity-95 pb-10 relative z-10 w-full">
                     {data.heroGallery.slice(0, 4).map((img, idx) => (
-                        <div key={idx} className={`relative h-48 sm:h-64 rounded-2xl overflow-hidden shadow-2xl border border-white/20 group cursor-pointer bg-white/5 ring-1 ring-white/10 ${data.heroGallery.length === 3 && idx === 0 ? 'sm:col-span-2' : ''}`}>
+                        <div key={idx} className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-white/20 group cursor-pointer bg-white/5 ring-1 ring-white/10">
                             <Image
                                 src={img}
                                 alt={`Gallery ${idx + 1}`}
