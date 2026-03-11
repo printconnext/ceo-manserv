@@ -123,23 +123,16 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                 }
 
                 // If creating NEW profile but organization exists (Pre-filling)
-                if (!profileId && data.latestProfile) {
-                    const lp = data.latestProfile;
+                if (!profileId && data.organization) {
                     const org = data.organization;
-                    const lastTrans = lp.translations?.[0];
 
                     setForm({
                         ...emptyForm,
                         orgName: org.name || "",
                         orgSlug: org.slug || "",
-                        // Copy non-identifying info
-                        phone1: lp.phone1 || "",
-                        phone2: lp.phone2 || "",
-                        email: lp.email || "",
-                        website: lp.website || "",
-                        lineUrl: lp.lineUrl || "",
-
                     });
+                } else if (!profileId) {
+                    setForm(emptyForm);
                 } else {
                     const mapped = mapResponseToForm(data);
                     if (mapped) {

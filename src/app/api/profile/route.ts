@@ -305,8 +305,19 @@ export async function POST(req: NextRequest) {
                 });
             }
 
+            // Inherit missing core profile data from the master/latest profile
             const inheritedThemeConfig = latestProfile?.themeConfig;
             const inheritedMediaConfig = latestProfile?.mediaConfig;
+
+            const finalProfileData = {
+                fullName: profileData.fullName || latestProfile?.fullName || "",
+                title: profileData.title || latestProfile?.title || "",
+                phone1: profileData.phone1 || latestProfile?.phone1 || "",
+                phone2: profileData.phone2 || latestProfile?.phone2 || "",
+                email: profileData.email || latestProfile?.email || "",
+                website: profileData.website || latestProfile?.website || "",
+                lineUrl: profileData.lineUrl || latestProfile?.lineUrl || "",
+            };
 
             const defaultThemeConfig = inheritedThemeConfig || {
                 colors: { primary: "#0F766E", secondary: "#1E293B", accent: "#F59E0B", background: "#FFFFFF", text: "#111827" },
@@ -318,7 +329,7 @@ export async function POST(req: NextRequest) {
 
             profile = await prisma.profile.create({
                 data: {
-                    ...profileData,
+                    ...finalProfileData,
                     slug: uniqueProfileSlug,
                     orgId: organization.id,
                     themeConfig: defaultThemeConfig,
