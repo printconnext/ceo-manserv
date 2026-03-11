@@ -65,6 +65,9 @@ export async function GET(req: NextRequest) {
                     fullName: profile.fullName,
                     title: profile.title,
                     organizationName: (profile as any).organization?.name,
+                    portraitUrl: profile.portraitUrl,
+                    lineQrUrl: profile.lineQrUrl,
+                    logoUrl: (profile as any).organization?.logoUrl,
                 }
             });
         }
@@ -84,6 +87,9 @@ export async function GET(req: NextRequest) {
                 fullName: profile.fullName,
                 title: profile.title,
                 organizationName: (profile as any).organization?.name,
+                portraitUrl: profile.portraitUrl,
+                lineQrUrl: profile.lineQrUrl,
+                logoUrl: (profile as any).organization?.logoUrl,
             }
         });
     } catch (error) {

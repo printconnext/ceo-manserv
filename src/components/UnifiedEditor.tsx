@@ -144,6 +144,14 @@ export default function UnifiedEditor({
 
                     // Fallback to profile-level data if still empty
                     if (profileData) {
+                        // Media Fallbacks
+                        setMedia((prev: any) => ({
+                            ...prev,
+                            logo: prev.logo || profileData.logoUrl || "",
+                            heroImage: prev.heroImage || profileData.portraitUrl || "",
+                            lineQrUrl: prev.lineQrUrl || profileData.lineQrUrl || "",
+                        }));
+
                         // Hero Fallbacks
                         if (!fetchedContent.heroName && profileData.fullName) fetchedContent.heroName = profileData.fullName;
                         if (!fetchedContent.heroTitle && profileData.organizationName) fetchedContent.heroTitle = profileData.organizationName;
