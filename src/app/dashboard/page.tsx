@@ -3,6 +3,7 @@ import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 import DeleteProfileButton from "@/components/DeleteProfileButton";
+import DuplicateProfileButton from "@/components/DuplicateProfileButton";
 
 export default async function DashboardPage() {
     const session = await getServerSession(authOptions);
@@ -118,6 +119,7 @@ export default async function DashboardPage() {
                                                         </Link>
                                                         <div className="w-px h-6 bg-gray-100 mx-1"></div>
                                                         <DeleteProfileButton profileId={p.id} profileName={p.fullName} />
+                                                        <DuplicateProfileButton profileId={p.id} profileName={p.fullName} />
                                                         <Link href={`/dashboard/settings?id=${p.id}&lang=${p.translations?.[0]?.lang || 'th'}`} className="px-3 py-2 bg-brand-blue text-white rounded-lg text-xs font-bold hover:bg-blue-800 transition-colors">
                                                             แก้ไขเนื้อหา
                                                         </Link>

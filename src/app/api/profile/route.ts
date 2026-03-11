@@ -297,12 +297,23 @@ export async function POST(req: NextRequest) {
                 include: { translations: true }
             });
 
-            // 2. If NO profile exists for this person at all, we use the global MASTER profile (samart-TH)
+            // 2. If NO profile exists for this person at all, we use the global MASTER profile (samarth-TH from manserv)
             if (!latestProfile) {
                 latestProfile = await prisma.profile.findFirst({
-                    where: { slug: { in: ['samart-TH', 'samart-th-TH', 'samarth-th', 'samart'] } }, // The master template slugs
+                    where: {
+                        slug: { in: ['samarth-TH', 'samart-TH', 'samarth-th', 'samart'] },
+                        organization: { slug: 'manserv' }
+                    },
                     include: { translations: true }
                 });
+
+                // Ultimate fallback if manserv one is missing
+                if (!latestProfile) {
+                    latestProfile = await prisma.profile.findFirst({
+                        where: { slug: { in: ['samarth-TH', 'samart-TH', 'samarth-th', 'samart'] } },
+                        include: { translations: true }
+                    });
+                }
             }
 
             // Inherit missing core profile data from the master/latest profile
