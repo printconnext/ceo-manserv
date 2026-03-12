@@ -524,7 +524,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "hero" && (
                         <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <SectionHeader title={(labels.heroSection || "Hero Section") + " v1.8"} desc={labels.heroSectionDesc || "จัดการข้อมูลและรูปภาพในส่วนแรกของเว็บไซต์"} layoutKey="showHero" />
+                            <SectionHeader title={(labels.heroSection || "Hero Section") + " v1.9"} desc={labels.heroSectionDesc || "จัดการข้อมูลและรูปภาพในส่วนแรกของเว็บไซต์"} layoutKey="showHero" />
 
                             <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
                                 <div className="space-y-6">
@@ -608,7 +608,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "about" && (
                         <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
-                            <SectionHeader title={(labels.aboutSection || "About Section") + " v1.8"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
+                            <SectionHeader title={(labels.aboutSection || "About Section") + " v1.9"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
 
                             <div className="grid grid-cols-1 gap-8">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -681,7 +681,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "services" && (
                         <div className="space-y-8 animate-in fade-in duration-500">
-                            <SectionHeader title={(labels.servicesSection || "Services Section") + " v1.8"} desc={labels.servicesSectionDesc || "บริการและความเชี่ยวชาญ"} layoutKey="showServices" />
+                            <SectionHeader title={(labels.servicesSection || "Services Section") + " v1.9"} desc={labels.servicesSectionDesc || "บริการและความเชี่ยวชาญ"} layoutKey="showServices" />
                             <div className="grid grid-cols-1 gap-6">
                                 <div className="grid grid-cols-2 gap-6">
                                     <div>
@@ -866,40 +866,15 @@ export default function UnifiedEditor({
 
                     {activeSection === "clients" && (
                         <div className="space-y-12 animate-in fade-in slide-in-from-bottom-6 duration-700">
-                            <SectionHeader title={(labels.clientsSection || "Clients Section") + " v1.8"} desc={labels.clientsSectionDesc || "ลูกค้าคนสำคัญและกลุ่มเป้าหมาย"} layoutKey="showClients" />
+                            <SectionHeader title={(labels.clientsSection || "Clients Section") + " v1.9"} desc={labels.clientsSectionDesc || "ลูกค้าคนสำคัญและกลุ่มเป้าหมาย"} layoutKey="showClients" />
 
-                            {/* Section 1: Text Content (Moved to top) */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-4">
+                            {/* Section 1: Key Customers Text (Kept at top) */}
+                            <div className="mt-4">
                                 <div className="space-y-6">
                                     <h4 className="text-sm font-bold text-gray-900 border-l-4 border-brand-blue pl-3 uppercase tracking-widest">{labels.clientsKeyTitleLabel || "Key Customers Text"}</h4>
                                     <div className="p-8 bg-gray-50 rounded-[2.5rem] space-y-4 border border-gray-100">
                                         <input type="text" value={content.clientsData?.keyCustomersBadge || ""} onChange={(e) => handleNestedChange("clientsData", "keyCustomersBadge", e.target.value)} className="w-full rounded-2xl border-none p-4 text-sm shadow-sm text-brand-blue bg-white" placeholder={labels.clientsKeyBadgeLabel || "Badge e.g. KEY CUSTOMERS"} />
                                         <input type="text" value={content.clientsData?.keyCustomersTitle || ""} onChange={(e) => handleNestedChange("clientsData", "keyCustomersTitle", e.target.value)} className="w-full rounded-2xl border-none p-4 text-sm shadow-sm text-gray-900 bg-white" placeholder="Title" />
-                                    </div>
-                                </div>
-
-                                <div className="space-y-6">
-                                    <h4 className="text-sm font-bold text-gray-900 border-l-4 border-brand-blue pl-3 uppercase tracking-widest">{labels.clientsLookTitleLabel || "Looking For Text"}</h4>
-                                    <div className="p-8 bg-gray-50 rounded-[2.5rem] space-y-4 border border-gray-100">
-                                        <input type="text" value={content.clientsData?.lookingForBadge || ""} onChange={(e) => handleNestedChange("clientsData", "lookingForBadge", e.target.value)} className="w-full rounded-2xl border-none p-4 text-sm shadow-sm text-brand-blue bg-white" placeholder={labels.clientsLookBadgeLabel || "Badge e.g. LOOKING FOR"} />
-                                        <input type="text" value={content.clientsData?.lookingForTitle || ""} onChange={(e) => handleNestedChange("clientsData", "lookingForTitle", e.target.value)} className="w-full rounded-2xl border-none p-4 text-sm shadow-sm text-gray-900 bg-white" placeholder="Title" />
-                                        <textarea value={content.clientsData?.lookingForDesc || ""} onChange={(e) => handleNestedChange("clientsData", "lookingForDesc", e.target.value)} className="w-full rounded-xl border-none bg-white p-4 text-sm shadow-sm text-gray-900" rows={2} placeholder={labels.clientsLookDescLabel || "Description..."} />
-
-                                        <div className="pt-4 space-y-3">
-                                            <div className="text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.itemsList || "Items List"}</div>
-                                            {(content.clientsData?.lookingForItems || []).map((itemStr: string, idx: number) => (
-                                                <div key={idx} className="flex gap-2">
-                                                    <input
-                                                        type="text"
-                                                        value={itemStr}
-                                                        onChange={(e) => handleArrayStringChange("clientsData", "lookingForItems", idx, e.target.value)}
-                                                        className="flex-grow rounded-xl border-none p-3 text-sm shadow-sm text-gray-900 bg-white"
-                                                    />
-                                                    <button onClick={() => removeArrayStringItem("clientsData", "lookingForItems", idx)} className="px-3 bg-red-50 text-red-500 rounded-xl font-bold hover:bg-red-100">✖</button>
-                                                </div>
-                                            ))}
-                                            <button onClick={() => addArrayStringItem("clientsData", "lookingForItems", "New Item")} className="w-full py-2 bg-blue-50 text-brand-blue rounded-xl text-xs font-bold hover:bg-blue-100">{labels.addLookForItem || "+ Add Look For Item"}</button>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -949,6 +924,34 @@ export default function UnifiedEditor({
                                                 {lang === 'en' ? 'No client logos yet. Click "+ Add Client Logo" above to add.' : 'ยังไม่มีโลโก้ลูกค้า กดปุ่ม "+ เพิ่มโลโก้ลูกค้า" ด้านบนเพื่อเพิ่ม'}
                                             </div>
                                         )}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Section 3: Looking For Text (Moved back down) */}
+                            <div className="mt-8">
+                                <div className="space-y-6">
+                                    <h4 className="text-sm font-bold text-gray-900 border-l-4 border-brand-blue pl-3 uppercase tracking-widest">{labels.clientsLookTitleLabel || "Looking For Text"}</h4>
+                                    <div className="p-8 bg-gray-50 rounded-[2.5rem] space-y-4 border border-gray-100">
+                                        <input type="text" value={content.clientsData?.lookingForBadge || ""} onChange={(e) => handleNestedChange("clientsData", "lookingForBadge", e.target.value)} className="w-full rounded-2xl border-none p-4 text-sm shadow-sm text-brand-blue bg-white" placeholder={labels.clientsLookBadgeLabel || "Badge e.g. LOOKING FOR"} />
+                                        <input type="text" value={content.clientsData?.lookingForTitle || ""} onChange={(e) => handleNestedChange("clientsData", "lookingForTitle", e.target.value)} className="w-full rounded-2xl border-none p-4 text-sm shadow-sm text-gray-900 bg-white" placeholder="Title" />
+                                        <textarea value={content.clientsData?.lookingForDesc || ""} onChange={(e) => handleNestedChange("clientsData", "lookingForDesc", e.target.value)} className="w-full rounded-xl border-none bg-white p-4 text-sm shadow-sm text-gray-900" rows={2} placeholder={labels.clientsLookDescLabel || "Description..."} />
+
+                                        <div className="pt-4 space-y-3">
+                                            <div className="text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.itemsList || "Items List"}</div>
+                                            {(content.clientsData?.lookingForItems || []).map((itemStr: string, idx: number) => (
+                                                <div key={idx} className="flex gap-2">
+                                                    <input
+                                                        type="text"
+                                                        value={itemStr}
+                                                        onChange={(e) => handleArrayStringChange("clientsData", "lookingForItems", idx, e.target.value)}
+                                                        className="flex-grow rounded-xl border-none p-3 text-sm shadow-sm text-gray-900 bg-white"
+                                                    />
+                                                    <button onClick={() => removeArrayStringItem("clientsData", "lookingForItems", idx)} className="px-3 bg-red-50 text-red-500 rounded-xl font-bold hover:bg-red-100">✖</button>
+                                                </div>
+                                            ))}
+                                            <button onClick={() => addArrayStringItem("clientsData", "lookingForItems", "New Item")} className="w-full py-2 bg-blue-50 text-brand-blue rounded-xl text-xs font-bold hover:bg-blue-100">{labels.addLookForItem || "+ Add Look For Item"}</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
