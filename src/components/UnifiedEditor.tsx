@@ -524,7 +524,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "hero" && (
                         <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <SectionHeader title={(labels.heroSection || "Hero Section") + " v1.3"} desc={labels.heroSectionDesc || "จัดการข้อมูลและรูปภาพในส่วนแรกของเว็บไซต์"} layoutKey="showHero" />
+                            <SectionHeader title={(labels.heroSection || "Hero Section") + " v1.4"} desc={labels.heroSectionDesc || "จัดการข้อมูลและรูปภาพในส่วนแรกของเว็บไซต์"} layoutKey="showHero" />
 
                             <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
                                 <div className="space-y-6">
@@ -608,7 +608,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "about" && (
                         <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
-                            <SectionHeader title={(labels.aboutSection || "About Section") + " v1.3"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
+                            <SectionHeader title={(labels.aboutSection || "About Section") + " v1.4"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
 
                             <div className="grid grid-cols-1 gap-8">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -647,7 +647,7 @@ export default function UnifiedEditor({
                                     <div className="flex justify-between items-center border-l-4 border-brand-blue pl-3">
                                         <h4 className="text-sm font-bold text-gray-900">{labels.statsNumbers || "Stats Numbers (สถิติความสำเร็จ)"}</h4>
                                         <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-gray-100 shadow-sm scale-90 origin-right">
-                                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">{labels.showSection || "แสดงส่วนนี้"}</span>
+                                            <span className="text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.showSection || "แสดงส่วนนี้"}</span>
                                             <label className="relative inline-flex items-center cursor-pointer">
                                                 <input type="checkbox" checked={theme.layout?.showAboutStats ?? true} onChange={() => handleLayoutToggle("showAboutStats")} className="sr-only peer" />
                                                 <div className="w-9 h-5 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
@@ -724,7 +724,7 @@ export default function UnifiedEditor({
                                             <div className="flex items-center gap-3">
                                                 {/* Left pill */}
                                                 <div className="flex items-center bg-white rounded-2xl px-3 py-1.5 flex-grow shadow-sm border border-gray-100 relative">
-                                                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mr-2 ml-1">Icon</span>
+                                                    <span className="text-xs font-bold text-gray-500 uppercase tracking-widest mr-2 ml-1">Icon</span>
                                                     <select
                                                         value={(() => {
                                                             const raw = content.servicesData?.items?.[idx]?.icon || defaultServiceIconOrder[idx % defaultServiceIconOrder.length];
@@ -935,7 +935,7 @@ export default function UnifiedEditor({
                                         <textarea value={content.clientsData?.lookingForDesc || ""} onChange={(e) => handleNestedChange("clientsData", "lookingForDesc", e.target.value)} className="w-full rounded-xl border-none bg-white p-4 text-xs shadow-sm text-gray-900 font-medium" rows={2} placeholder={labels.clientsLookDescLabel || "Description..."} />
 
                                         <div className="pt-4 space-y-3">
-                                            <div className="text-xs font-bold text-gray-400 uppercase tracking-widest">{labels.itemsList || "Items List"}</div>
+                                            <div className="text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.itemsList || "Items List"}</div>
                                             {(content.clientsData?.lookingForItems || []).map((itemStr: string, idx: number) => (
                                                 <div key={idx} className="flex gap-2">
                                                     <input
