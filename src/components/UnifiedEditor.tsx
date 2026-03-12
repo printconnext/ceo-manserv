@@ -524,7 +524,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "hero" && (
                         <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <SectionHeader title={(labels.heroSection || "Hero Section") + " v1.9"} desc={labels.heroSectionDesc || "จัดการข้อมูลและรูปภาพในส่วนแรกของเว็บไซต์"} layoutKey="showHero" />
+                            <SectionHeader title={(labels.heroSection || "Hero Section") + " v2.0"} desc={labels.heroSectionDesc || "จัดการข้อมูลและรูปภาพในส่วนแรกของเว็บไซต์"} layoutKey="showHero" />
 
                             <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
                                 <div className="space-y-6">
@@ -608,7 +608,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "about" && (
                         <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
-                            <SectionHeader title={(labels.aboutSection || "About Section") + " v1.9"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
+                            <SectionHeader title={(labels.aboutSection || "About Section") + " v2.0"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
 
                             <div className="grid grid-cols-1 gap-8">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -681,7 +681,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "services" && (
                         <div className="space-y-8 animate-in fade-in duration-500">
-                            <SectionHeader title={(labels.servicesSection || "Services Section") + " v1.9"} desc={labels.servicesSectionDesc || "บริการและความเชี่ยวชาญ"} layoutKey="showServices" />
+                            <SectionHeader title={(labels.servicesSection || "Services Section") + " v2.0"} desc={labels.servicesSectionDesc || "บริการและความเชี่ยวชาญ"} layoutKey="showServices" />
                             <div className="grid grid-cols-1 gap-6">
                                 <div className="grid grid-cols-2 gap-6">
                                     <div>
@@ -774,7 +774,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "contact" && (
                         <div className="space-y-10 animate-in fade-in duration-500">
-                            <SectionHeader title={labels.contactSection || "Contact Section"} desc={labels.contactSectionDesc || "ช่องทางการติดต่อและโซเชียลมีเดีย"} layoutKey="showContact" />
+                            <SectionHeader title={(labels.contactSection || "Contact Section") + " v2.0"} desc={labels.contactSectionDesc || "ช่องทางการติดต่อและโซเชีลมีเดีย"} layoutKey="showContact" />
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="space-y-6">
                                     <div>
@@ -794,19 +794,19 @@ export default function UnifiedEditor({
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.mobilePhone || "Mobile Phone"}</label>
-                                            <input type="text" value={content.contactData?.mobile || content.contactData?.mobileValue || ""} onChange={(e) => handleNestedChange("contactData", "mobile", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Phone..." />
+                                            <input type="text" value={content.contactData?.mobile || content.contactData?.mobileValue || ""} onChange={(e) => handleNestedChange("contactData", "mobile", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Phone..." />
                                         </div>
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.email || "Email"}</label>
-                                            <input type="text" value={content.contactData?.email || content.contactData?.emailValue || ""} onChange={(e) => handleNestedChange("contactData", "email", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Email..." />
+                                            <input type="text" value={content.contactData?.email || content.contactData?.emailValue || ""} onChange={(e) => handleNestedChange("contactData", "email", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Email..." />
                                         </div>
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.website || "Website"}</label>
-                                            <input type="text" value={content.contactData?.website || content.contactData?.websiteValue || ""} onChange={(e) => handleNestedChange("contactData", "website", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Website URL..." />
+                                            <input type="text" value={content.contactData?.website || content.contactData?.websiteValue || ""} onChange={(e) => handleNestedChange("contactData", "website", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Website URL..." />
                                         </div>
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.lineId || "Line ID / Add Line Link"}</label>
-                                            <input type="text" value={content.contactData?.lineTitle || content.contactData?.lineValue || ""} onChange={(e) => handleNestedChange("contactData", "lineTitle", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Line Link..." />
+                                            <input type="text" value={content.contactData?.lineTitle || content.contactData?.lineValue || ""} onChange={(e) => handleNestedChange("contactData", "lineTitle", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Line Link..." />
                                         </div>
                                     </div>
                                 </div>
@@ -866,7 +866,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "clients" && (
                         <div className="space-y-12 animate-in fade-in slide-in-from-bottom-6 duration-700">
-                            <SectionHeader title={(labels.clientsSection || "Clients Section") + " v1.9"} desc={labels.clientsSectionDesc || "ลูกค้าคนสำคัญและกลุ่มเป้าหมาย"} layoutKey="showClients" />
+                            <SectionHeader title={(labels.clientsSection || "Clients Section") + " v2.0"} desc={labels.clientsSectionDesc || "ลูกค้าคนสำคัญและกลุ่มเป้าหมาย"} layoutKey="showClients" />
 
                             {/* Section 1: Key Customers Text (Kept at top) */}
                             <div className="mt-4">
