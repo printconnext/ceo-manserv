@@ -608,7 +608,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "about" && (
                         <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
-                            <SectionHeader title={labels.aboutSection || "About Section"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
+                            <SectionHeader title={(labels.aboutSection || "About Section") + " v1.1"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
 
                             <div className="grid grid-cols-1 gap-8">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -618,7 +618,7 @@ export default function UnifiedEditor({
                                             type="text" 
                                             value={content.aboutData?.visionBadge || ""} 
                                             onChange={(e) => handleNestedChange("aboutData", "visionBadge", e.target.value)} 
-                                            className="w-full text-brand-blue rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm font-bold shadow-sm" 
+                                            className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm shadow-sm" 
                                             placeholder="เช่น VISION & MISSION" 
                                         />
                                     </div>
@@ -628,7 +628,7 @@ export default function UnifiedEditor({
                                             type="text" 
                                             value={content.aboutData?.visionTitle || ""} 
                                             onChange={(e) => handleNestedChange("aboutData", "visionTitle", e.target.value)} 
-                                            className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm font-bold shadow-sm" 
+                                            className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm shadow-sm" 
                                         />
                                     </div>
                                 </div>
@@ -661,14 +661,14 @@ export default function UnifiedEditor({
                                                     type="text"
                                                     value={content.aboutData?.stats?.[idx]?.label || ""}
                                                     onChange={(e) => handleArrayItemChange("aboutData", idx, "label", e.target.value, "stats")}
-                                                    className="w-full text-brand-blue rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm font-bold text-center shadow-sm"
+                                                    className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm text-center shadow-sm"
                                                     placeholder="Label"
                                                 />
                                                 <input
                                                     type="text"
                                                     value={content.aboutData?.stats?.[idx]?.value || ""}
                                                     onChange={(e) => handleArrayItemChange("aboutData", idx, "value", e.target.value, "stats")}
-                                                    className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm font-bold text-center shadow-sm"
+                                                    className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm text-center shadow-sm"
                                                     placeholder="15+"
                                                 />
                                             </div>
