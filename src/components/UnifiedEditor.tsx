@@ -524,7 +524,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "hero" && (
                         <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <SectionHeader title={(labels.heroSection || "Hero Section") + " v2.0"} desc={labels.heroSectionDesc || "จัดการข้อมูลและรูปภาพในส่วนแรกของเว็บไซต์"} layoutKey="showHero" />
+                            <SectionHeader title={labels.heroSection || "Hero Section"} desc={labels.heroSectionDesc || "จัดการข้อมูลและรูปภาพในส่วนแรกของเว็บไซต์"} layoutKey="showHero" />
 
                             <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
                                 <div className="space-y-6">
@@ -608,7 +608,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "about" && (
                         <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
-                            <SectionHeader title={(labels.aboutSection || "About Section") + " v2.0"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
+                            <SectionHeader title={labels.aboutSection || "About Section"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
 
                             <div className="grid grid-cols-1 gap-8">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -681,7 +681,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "services" && (
                         <div className="space-y-8 animate-in fade-in duration-500">
-                            <SectionHeader title={(labels.servicesSection || "Services Section") + " v2.0"} desc={labels.servicesSectionDesc || "บริการและความเชี่ยวชาญ"} layoutKey="showServices" />
+                            <SectionHeader title={labels.servicesSection || "Services Section"} desc={labels.servicesSectionDesc || "บริการและความเชี่ยวชาญ"} layoutKey="showServices" />
                             <div className="grid grid-cols-1 gap-6">
                                 <div className="grid grid-cols-2 gap-6">
                                     <div>
@@ -774,7 +774,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "contact" && (
                         <div className="space-y-10 animate-in fade-in duration-500">
-                            <SectionHeader title={(labels.contactSection || "Contact Section") + " v2.0"} desc={labels.contactSectionDesc || "ช่องทางการติดต่อและโซเชีลมีเดีย"} layoutKey="showContact" />
+                            <SectionHeader title={labels.contactSection || "Contact Section"} desc={labels.contactSectionDesc || "ช่องทางการติดต่อและโซเชีลมีเดีย"} layoutKey="showContact" />
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="space-y-6">
                                     <div>
