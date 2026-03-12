@@ -434,7 +434,7 @@ export default function UnifiedEditor({
             </div>
             {layoutKey && (
                 <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-xl border border-gray-100 shadow-sm">
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">{labels.showSection || "แสดงส่วนนี้"}</span>
+                    <span className="text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.showSection || "แสดงส่วนนี้"}</span>
                     <label className="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" checked={theme.layout?.[layoutKey] ?? true} onChange={() => handleLayoutToggle(layoutKey)} className="sr-only peer" />
                         <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
@@ -524,7 +524,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "hero" && (
                         <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <SectionHeader title={(labels.heroSection || "Hero Section") + " v1.2"} desc={labels.heroSectionDesc || "จัดการข้อมูลและรูปภาพในส่วนแรกของเว็บไซต์"} layoutKey="showHero" />
+                            <SectionHeader title={(labels.heroSection || "Hero Section") + " v1.3"} desc={labels.heroSectionDesc || "จัดการข้อมูลและรูปภาพในส่วนแรกของเว็บไซต์"} layoutKey="showHero" />
 
                             <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
                                 <div className="space-y-6">
@@ -559,14 +559,14 @@ export default function UnifiedEditor({
                                 <div className="space-y-8">
                                     <div className="grid grid-cols-2 gap-6">
                                         <div className="space-y-3">
-                                            <label className="block text-xs font-bold text-gray-400 uppercase ml-1">{labels.websiteLogo || "Website Logo"}</label>
+                                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.websiteLogo || "Website Logo"}</label>
                                             <div className="relative aspect-square rounded-2xl border-2 border-dashed border-gray-200 flex items-center justify-center bg-gray-50 overflow-hidden group hover:border-brand-blue transition-colors cursor-pointer shadow-sm">
                                                 {media.logo ? <img src={media.logo} className="h-full w-full object-contain p-4" /> : <span className="text-[10px] text-gray-400 font-bold uppercase">Logo</span>}
                                                 <input type="file" onChange={(e) => handleFileUpload("logo", e)} className="absolute inset-0 opacity-0 cursor-pointer" />
                                             </div>
                                         </div>
                                         <div className="space-y-3">
-                                            <label className="block text-xs font-bold text-gray-400 uppercase ml-1">{labels.portraitProfile || "Portrait Profile"}</label>
+                                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.portraitProfile || "Portrait Profile"}</label>
                                             <div className="relative aspect-[3/4] rounded-2xl border-2 border-dashed border-gray-200 flex items-center justify-center bg-gray-50 overflow-hidden group hover:border-brand-blue transition-colors cursor-pointer shadow-sm">
                                                 {media.heroImage ? <img src={media.heroImage} className="h-full w-full object-cover" /> : <span className="text-[10px] text-gray-400 font-bold uppercase">{labels.portrait || "Portrait"}</span>}
                                                 <input type="file" onChange={(e) => handleFileUpload("heroImage", e)} className="absolute inset-0 opacity-0 cursor-pointer" />
@@ -575,7 +575,7 @@ export default function UnifiedEditor({
                                     </div>
 
                                     <div className="p-6 bg-blue-50/50 rounded-3xl border border-blue-100 space-y-4">
-                                        <label className="block text-xs font-bold text-blue-800 uppercase ml-1">{labels.standardBadges || "Standard Badges (2 Slots)"}</label>
+                                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.standardBadges || "Standard Badges (2 Slots)"}</label>
                                         <div className="grid grid-cols-2 gap-4">
                                             {[0, 1].map((idx) => (
                                                 <div key={idx} className="relative aspect-square rounded-2xl border-2 border-dashed border-blue-200 flex items-center justify-center bg-white overflow-hidden group hover:border-brand-blue transition-colors cursor-pointer shadow-sm">
@@ -608,7 +608,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "about" && (
                         <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
-                            <SectionHeader title={(labels.aboutSection || "About Section") + " v1.2"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
+                            <SectionHeader title={(labels.aboutSection || "About Section") + " v1.3"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
 
                             <div className="grid grid-cols-1 gap-8">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
