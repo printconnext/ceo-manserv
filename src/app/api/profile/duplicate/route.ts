@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { translateProfileContent } from "@/lib/translator";
+import { translateProfileContent, translateProfileSettings } from "@/lib/translator";
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
         }
 
         // 2. Determine new slug (e.g. samath-TH -> samath-EN)
-        const baseSlug = sourceProfile.slug.replace(/-(TH|EN|CH|JP|LO|HI|FR|IT|ES|DE|RU|FA|PT|BR|VI|MY|PH|ID)$/i, "");
+        const baseSlug = sourceProfile.slug.replace(/-[a-z]{2}(-[a-z]{2,4})?$/i, "");
         const newSlug = `${baseSlug}-${targetLang.toUpperCase()}`;
 
         // Check if already exists
@@ -52,33 +52,38 @@ export async function POST(req: NextRequest) {
 
         // 3. Perform duplication in a transaction
         const result = await prisma.$transaction(async (tx) => {
-            // Create new profile record (Full metadata clone)
+            // Translate core profile data (Name and Title) using AI
+            const translatedSettings = await translateProfileSettings(
+                { fullName: sourceProfile.fullName || "", title: sourceProfile.title || "" },
+                targetLang.toLowerCase()
+            );
+
+            // Create new profile record (Full metadata clone + Translated Settings)
             const newProfile = await tx.profile.create({
                 data: {
                     orgId: sourceProfile.orgId,
                     slug: newSlug,
-                    fullName: sourceProfile.fullName,
-                    title: sourceProfile.title,
-                    portraitUrl: sourceProfile.portraitUrl, // Copy portrait!
+                    fullName: translatedSettings.fullName,
+                    title: translatedSettings.title,
+                    portraitUrl: sourceProfile.portraitUrl, 
                     phone1: sourceProfile.phone1,
                     phone2: sourceProfile.phone2,
                     email: sourceProfile.email,
                     website: sourceProfile.website,
                     lineUrl: sourceProfile.lineUrl,
-                    lineQrUrl: sourceProfile.lineQrUrl, // Copy Line QR!
+                    lineQrUrl: sourceProfile.lineQrUrl,
                     isPublished: sourceProfile.isPublished,
                     themeConfig: sourceProfile.themeConfig || {},
                     mediaConfig: sourceProfile.mediaConfig || {},
                 }
             });
 
-            // Clone and Translate priority logic: TH -> EN -> First available
-            const sourceTrans = sourceProfile.translations.find(t => t.lang === 'th') ||
-                sourceProfile.translations.find(t => t.lang === 'en') ||
+            // Clone and Translate content from the CURRENT source profile (as per Rule #2)
+            const sourceTrans = sourceProfile.translations.find(t => t.lang === sourceProfile.slug.split('-').pop()?.toLowerCase()) ||
                 sourceProfile.translations[0];
 
             if (sourceTrans) {
-                const translatedData = translateProfileContent(sourceTrans, targetLang.toLowerCase());
+                const translatedData = await translateProfileContent(sourceTrans, targetLang.toLowerCase());
 
                 // Remove database-specific fields from the clone target
                 const { id, profileId, createdAt, updatedAt, lang, ...contentToClone } = translatedData;
@@ -88,6 +93,10 @@ export async function POST(req: NextRequest) {
                         ...contentToClone,
                         profileId: newProfile.id,
                         lang: targetLang.toLowerCase(),
+                        // Ensure name and title in translation record also match translated settings
+                        heroName: translatedSettings.fullName,
+                        heroTitle: translatedSettings.title,
+                        heroRole: translatedSettings.title,
                     }
                 });
             }

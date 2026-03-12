@@ -108,7 +108,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                         const mapped = mapResponseToForm({ organization: { ...data.organization, profiles: [specific] } });
                         if (mapped) {
                             setForm(mapped);
-                            setProfileUrl(`/${mapped.orgSlug}/${mapped.profileSlug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/${specific.translations?.[0]?.lang || "th"}`);
+                            setProfileUrl(`/${mapped.orgSlug}/${mapped.profileSlug.replace(/-[a-z]{2}(-[a-z]{2,4})?$/i, "")}/${specific.translations?.[0]?.lang || "th"}`);
 
                             // SYNC LANGUAGE: Set the UI language based on the profile's translation
                             const profileLang = specific.translations?.[0]?.lang;
@@ -138,7 +138,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                     if (mapped) {
                         setForm(mapped);
                         if (mapped.orgSlug && mapped.profileSlug) {
-                            setProfileUrl(`/${mapped.orgSlug}/${mapped.profileSlug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/${uiLang}`);
+                            setProfileUrl(`/${mapped.orgSlug}/${mapped.profileSlug.replace(/-[a-z]{2}(-[a-z]{2,4})?$/i, "")}/${uiLang}`);
                         }
                     }
                 }
@@ -220,7 +220,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
     const getPreviewUrl = () => {
         if (!form.orgSlug || !form.fullName) return "";
         let slug = form.profileSlug || slugify(form.fullName);
-        slug = slug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "");
+        slug = slug.replace(/-[a-z]{2}(-[a-z]{2,4})?$/i, "");
         return `/${form.orgSlug}/${slug}/${uiLang.toLowerCase()}`;
     };
 
@@ -272,9 +272,10 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                             onChange={(e) => setUiLang(e.target.value)}
                             className="w-full bg-white pl-4 pr-10 py-2 rounded-xl border border-gray-200 shadow-sm text-xs font-bold text-gray-700 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue outline-none appearance-none transition-all cursor-pointer"
                         >
-                            {availableLangs.map(lang => (
+                            {/* If editing, show only available translations. If new, show ALL languages. */}
+                            {(form.id ? availableLangs : Object.keys(LANG_NAMES)).map(lang => (
                                 <option key={lang} value={lang}>
-                                    {LANG_NAMES[lang]}
+                                    {LANG_NAMES[lang] || lang.toUpperCase()}
                                 </option>
                             ))}
                         </select>
