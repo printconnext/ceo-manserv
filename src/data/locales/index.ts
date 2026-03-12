@@ -1,7 +1,7 @@
 import { th } from "./th";
 import { en } from "./en";
-import { ch } from "./ch";
-import { jp } from "./jp";
+import { zh } from "./zh";
+import { ja } from "./ja";
 import { hi } from "./hi";
 import { fr } from "./fr";
 import { it } from "./it";
@@ -14,11 +14,11 @@ import { br } from "./br";
 import { vi } from "./vi";
 import { lo } from "./lo";
 import { my } from "./my";
-import { ph } from "./ph";
+import { tl } from "./tl";
 import { id } from "./id";
 
 export const LOCALES: Record<string, any> = {
-    th, en, ch, jp, hi, fr, it, es, de, ru, fa, pt, br, vi, lo, my, ph, id
+    th, en, zh, ja, hi, fr, it, es, de, ru, fa, pt, br, vi, lo, my, tl, id
 };
 
 export const LANG_NAMES: Record<string, string> = {

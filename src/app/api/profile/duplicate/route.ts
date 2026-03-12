@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
                     slug: newSlug,
                     fullName: translatedSettings.fullName,
                     title: translatedSettings.title,
-                    portraitUrl: sourceProfile.portraitUrl, 
+                    portraitUrl: sourceProfile.portraitUrl,
                     phone1: sourceProfile.phone1,
                     phone2: sourceProfile.phone2,
                     email: sourceProfile.email,
@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
                 const translatedData = await translateProfileContent(sourceTrans, targetLang.toLowerCase(), referer);
 
                 // Remove database-specific fields from the clone target
-                const { id, profileId, createdAt, updatedAt, lang, ...contentToClone } = translatedData;
+                const { id, profileId, lang, ...contentToClone } = translatedData;
 
                 await tx.profileTranslation.create({
                     data: {
@@ -103,6 +103,7 @@ export async function POST(req: NextRequest) {
                 });
             }
 
+            console.log(`[API/Duplicate] Successfully created profile ${newProfile.id} for ${targetLang}`);
             return newProfile;
         });
 

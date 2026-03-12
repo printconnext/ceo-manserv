@@ -504,6 +504,11 @@ export default function UnifiedEditor({
                             portraitUrl={media.heroImage || undefined}
                             primaryColor={theme.colors?.primary || "#00318C"}
                             onClose={() => setShowQR(false)}
+                            labels={{
+                                title: labels.viewQRCode || "QR Code Namecard",
+                                scanMe: labels.scanToAdd || "Scan to add me",
+                                shareBtn: labels.shareQRCode || "Share QR Code Namecard"
+                            }}
                             vCardString={generateVCard({
                                 fullName: content.heroName || "",
                                 title: content.heroRole || "",
@@ -866,7 +871,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "clients" && (
                         <div className="space-y-12 animate-in fade-in slide-in-from-bottom-6 duration-700">
-                            <SectionHeader title={(labels.clientsSection || "Clients Section") + " v2.0"} desc={labels.clientsSectionDesc || "ลูกค้าคนสำคัญและกลุ่มเป้าหมาย"} layoutKey="showClients" />
+                            <SectionHeader title={labels.clientsSection || "Clients Section"} desc={labels.clientsSectionDesc || "ลูกค้าคนสำคัญและกลุ่มเป้าหมาย"} layoutKey="showClients" />
 
                             {/* Section 1: Key Customers Text (Kept at top) */}
                             <div className="mt-4">

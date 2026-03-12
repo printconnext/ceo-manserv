@@ -4,15 +4,21 @@ import React from "react";
 import { QRCodeSVG } from "qrcode.react";
 import Image from "next/image";
 
+
 interface VCardQRProps {
     fullName: string;
     portraitUrl?: string;
     vCardString: string;
     onClose?: () => void;
     primaryColor?: string;
+    labels?: {
+        title?: string;
+        scanMe?: string;
+        shareBtn?: string;
+    };
 }
 
-export default function VCardQR({ fullName, portraitUrl, vCardString, onClose, primaryColor = "#00318C" }: VCardQRProps) {
+export default function VCardQR({ fullName, portraitUrl, vCardString, onClose, primaryColor = "#00318C", labels }: VCardQRProps) {
     const handleDownload = () => {
         const element = document.createElement("a");
         const file = new Blob([vCardString], { type: 'text/vcard' });
@@ -37,7 +43,7 @@ export default function VCardQR({ fullName, portraitUrl, vCardString, onClose, p
 
             {/* Title from screenshot */}
             <div className="absolute top-8 left-1/2 -translate-x-1/2 w-full text-center px-4">
-                <h3 className="text-sm font-medium text-gray-300">นามบัตรแบบรหัส QR</h3>
+                <h3 className="text-sm font-medium text-gray-300">{labels?.title || "QR Code Namecard"}</h3>
             </div>
 
             {/* Profile Picture */}
@@ -71,7 +77,7 @@ export default function VCardQR({ fullName, portraitUrl, vCardString, onClose, p
 
             {/* Instruction */}
             <p className="mt-8 text-sm font-medium text-gray-400 tracking-wide">
-                สแกนเพื่อเพิ่มฉัน
+                {labels?.scanMe || "Scan to add me"}
             </p>
 
             {/* Action Button */}
@@ -80,7 +86,7 @@ export default function VCardQR({ fullName, portraitUrl, vCardString, onClose, p
                 className="mt-10 w-full py-4 text-white rounded-full font-bold transition-all transform active:scale-95 shadow-xl shadow-black/20"
                 style={{ backgroundColor: primaryColor }}
             >
-                แชร์นามบัตรแบบรหัส QR
+                {labels?.shareBtn || "Share QR Code Namecard"}
             </button>
         </div>
     );

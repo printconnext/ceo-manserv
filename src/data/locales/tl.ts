@@ -1,5 +1,5 @@
 
-export const ph = {
+export const tl = {
     header: {
         about: "Tungkol sa Amin",
         services: "Mga Serbisyo",

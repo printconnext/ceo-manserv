@@ -1,5 +1,5 @@
 
-export const ch = {
+export const zh = {
     header: {
         about: "关于我们",
         services: "服务",

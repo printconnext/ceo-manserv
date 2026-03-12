@@ -79,14 +79,16 @@ async function googleTranslateBatch(texts: string[], targetLang: string, referer
     const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY;
     if (!apiKey || texts.length === 0) return texts;
 
+    // Sanitize: Google API rejects null/undefined
+    const sanitizedTexts = texts.map(t => t?.toString() || "");
     // Use a default referer if not provided, favoring NEXTAUTH_URL
     const finalReferer = referer || process.env.NEXTAUTH_URL || "http://localhost:3000/";
 
     const CHUNK_SIZE = 50;
     const results: string[] = [];
 
-    for (let i = 0; i < texts.length; i += CHUNK_SIZE) {
-        const chunk = texts.slice(i, i + CHUNK_SIZE);
+    for (let i = 0; i < sanitizedTexts.length; i += CHUNK_SIZE) {
+        const chunk = sanitizedTexts.slice(i, i + CHUNK_SIZE);
         try {
             const url = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
             const res = await fetch(url, {
@@ -106,9 +108,13 @@ async function googleTranslateBatch(texts: string[], targetLang: string, referer
             if (data.data?.translations) {
                 results.push(...data.data.translations.map((t: any) => t.translatedText));
             } else {
-                if (data.error) {
-                    console.error(`[GoogleTranslateBatch] Chunk Error (${targetLang}):`, data.error.message, "Referer:", finalReferer);
-                }
+                console.error(`[GoogleTranslateBatch] Error (${targetLang}):`, {
+                    status: res.status,
+                    statusText: res.statusText,
+                    error: data.error,
+                    referer: finalReferer,
+                    textsCount: chunk.length
+                });
                 results.push(...chunk);
             }
         } catch (error) {

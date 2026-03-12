@@ -1,5 +1,5 @@
 
-export const jp = {
+export const ja = {
     header: {
         about: "会社概要",
         services: "サービス",
