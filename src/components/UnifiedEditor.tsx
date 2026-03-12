@@ -524,7 +524,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "hero" && (
                         <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <SectionHeader title={(labels.heroSection || "Hero Section") + " v1.5"} desc={labels.heroSectionDesc || "จัดการข้อมูลและรูปภาพในส่วนแรกของเว็บไซต์"} layoutKey="showHero" />
+                            <SectionHeader title={(labels.heroSection || "Hero Section") + " v1.6"} desc={labels.heroSectionDesc || "จัดการข้อมูลและรูปภาพในส่วนแรกของเว็บไซต์"} layoutKey="showHero" />
 
                             <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
                                 <div className="space-y-6">
@@ -608,7 +608,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "about" && (
                         <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
-                            <SectionHeader title={(labels.aboutSection || "About Section") + " v1.5"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
+                            <SectionHeader title={(labels.aboutSection || "About Section") + " v1.6"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
 
                             <div className="grid grid-cols-1 gap-8">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -646,7 +646,7 @@ export default function UnifiedEditor({
                                 <div className="p-8 bg-gray-50 rounded-[2rem] border border-gray-100 space-y-6">
                                     <div className="flex justify-between items-center border-l-4 border-brand-blue pl-3">
                                         <h4 className="text-sm font-bold text-gray-900">{labels.statsNumbers || "Stats Numbers (สถิติความสำเร็จ)"}</h4>
-                                        <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-gray-100 shadow-sm scale-90 origin-right">
+                                        <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-gray-100 shadow-sm">
                                             <span className="text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.showSection || "แสดงส่วนนี้"}</span>
                                             <label className="relative inline-flex items-center cursor-pointer">
                                                 <input type="checkbox" checked={theme.layout?.showAboutStats ?? true} onChange={() => handleLayoutToggle("showAboutStats")} className="sr-only peer" />
@@ -681,15 +681,15 @@ export default function UnifiedEditor({
 
                     {activeSection === "services" && (
                         <div className="space-y-8 animate-in fade-in duration-500">
-                            <SectionHeader title={(labels.servicesSection || "Services Section") + " v1.5"} desc={labels.servicesSectionDesc || "บริการและความเชี่ยวชาญ"} layoutKey="showServices" />
+                            <SectionHeader title={(labels.servicesSection || "Services Section") + " v1.6"} desc={labels.servicesSectionDesc || "บริการและความเชี่ยวชาญ"} layoutKey="showServices" />
                             <div className="grid grid-cols-1 gap-6">
                                 <div className="grid grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-400 uppercase mb-2">{labels.servicesTitleLabel || "Section Title"}</label>
+                                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1 mb-2">{labels.servicesTitleLabel || "Section Title"}</label>
                                         <input type="text" value={content.servicesData?.title || ""} onChange={(e) => handleNestedChange("servicesData", "title", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm font-bold" />
                                     </div>
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-400 uppercase mb-2">{labels.servicesSubtitleLabel || "Section Subtitle"}</label>
+                                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1 mb-2">{labels.servicesSubtitleLabel || "Section Subtitle"}</label>
                                         <input type="text" value={content.servicesData?.subtitle || ""} onChange={(e) => handleNestedChange("servicesData", "subtitle", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" />
                                     </div>
                                 </div>
@@ -778,11 +778,11 @@ export default function UnifiedEditor({
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div className="space-y-6">
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-400 uppercase mb-2">{labels.servicesTitleLabel || "Section Title"}</label>
+                                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1 mb-2">{labels.servicesTitleLabel || "Section Title"}</label>
                                         <input type="text" value={content.contactData?.title || ""} onChange={(e) => handleNestedChange("contactData", "title", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" />
                                     </div>
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-400 uppercase mb-2">{labels.servicesSubtitleLabel || "Section Subtitle"}</label>
+                                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1 mb-2">{labels.servicesSubtitleLabel || "Section Subtitle"}</label>
                                         <input type="text" value={content.contactData?.subtitle || ""} onChange={(e) => handleNestedChange("contactData", "subtitle", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" />
                                     </div>
                                 </div>
