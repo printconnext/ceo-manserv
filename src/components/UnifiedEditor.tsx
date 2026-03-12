@@ -524,7 +524,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "hero" && (
                         <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <SectionHeader title={(labels.heroSection || "Hero Section") + " v1.4"} desc={labels.heroSectionDesc || "จัดการข้อมูลและรูปภาพในส่วนแรกของเว็บไซต์"} layoutKey="showHero" />
+                            <SectionHeader title={(labels.heroSection || "Hero Section") + " v1.5"} desc={labels.heroSectionDesc || "จัดการข้อมูลและรูปภาพในส่วนแรกของเว็บไซต์"} layoutKey="showHero" />
 
                             <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
                                 <div className="space-y-6">
@@ -608,12 +608,12 @@ export default function UnifiedEditor({
 
                     {activeSection === "about" && (
                         <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
-                            <SectionHeader title={(labels.aboutSection || "About Section") + " v1.4"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
+                            <SectionHeader title={(labels.aboutSection || "About Section") + " v1.5"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
 
                             <div className="grid grid-cols-1 gap-8">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">{labels.visionBadge || "Vision Badge"}</label>
+                                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1 mb-2">{labels.visionBadge || "Vision Badge"}</label>
                                         <input 
                                             type="text" 
                                             value={content.aboutData?.visionBadge || ""} 
@@ -623,7 +623,7 @@ export default function UnifiedEditor({
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">{labels.visionTitle || "Vision Title"}</label>
+                                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1 mb-2">{labels.visionTitle || "Vision Title"}</label>
                                         <input 
                                             type="text" 
                                             value={content.aboutData?.visionTitle || ""} 
@@ -634,11 +634,11 @@ export default function UnifiedEditor({
                                 </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">{labels.desc1 || "Description 1 (ข้อความเน้น)"}</label>
+                                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1 mb-2">{labels.desc1 || "Description 1 (ข้อความเน้น)"}</label>
                                         <textarea value={content.aboutData?.visionDesc1 || ""} onChange={(e) => handleNestedChange("aboutData", "visionDesc1", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" rows={4} />
                                     </div>
                                     <div>
-                                        <label className="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">{labels.desc2 || "Description 2 (รายละเอียดสมทบ)"}</label>
+                                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1 mb-2">{labels.desc2 || "Description 2 (รายละเอียดสมทบ)"}</label>
                                         <textarea value={content.aboutData?.visionDesc2 || ""} onChange={(e) => handleNestedChange("aboutData", "visionDesc2", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" rows={4} />
                                     </div>
                                 </div>
@@ -681,7 +681,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "services" && (
                         <div className="space-y-8 animate-in fade-in duration-500">
-                            <SectionHeader title={labels.servicesSection || "Services Section"} desc={labels.servicesSectionDesc || "บริการและความเชี่ยวชาญ"} layoutKey="showServices" />
+                            <SectionHeader title={(labels.servicesSection || "Services Section") + " v1.5"} desc={labels.servicesSectionDesc || "บริการและความเชี่ยวชาญ"} layoutKey="showServices" />
                             <div className="grid grid-cols-1 gap-6">
                                 <div className="grid grid-cols-2 gap-6">
                                     <div>
@@ -704,7 +704,7 @@ export default function UnifiedEditor({
                                                 ) : (
                                                     <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 group-hover:text-brand-blue transition-colors">
                                                         <svg className="w-6 h-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                                        <span className="text-[10px] font-bold uppercase tracking-wider">{labels.serviceImage || "Service Image"}</span>
+                                                         <span className="text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.serviceImage || "Service Image"}</span>
                                                     </div>
                                                 )}
                                                 <input type="file" onChange={(e) => handleContentImageUpload("servicesData", "items", idx, "image", e)} className="absolute inset-0 opacity-0 cursor-pointer" />
