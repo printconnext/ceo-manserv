@@ -161,8 +161,9 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const body = await req.json();
-        const { orgName, orgSlug, profileSlug, fullName, title, phone1, phone2, email, website, lineUrl, experience, id: profileId, uiLang = "th" } = body;
+        const referer = req.headers.get("referer") || undefined;
+        const requestBody = await req.json();
+        const { orgName, orgSlug, profileSlug, fullName, title, phone1, phone2, email, website, lineUrl, portraitUrl, lineQrUrl, experience, id: profileId, uiLang = "th" } = requestBody;
 
         const userId = session.user.id;
         const targetLang = uiLang.toLowerCase();
@@ -235,6 +236,8 @@ export async function POST(req: NextRequest) {
             email: email || session.user.email || "",
             website: website || "",
             lineUrl: lineUrl || "",
+            portraitUrl: portraitUrl || "",
+            lineQrUrl: lineQrUrl || "",
         };
 
         // NEW LOGIC: Look for existing profile for THIS language specifically
@@ -348,10 +351,11 @@ export async function POST(req: NextRequest) {
 
                 if (sourceTranslation) {
                     // Translate the inherited content using AI
-                    const translatedData = await translateProfileContent(sourceTranslation, targetLang.toLowerCase());
+                    const translatedData = await translateProfileContent(sourceTranslation, targetLang.toLowerCase(), referer);
                     const translatedSettings = await translateProfileSettings(
                         { fullName: profileData.fullName || latestProfile.fullName || "", title: profileData.title || latestProfile.title || "" },
-                        targetLang.toLowerCase()
+                        targetLang.toLowerCase(),
+                        referer
                     );
 
                     const {

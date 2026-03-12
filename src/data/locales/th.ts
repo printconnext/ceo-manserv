@@ -15,8 +15,8 @@ export const th = {
         name: "สามารถ ไชยะ",
         title: "บริษัท แมน แมนเนจเม้นท์ เซอร์วิส จำกัด",
         quote: "\"เราคือ ผู้นำเชี่ยวชาญด้านการเดินทางด้วยรถยนต์ ให้กับผู้บริหาร โดยให้บริการพนักงานขับรถผู้บริหาร และรถเช่าพร้อมคนขับ ด้วยประสบการณ์กว่า 20 ปี บริการมากกว่า 4,00,000 เที่ยว มีพนักงานขับรถกว่า 300 คน ลูกค้ามากกว่า 100 ราย\"",
-        contactButton: "Contact Us",
-        standardButton: "Our Standard",
+        contactButton: "ติดต่อเรา",
+        standardButton: "มาตรฐานของเรา",
 
         role: "ประธานเจ้าหน้าที่บริหาร",
     },
@@ -38,60 +38,60 @@ export const th = {
     },
     services: {
         title: "บริการของเรา",
-        subtitle: "โซลูชั่นด้านการเดินทางที่ครบวงจรสำหรับธุรกิจของคุณ",
+        subtitle: "โซลูชันการเดินทางครบวงจรสำหรับธุรกิจของคุณ",
         items: [
             {
                 title: 'พนักงานขับรถผู้บริหาร',
-                description: 'พนักงานขับรถมืออาชีพ ผ่านการฝึกอบรมอย่างดี มีมารยาทและชำนาญเส้นทาง',
+                description: 'ผ่านการฝึกฝนอย่างดี มีมารยาทเป็นเลิศ และรู้เส้นทางอย่างดี',
                 icon: 'user',
                 image: 'service-1.png'
             },
             {
-                title: 'รถเช่าลีมูซีน',
-                description: 'รถเก๋งและรถตู้ VIP พร้อมคนขับ สำหรับการเดินทางระดับผู้บริหารและองค์กร (รายวัน/รายเดือน)',
+                title: 'รถเช่าพร้อมคนขับ',
+                description: 'รถ VIP เก๋ง และรถตู้ พร้อมคนขับสำหรับผู้บริหารและองค์กร (รายวัน/รายเดือน)',
                 icon: 'van',
                 image: 'service-2.png'
             },
             {
-                title: 'บริการรับจอดรถ',
-                description: 'บริหารจัดการลานจอดรถและบริการรับจอดรถ (Valet) สำหรับโรงแรม ห้างสรรพสินค้า และงานอีเวนต์',
+                title: 'วาเล่ต์พาร์คกิ้ง',
+                description: 'บริการจัดการที่จอดรถอย่างมืออาชีพสำหรับโรงแรม ห้าง และงานอีเว้นท์',
                 icon: 'location',
                 image: 'service-3.png'
             },
             {
-                title: 'รับ-ส่ง สนามบิน',
-                description: 'บริการรับส่งสนามบินที่ตรงต่อเวลา ปลอดภัย และมีคุณภาพสูง',
+                title: 'รับ-ส่งสนามบิน',
+                description: 'บริการรับส่งสนามบินที่ตรงเวลา ปลอดภัย และคุณภาพสูง',
                 icon: 'globe',
                 image: 'service-4.png'
             },
             {
                 title: 'ฝึกอบรมพนักงานขับรถ',
-                description: 'หลักสูตรขับขี่ปลอดภัย (Defensive Driving) และ TSM เพื่อยกระดับมาตรฐานพนักงานขับรถ',
+                description: 'หลักสูตร Defensive Driving และ TSM เพิ่มมาตรฐานคนขับ',
                 icon: 'briefcase',
                 image: 'service-5.png'
             },
             {
                 title: 'พนักงานขับรถหญิง',
-                description: 'บริการพิเศษด้วยพนักงานขับรถหญิงมืออาชีพ เพื่อความสะดวกสบายและความเป็นส่วนตัวสูงสุด',
+                description: 'บริการพิเศษด้วยพนักงานขับรถสตรีมืออาชีพ เพื่อความสบายใจสูงสุด',
                 icon: 'heart',
                 image: 'service-6.png'
             },
         ]
     },
     clients: {
-        keyCustomersBadge: "Key Customers",
+        keyCustomersBadge: "ลูกค้าสำคัญ",
         keyCustomersTitle: "ได้รับความไว้วางใจจากบริษัทชั้นนำ",
-        lookingForBadge: "Looking For",
-        lookingForTitle: "พันธมิตรที่เรามองหา",
+        lookingForBadge: "กลุ่มเป้าหมาย",
+        lookingForTitle: "พันธมิตรเป้าหมายของเรา",
 
-        lookingForDesc: "เราพร้อมที่จะร่วมมือกับองค์กรของคุณ เพื่อยกระดับมาตรฐานการเดินทางระดับองค์กร",
+        lookingForDesc: "เราพร้อมเป็นพันธมิตรกับองค์กรของคุณเพื่อยกระดับมาตรฐานการเดินทาง",
         lookingForItems: [
-            "บริษัท,โรงงานที่ใช้คนขับรถผู้บริหาร คนขับส่วนกลาง",
-            "บริษัท,โรงงานที่ใช้รถเช่า รถเก๋ง รถตู้  รายวัน รายเดือน",
-            "บริษัท,โรงงานที่ใช้รถรับ-ส่งVender คู่ค้า สนามบิน",
-            "บริษัท,โรงงานที่ฝึกอบรมคนขับรถ Defensive & TSM"
+            "บริษัท/โรงงานญี่ปุ่น ที่ใช้บริการพนักงานขับรถผู้บริหาร",
+            "บริษัทที่ต้องการเช่ารถตู้/SUV ระยะยาว พร้อมคนขับ",
+            "บริการรับส่งสนามบินองค์กร และ Vendor Transport",
+            "องค์กรที่ต้องการอบรม Defensive Driving & TSM"
         ],
-        growingTogether: "เติบโตไปพร้อมกัน",
+        growingTogether: "เติบโตร่วมกัน",
         items: [
             { name: "KUBOTA", image: "kubota.png" },
             { name: "SATI", "image": "sati.png" },
@@ -142,7 +142,7 @@ export const th = {
     },
     contact: {
         title: "ติดต่อ",
-        subtitle: "เปิดรับโอกาสในการบรรยาย การเป็นที่ปรึกษา และพันธมิตรทางธุรกิจ",
+        subtitle: "ยินดีให้คำปรึกษา บรรยาย และความร่วมมือเชิงกลยุทธ์",
         contactUs: "ติดต่อเรา",
         getInTouch: "ช่องทางการติดต่อ",
         officeLabel: "ที่ตั้งสำนักงาน",
@@ -150,11 +150,11 @@ export const th = {
         emailLabel: "อีเมล",
         websiteLabel: "เว็บไซต์",
         lineLabel: "Line ID / เพิ่มเพื่อน Line",
-        officeValue: "บริษัท แมน แมนเนจเม้นท์ เซอร์วิส จำกัด (สำนักงานใหญ่)",
-        mobileValue: "099-440-5888",
-        emailValue: "printconnext@gmail.com",
-        websiteValue: "https://utila.co.th/web/",
-        lineValue: "@manserv",
+        officeValue: "8/69 ถนนวิภาวดีรังสิต แขวงสนามบิน เขตดอนเมือง กรุงเทพฯ 10210",
+        mobileValue: "093-789-3259",
+        emailValue: "samartch@manserv.co.th",
+        websiteValue: "https://www.manserv.co.th/",
+        lineValue: "https://line.me/ti/p/nm3_49-Ef-",
         clickToAdd: "คลิกเพื่อเพิ่มเพื่อน",
         clickToCall: "กดเพื่อโทร",
         preferEmail: "สะดวกทางอีเมล?",

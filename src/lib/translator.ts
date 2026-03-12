@@ -75,12 +75,13 @@ function smartTranslate(obj: any, targetLang: string, sourceMap: Record<string, 
 /**
  * Translates an array of strings using Google Cloud Translation V2 API (Batched & Chunked).
  */
-async function googleTranslateBatch(texts: string[], targetLang: string): Promise<string[]> {
+async function googleTranslateBatch(texts: string[], targetLang: string, referer?: string): Promise<string[]> {
     const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY;
     if (!apiKey || texts.length === 0) return texts;
 
-    // Google API typically allows up to 128 strings per request, 
-    // but we use 50 to be safe with total character limits.
+    // Use a default referer if not provided, favoring NEXTAUTH_URL
+    const finalReferer = referer || process.env.NEXTAUTH_URL || "http://localhost:3000/";
+
     const CHUNK_SIZE = 50;
     const results: string[] = [];
 
@@ -92,7 +93,7 @@ async function googleTranslateBatch(texts: string[], targetLang: string): Promis
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",
-                    "Referer": process.env.NEXTAUTH_URL || "http://localhost:3000/" 
+                    "Referer": finalReferer 
                 },
                 body: JSON.stringify({
                     q: chunk,
@@ -106,13 +107,12 @@ async function googleTranslateBatch(texts: string[], targetLang: string): Promis
                 results.push(...data.data.translations.map((t: any) => t.translatedText));
             } else {
                 if (data.error) {
-                    console.error("[GoogleTranslateBatch] Chunk Error:", data.error.message);
+                    console.error(`[GoogleTranslateBatch] Chunk Error (${targetLang}):`, data.error.message, "Referer:", finalReferer);
                 }
-                // Fallback to original texts for this chunk
                 results.push(...chunk);
             }
         } catch (error) {
-            console.error("[GoogleTranslateBatch] Fetch Error:", error);
+            console.error(`[GoogleTranslateBatch] Fetch Error (${targetLang}):`, error);
             results.push(...chunk);
         }
     }
@@ -188,9 +188,9 @@ function applyTranslations(obj: any, targetLang: string, sourceMap: Record<strin
 /**
  * Re-added to handle core profile data with batching.
  */
-export async function translateProfileSettings(data: { fullName: string, title: string }, targetLang: string) {
+export async function translateProfileSettings(data: { fullName: string, title: string }, targetLang: string, referer?: string) {
     const texts = [data.fullName, data.title];
-    const translated = await googleTranslateBatch(texts, targetLang.toLowerCase());
+    const translated = await googleTranslateBatch(texts, targetLang.toLowerCase(), referer);
     return { 
         fullName: translated[0], 
         title: translated[1] 
@@ -200,7 +200,7 @@ export async function translateProfileSettings(data: { fullName: string, title: 
 /**
  * Optimized profile content translation using batching.
  */
-export async function translateProfileContent(content: any, targetLang: string) {
+export async function translateProfileContent(content: any, targetLang: string, referer?: string) {
     const thMap = buildStringMap(LOCALES.th);
     const result = JSON.parse(JSON.stringify(content));
 
@@ -225,7 +225,7 @@ export async function translateProfileContent(content: any, targetLang: string) 
     const uniqueTexts = Array.from(new Set(stringsToTranslate.map(s => s.text)));
 
     // 2. Perform batched AI translation (Chunked)
-    const translatedTexts = await googleTranslateBatch(uniqueTexts, targetLang);
+    const translatedTexts = await googleTranslateBatch(uniqueTexts, targetLang, referer);
     
     const translationMap: Record<string, string> = {};
     uniqueTexts.forEach((text, i) => {

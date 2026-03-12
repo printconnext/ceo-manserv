@@ -12,6 +12,7 @@ export async function POST(req: NextRequest) {
     }
 
     try {
+        const referer = req.headers.get("referer") || undefined;
         const body = await req.json();
         const { sourceId, targetLang } = body;
 
@@ -55,7 +56,8 @@ export async function POST(req: NextRequest) {
             // Translate core profile data (Name and Title) using AI
             const translatedSettings = await translateProfileSettings(
                 { fullName: sourceProfile.fullName || "", title: sourceProfile.title || "" },
-                targetLang.toLowerCase()
+                targetLang.toLowerCase(),
+                referer
             );
 
             // Create new profile record (Full metadata clone + Translated Settings)
@@ -83,7 +85,7 @@ export async function POST(req: NextRequest) {
                 sourceProfile.translations[0];
 
             if (sourceTrans) {
-                const translatedData = await translateProfileContent(sourceTrans, targetLang.toLowerCase());
+                const translatedData = await translateProfileContent(sourceTrans, targetLang.toLowerCase(), referer);
 
                 // Remove database-specific fields from the clone target
                 const { id, profileId, createdAt, updatedAt, lang, ...contentToClone } = translatedData;
