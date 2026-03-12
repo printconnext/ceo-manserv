@@ -618,7 +618,7 @@ export default function UnifiedEditor({
                                             type="text" 
                                             value={content.aboutData?.visionBadge || ""} 
                                             onChange={(e) => handleNestedChange("aboutData", "visionBadge", e.target.value)} 
-                                            className="w-full text-brand-blue rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm font-bold uppercase tracking-widest shadow-inner" 
+                                            className="w-full text-brand-blue rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm font-bold shadow-sm" 
                                             placeholder="เช่น VISION & MISSION" 
                                         />
                                     </div>
@@ -628,7 +628,7 @@ export default function UnifiedEditor({
                                             type="text" 
                                             value={content.aboutData?.visionTitle || ""} 
                                             onChange={(e) => handleNestedChange("aboutData", "visionTitle", e.target.value)} 
-                                            className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-lg font-bold shadow-inner" 
+                                            className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm font-bold shadow-sm" 
                                         />
                                     </div>
                                 </div>
@@ -661,14 +661,14 @@ export default function UnifiedEditor({
                                                     type="text"
                                                     value={content.aboutData?.stats?.[idx]?.label || ""}
                                                     onChange={(e) => handleArrayItemChange("aboutData", idx, "label", e.target.value, "stats")}
-                                                    className="w-full text-brand-blue rounded-2xl border-gray-100 bg-gray-50 p-4 text-xs font-bold text-center uppercase tracking-widest"
+                                                    className="w-full text-brand-blue rounded-2xl border-gray-100 bg-gray-50 p-4 text-xs font-bold text-center shadow-sm"
                                                     placeholder="Label"
                                                 />
                                                 <input
                                                     type="text"
                                                     value={content.aboutData?.stats?.[idx]?.value || ""}
                                                     onChange={(e) => handleArrayItemChange("aboutData", idx, "value", e.target.value, "stats")}
-                                                    className="w-full rounded-xl border-none bg-white p-3 text-2xl font-bold text-gray-900 text-center shadow-sm"
+                                                    className="w-full rounded-xl border-none bg-white p-3 text-lg font-bold text-gray-900 text-center shadow-sm"
                                                     placeholder="15+"
                                                 />
                                             </div>
