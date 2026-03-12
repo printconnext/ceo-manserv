@@ -524,22 +524,22 @@ export default function UnifiedEditor({
 
                     {activeSection === "hero" && (
                         <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <SectionHeader title={labels.heroSection || "Hero Section"} desc={labels.heroSectionDesc || "จัดการข้อมูลและรูปภาพในส่วนแรกของเว็บไซต์"} layoutKey="showHero" />
+                            <SectionHeader title={(labels.heroSection || "Hero Section") + " v1.2"} desc={labels.heroSectionDesc || "จัดการข้อมูลและรูปภาพในส่วนแรกของเว็บไซต์"} layoutKey="showHero" />
 
                             <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
                                 <div className="space-y-6">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-12 bg-gray-50 rounded-[3rem] border border-gray-100 shadow-sm">
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.heroBadgeLabel || "Badge"}</label>
-                                            <input type="text" value={content.heroBadge || ""} onChange={(e) => handleContentChange("heroBadge", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroBadgePlace || "เช่น ผู้ก่อตั้งและซีอีโอ"} />
+                                            <input type="text" value={content.heroBadge || ""} onChange={(e) => handleContentChange("heroBadge", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroBadgePlace || "เช่น ผู้ก่อตั้งและซีอีโอ"} />
                                         </div>
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.heroNameLabel || "ชื่อ-นามสกุล"}</label>
-                                            <input type="text" value={content.heroName || ""} onChange={(e) => handleContentChange("heroName", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroNamePlace || "เช่น สามารถ ไชยะ"} />
+                                            <input type="text" value={content.heroName || ""} onChange={(e) => handleContentChange("heroName", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroNamePlace || "เช่น สามารถ ไชยะ"} />
                                         </div>
                                         <div className="col-span-full space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.heroOrgLabel || "ชื่อองค์กร/บริษัท"}</label>
-                                            <input type="text" value={content.heroTitle || ""} onChange={(e) => handleContentChange("heroTitle", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroOrgPlace || "เช่น บริษัท แมน แมนเนจเม้นท์ เซอร์วิส จำกัด"} />
+                                            <input type="text" value={content.heroTitle || ""} onChange={(e) => handleContentChange("heroTitle", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroOrgPlace || "เช่น บริษัท แมน แมนเนจเม้นท์ เซอร์วิส จำกัด"} />
                                         </div>
                                         <div className="col-span-full space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.heroQuoteLabel || "คำคม/สโลแกน (Quote)"}</label>
@@ -547,11 +547,11 @@ export default function UnifiedEditor({
                                         </div>
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.heroContactBtnLabel || "ปุ่มติดต่อเรา"}</label>
-                                            <input type="text" value={content.heroContactBtn || ""} onChange={(e) => handleContentChange("heroContactBtn", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroContactBtnPlace || "เช่น Contact Us"} />
+                                            <input type="text" value={content.heroContactBtn || ""} onChange={(e) => handleContentChange("heroContactBtn", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroContactBtnPlace || "เช่น Contact Us"} />
                                         </div>
                                         <div className="space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.heroStandardBtnLabel || "ปุ่มมาตรฐานของเรา"}</label>
-                                            <input type="text" value={content.heroStandardBtn || ""} onChange={(e) => handleContentChange("heroStandardBtn", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm font-bold shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroStandardBtnPlace || "เช่น Our Standard"} />
+                                            <input type="text" value={content.heroStandardBtn || ""} onChange={(e) => handleContentChange("heroStandardBtn", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroStandardBtnPlace || "เช่น Our Standard"} />
                                         </div>
                                     </div>
                                 </div>
@@ -608,7 +608,7 @@ export default function UnifiedEditor({
 
                     {activeSection === "about" && (
                         <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
-                            <SectionHeader title={labels.aboutSection || "About Section"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
+                            <SectionHeader title={(labels.aboutSection || "About Section") + " v1.2"} desc={labels.aboutSectionDesc || "วิสัยทัศน์ และตัวเลขความสำเร็จ"} layoutKey="showAbout" />
 
                             <div className="grid grid-cols-1 gap-8">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
