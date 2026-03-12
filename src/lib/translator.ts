@@ -73,39 +73,51 @@ function smartTranslate(obj: any, targetLang: string, sourceMap: Record<string, 
 }
 
 /**
- * Translates an array of strings using Google Cloud Translation V2 API (Batched).
+ * Translates an array of strings using Google Cloud Translation V2 API (Batched & Chunked).
  */
 async function googleTranslateBatch(texts: string[], targetLang: string): Promise<string[]> {
     const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY;
     if (!apiKey || texts.length === 0) return texts;
 
-    try {
-        const url = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
-        const res = await fetch(url, {
-            method: "POST",
-            headers: { 
-                "Content-Type": "application/json",
-                "Referer": process.env.NEXTAUTH_URL || "http://localhost:3000/" 
-            },
-            body: JSON.stringify({
-                q: texts,
-                target: targetLang,
-                format: "text"
-            })
-        });
+    // Google API typically allows up to 128 strings per request, 
+    // but we use 50 to be safe with total character limits.
+    const CHUNK_SIZE = 50;
+    const results: string[] = [];
 
-        const data = await res.json();
-        if (data.data?.translations) {
-            return data.data.translations.map((t: any) => t.translatedText);
+    for (let i = 0; i < texts.length; i += CHUNK_SIZE) {
+        const chunk = texts.slice(i, i + CHUNK_SIZE);
+        try {
+            const url = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
+            const res = await fetch(url, {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Referer": process.env.NEXTAUTH_URL || "http://localhost:3000/" 
+                },
+                body: JSON.stringify({
+                    q: chunk,
+                    target: targetLang,
+                    format: "text"
+                })
+            });
+
+            const data = await res.json();
+            if (data.data?.translations) {
+                results.push(...data.data.translations.map((t: any) => t.translatedText));
+            } else {
+                if (data.error) {
+                    console.error("[GoogleTranslateBatch] Chunk Error:", data.error.message);
+                }
+                // Fallback to original texts for this chunk
+                results.push(...chunk);
+            }
+        } catch (error) {
+            console.error("[GoogleTranslateBatch] Fetch Error:", error);
+            results.push(...chunk);
         }
-        if (data.error) {
-            console.error("[GoogleTranslateBatch] API Error:", data.error.message);
-        }
-        return texts;
-    } catch (error) {
-        console.error("[GoogleTranslateBatch] Fetch Error:", error);
-        return texts;
     }
+
+    return results;
 }
 
 /**
@@ -194,11 +206,25 @@ export async function translateProfileContent(content: any, targetLang: string) 
 
     // 1. Collect all unique strings that need AI translation
     const stringsToTranslate: { text: string; path: string | null }[] = [];
+    
+    // Explicitly add top-level fields to ensure they are captured regardless of object structure
+    const topLevelFields = [
+        'heroBadge', 'heroName', 'heroTitle', 'heroQuote', 'heroContact', 'heroStandard',
+        'heroStandardBtn', 'heroContactBtn', 'navAbout', 'navServices', 'navCustomers', 
+        'navLookingFor', 'navContact'
+    ];
+    topLevelFields.forEach(field => {
+        if (typeof result[field] === 'string' && result[field].trim() !== "") {
+            collectStringsToTranslate(result[field], targetLang, thMap, stringsToTranslate);
+        }
+    });
+
+    // Recursively collect from the whole object (for JSON fields like servicesData, etc.)
     collectStringsToTranslate(result, targetLang, thMap, stringsToTranslate);
     
     const uniqueTexts = Array.from(new Set(stringsToTranslate.map(s => s.text)));
 
-    // 2. Perform batched AI translation
+    // 2. Perform batched AI translation (Chunked)
     const translatedTexts = await googleTranslateBatch(uniqueTexts, targetLang);
     
     const translationMap: Record<string, string> = {};
@@ -209,7 +235,7 @@ export async function translateProfileContent(content: any, targetLang: string) 
     // 3. Apply translations
     const translated = applyTranslations(result, targetLang, thMap, translationMap);
 
-    // 4. Force core nav
+    // 4. Force core nav from locales if they exist
     const targetLocale = LOCALES[targetLang];
     if (targetLocale) {
         translated.navAbout = targetLocale.header?.about || translated.navAbout;
