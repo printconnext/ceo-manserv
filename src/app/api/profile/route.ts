@@ -167,7 +167,7 @@ export async function POST(req: NextRequest) {
 
         const userId = session.user.id;
         const targetLang = uiLang.toLowerCase();
-        const langSuffix = targetLang.toUpperCase();
+        const langSuffix = targetLang.toLowerCase();
 
         // Generate slugs
         const finalOrgSlug = slugify(orgSlug || orgName || "my-org").toLowerCase();
@@ -177,7 +177,7 @@ export async function POST(req: NextRequest) {
         // so we don't end up with duplicate suffixes like samart-th-TH
         baseProfileSlug = baseProfileSlug.replace(/(?:-[a-z]{2})+$/i, '');
 
-        // Ensure slug ends with proper uppercase -LANG (e.g., nat-medhee-TH)
+        // Ensure slug ends with proper lowercase -LANG (e.g., nat-medhee-th)
         if (!baseProfileSlug.endsWith(`-${langSuffix}`)) {
             baseProfileSlug = `${baseProfileSlug}-${langSuffix}`;
         }

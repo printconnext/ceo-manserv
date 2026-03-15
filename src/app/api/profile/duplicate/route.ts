@@ -35,9 +35,9 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Permission denied" }, { status: 403 });
         }
 
-        // 2. Determine new slug (e.g. samath-TH -> samath-EN)
+        // 2. Determine new slug (e.g. samalth-th -> samath-en)
         const baseSlug = sourceProfile.slug.replace(/-[a-z]{2}(-[a-z]{2,4})?$/i, "");
-        const newSlug = `${baseSlug}-${targetLang.toUpperCase()}`;
+        const newSlug = `${baseSlug.toLowerCase()}-${targetLang.toLowerCase()}`;
 
         // Check if already exists
         const existing = await prisma.profile.findFirst({
