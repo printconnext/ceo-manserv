@@ -26,7 +26,12 @@ export default function SettingsPage() {
     return (
         <div className="p-6 max-w-6xl mx-auto space-y-8">
             <div className="mb-2">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">{labels.pageTitle || "Profile Editor (เครื่องมือแก้ไขโปรไฟล์)"}</h1>
+                <div className="flex items-center gap-3 mb-2">
+                    <h1 className="text-3xl font-bold text-gray-900">{labels.pageTitle || "Profile Editor (เครื่องมือแก้ไขโปรไฟล์)"}</h1>
+                    <div className="px-3 py-1 rounded-lg bg-brand-blue/10 border border-brand-blue/20 text-brand-blue text-xs font-black uppercase tracking-tighter shadow-sm">
+                        {lang}
+                    </div>
+                </div>
                 <p className="text-gray-600">{labels.pageDescription || "จัดการข้อมูล รูปภาพ และความสวยงามของโปรไฟล์คุณแบบแบ่งตามส่วน"}</p>
             </div>
 
