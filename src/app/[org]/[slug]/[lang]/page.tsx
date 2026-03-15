@@ -17,8 +17,8 @@ import { brand as defaultBrand } from "@/config/brand";
 // Import TypeScript-based locales
 import { th } from "@/data/locales/th";
 import { en } from "@/data/locales/en";
-import { ch } from "@/data/locales/ch";
-import { jp } from "@/data/locales/jp";
+import { zh } from "@/data/locales/zh";
+import { ja } from "@/data/locales/ja";
 import { hi } from "@/data/locales/hi";
 import { fr } from "@/data/locales/fr";
 import { it } from "@/data/locales/it";
@@ -31,11 +31,11 @@ import { br } from "@/data/locales/br";
 import { vi } from "@/data/locales/vi";
 import { lo } from "@/data/locales/lo";
 import { my } from "@/data/locales/my";
-import { ph } from "@/data/locales/ph";
+import { tl } from "@/data/locales/tl";
 import { id } from "@/data/locales/id";
 
 
-const LOCALES: Record<string, any> = { th, en, ch, jp, hi, fr, it, es, de, ru, fa, pt, br, vi, lo, my, ph, id };
+const LOCALES: Record<string, any> = { th, en, zh, ja, hi, fr, it, es, de, ru, fa, pt, br, vi, lo, my, tl, id };
 
 
 interface PageProps {
@@ -183,6 +183,7 @@ export default async function ProfilePage({ params }: PageProps) {
         badges: mergedMedia.badges,
         heroGallery: mergedMedia.heroGallery,
         media: mergedMedia,
+        lang: resolvedLang,
     };
 
     const aboutDataFormatted = {

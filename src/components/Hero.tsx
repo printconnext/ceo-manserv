@@ -14,6 +14,7 @@ interface HeroProps {
         backgroundPattern: string;
         badges: { src: string; alt: string }[];
         heroGallery: string[];
+        lang?: string;
         media: {
             heroImage: string;
             backgroundPattern?: string;
@@ -47,8 +48,15 @@ export default function Hero({ data }: HeroProps) {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                     {/* Text Content */}
                     <div className="lg:col-span-7 text-center lg:text-left">
-                        <div className="inline-flex items-center space-x-2 rounded-full bg-white px-5 py-2 text-sm font-bold text-[var(--color-primary)] shadow-[0_0_20px_rgba(255,255,255,0.2)] mb-8">
-                            <span className="uppercase tracking-wider">{data.badge}</span>
+                        <div className="flex items-center justify-center lg:justify-start gap-3 mb-8">
+                            <div className="inline-flex items-center space-x-2 rounded-full bg-white px-5 py-2 text-sm font-bold text-[var(--color-primary)] shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                                <span className="uppercase tracking-wider">{data.badge}</span>
+                            </div>
+                            {data.lang && (
+                                <div className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white text-xs font-black uppercase tracking-tighter">
+                                    {data.lang}
+                                </div>
+                            )}
                         </div>
                         <h1 className="text-5xl font-bold tracking-tight text-white sm:text-7xl mb-6 leading-tight drop-shadow-sm">
                             {data.name}
