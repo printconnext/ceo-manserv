@@ -170,8 +170,8 @@ export async function POST(req: NextRequest) {
         const langSuffix = targetLang.toUpperCase();
 
         // Generate slugs
-        const finalOrgSlug = slugify(orgSlug || orgName || "my-org");
-        let baseProfileSlug = slugify(profileSlug || fullName || "profile");
+        const finalOrgSlug = slugify(orgSlug || orgName || "my-org").toLowerCase();
+        let baseProfileSlug = slugify(profileSlug || fullName || "profile").toLowerCase();
 
         // CLEANUP: Remove any trailing language suffix the user might have accidentally typed
         // so we don't end up with duplicate suffixes like samart-th-TH

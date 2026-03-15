@@ -44,6 +44,25 @@ export default function ContentSettings() {
         setSaved(false);
     };
 
+    const handleStatChange = (index: number, field: 'label' | 'value', value: string) => {
+        setContent((prev: any) => {
+            const stats = [...(prev.aboutData?.stats || [])];
+            // Ensure array has enough elements
+            while (stats.length <= index) {
+                stats.push({ label: "", value: "" });
+            }
+            stats[index] = { ...stats[index], [field]: value };
+            return {
+                ...prev,
+                aboutData: {
+                    ...(prev.aboutData || {}),
+                    stats
+                }
+            };
+        });
+        setSaved(false);
+    };
+
     const handleSave = async () => {
         setSaving(true);
         setError("");
@@ -152,9 +171,9 @@ export default function ContentSettings() {
                     </div>
 
 
-                    {/* About Data JSON Edit */}
+                    {/* About Section */}
                     <div>
-                        <h4 className="font-semibold text-gray-800 mb-3 border-b pb-2">About Section (วิสัยทัศน์)</h4>
+                        <h4 className="font-semibold text-gray-800 mb-3 border-b pb-2">About Section (วิสัยทัศน์และสถิติ)</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-sm text-gray-600 mb-1">Badge เหนือวิสัยทัศน์</label>
@@ -171,6 +190,125 @@ export default function ContentSettings() {
                             <div className="col-span-1 md:col-span-2">
                                 <label className="block text-sm text-gray-600 mb-1">ข้อความวิสัยทัศน์ 2 (อธิบายย่อย)</label>
                                 <textarea value={content.aboutData?.visionDesc2 || ""} onChange={(e) => handleNestedChange("aboutData", "visionDesc2", e.target.value)} placeholder="เช่น พร้อมให้บริการเต็มรูปแบบ..." className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" rows={2}></textarea>
+                            </div>
+                            
+                            {/* Stats */}
+                            <div className="col-span-1 md:col-span-2 mt-2">
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">สถิติความสำเร็จ (Success Stats - 4 รายการ)</label>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    {[0, 1, 2, 3].map((idx) => (
+                                        <div key={idx} className="space-y-2 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                            <div>
+                                                <label className="block text-[10px] uppercase font-bold text-gray-500 mb-1">สถิติ {idx + 1}: หัวข้อ</label>
+                                                <input 
+                                                    type="text" 
+                                                    value={content.aboutData?.stats?.[idx]?.label || ""} 
+                                                    onChange={(e) => handleStatChange(idx, 'label', e.target.value)} 
+                                                    placeholder="เช่น ประสบการณ์" 
+                                                    className="w-full rounded border border-gray-300 px-2 py-1 text-xs" 
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-[10px] uppercase font-bold text-gray-500 mb-1">สถิติ {idx + 1}: ตัวเลข</label>
+                                                <input 
+                                                    type="text" 
+                                                    value={content.aboutData?.stats?.[idx]?.value || ""} 
+                                                    onChange={(e) => handleStatChange(idx, 'value', e.target.value)} 
+                                                    placeholder="เช่น 20+" 
+                                                    className="w-full rounded border border-gray-300 px-2 py-1 text-xs font-bold text-brand-blue" 
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Services Section */}
+                    <div>
+                        <h4 className="font-semibold text-gray-800 mb-3 border-b pb-2">Services Section (บริการหลัก)</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm text-gray-600 mb-1">หัวข้อส่วนบริการ (Title)</label>
+                                <input type="text" value={content.servicesData?.title || ""} onChange={(e) => handleNestedChange("servicesData", "title", e.target.value)} placeholder="เช่น บริการของเรา" className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-600 mb-1">คำอธิบายส่วนบริการ (Subtitle)</label>
+                                <input type="text" value={content.servicesData?.subtitle || ""} onChange={(e) => handleNestedChange("servicesData", "subtitle", e.target.value)} placeholder="เช่น โซลูชันคำตอบที่ใช่..." className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Clients Section */}
+                    <div>
+                        <h4 className="font-semibold text-gray-800 mb-3 border-b pb-2">Clients & Partners (ลูกค้าและเป้าหมาย)</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm text-gray-600 mb-1">Badge ลูกค้าหลัก</label>
+                                <input type="text" value={content.clientsData?.keyCustomersBadge || ""} onChange={(e) => handleNestedChange("clientsData", "keyCustomersBadge", e.target.value)} placeholder="เช่น KEY CLIENTS" className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-600 mb-1">หัวข้อลูกค้าหลัก</label>
+                                <input type="text" value={content.clientsData?.keyCustomersTitle || ""} onChange={(e) => handleNestedChange("clientsData", "keyCustomersTitle", e.target.value)} placeholder="เช่น บริษัที่ให้ความไว้วางใจ" className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-600 mb-1">Badge สิ่งที่มองหา</label>
+                                <input type="text" value={content.clientsData?.lookingForBadge || ""} onChange={(e) => handleNestedChange("clientsData", "lookingForBadge", e.target.value)} placeholder="เช่น OPPORTUNITY" className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-600 mb-1">หัวข้อสิ่งที่มองหา</label>
+                                <input type="text" value={content.clientsData?.lookingForTitle || ""} onChange={(e) => handleNestedChange("clientsData", "lookingForTitle", e.target.value)} placeholder="เช่น พันธมิตรที่เรามองหา" className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                            </div>
+                            <div className="col-span-1 md:col-span-2">
+                                <label className="block text-sm text-gray-600 mb-1">คำอธิบายสิ่งที่มองหา</label>
+                                <textarea value={content.clientsData?.lookingForDesc || ""} onChange={(e) => handleNestedChange("clientsData", "lookingForDesc", e.target.value)} placeholder="เช่น เราพร้อมร่วมงานกับ..." className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" rows={2}></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Contact Section */}
+                    <div>
+                        <h4 className="font-semibold text-gray-800 mb-3 border-b pb-2">Contact Section (ข้อมูลติดต่อท้ายเว็บ)</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm text-gray-600 mb-1">หัวข้อติดต่อ (Title)</label>
+                                <input type="text" value={content.contactData?.title || ""} onChange={(e) => handleNestedChange("contactData", "title", e.target.value)} placeholder="เช่น ติดต่อ" className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-600 mb-1">คำบรรยายติดต่อ (Subtitle)</label>
+                                <input type="text" value={content.contactData?.subtitle || ""} onChange={(e) => handleNestedChange("contactData", "subtitle", e.target.value)} placeholder="เช่น ยินดีให้คำปรึกษา..." className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                            </div>
+                            <div className="col-span-1 md:col-span-2">
+                                <label className="block text-sm text-gray-600 mb-1">ที่ตั้งสำนักงาน (Office Address)</label>
+                                <textarea value={content.contactData?.officeValue || ""} onChange={(e) => handleNestedChange("contactData", "officeValue", e.target.value)} placeholder="ที่อยู่บริษัท..." className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" rows={2}></textarea>
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-600 mb-1">เบอร์มือถือ (Mobile)</label>
+                                <input type="text" value={content.contactData?.mobile || ""} onChange={(e) => handleNestedChange("contactData", "mobile", e.target.value)} placeholder="0xx-xxx-xxxx" className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-600 mb-1">ที่อยู่อีเมล (Email)</label>
+                                <input type="text" value={content.contactData?.email || ""} onChange={(e) => handleNestedChange("contactData", "email", e.target.value)} placeholder="name@company.com" className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-600 mb-1">เว็บไซต์ (Website)</label>
+                                <input type="text" value={content.contactData?.website || ""} onChange={(e) => handleNestedChange("contactData", "website", e.target.value)} placeholder="https://..." className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                            </div>
+                            <div>
+                                <label className="block text-sm text-gray-600 mb-1">Line ID / Link</label>
+                                <input type="text" value={content.contactData?.lineValue || ""} onChange={(e) => handleNestedChange("contactData", "lineValue", e.target.value)} placeholder="ID หรือ Link line..." className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Footer Section */}
+                    <div>
+                        <h4 className="font-semibold text-gray-800 mb-3 border-b pb-2">Footer (ส่วนท้ายสุด)</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="col-span-1 md:col-span-2">
+                                <label className="block text-sm text-gray-600 mb-1">ข้อความลิขสิทธิ์ (Copyright Rights)</label>
+                                <input type="text" value={content.footerData?.rights || ""} onChange={(e) => handleNestedChange("footerData", "rights", e.target.value)} placeholder="เช่น © 2024 Your Company. All rights reserved." className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
                             </div>
                         </div>
                     </div>

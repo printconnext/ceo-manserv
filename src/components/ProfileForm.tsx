@@ -155,7 +155,14 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
+        
+        let finalValue = value;
+        if (name === "orgSlug" || name === "profileSlug") {
+            // Force lowercase and restrict characters for slugs
+            finalValue = value.toLowerCase().replace(/[^a-z0-9-]/g, "");
+        }
+        
+        setForm((prev) => ({ ...prev, [name]: finalValue }));
         setSaved(false);
     };
 
@@ -432,11 +439,20 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
 
                         {/* URL Preview */}
                         {previewUrl && (
-                            <div className="bg-blue-50 border border-blue-100 rounded-lg p-4">
-                                <p className="text-xs font-medium text-blue-600 mb-1">{labels.urlPreview}</p>
-                                <p className="text-sm font-mono text-blue-900">
-                                    ceoprofile.site<span className="font-bold">{previewUrl}</span>
-                                </p>
+                            <div className="bg-gray-900 border border-gray-800 rounded-xl p-5 shadow-inner">
+                                <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2 opacity-80">{labels.urlPreview || "URL PREVIEW"}</p>
+                                <div className="flex items-center gap-2 overflow-hidden">
+                                    <span className="text-gray-500 text-sm font-medium shrink-0">ceoprofile.site</span>
+                                    <div className="flex items-center text-sm font-mono text-white truncate">
+                                        {previewUrl.split('/').map((part, i) => (
+                                            <span key={i} className="flex items-center">
+                                                {i > 0 && <span className="text-gray-600 mx-0.5">/</span>}
+                                                {part && <span className={i === 1 || i === 2 ? "text-blue-400 font-bold" : "text-gray-300"}>{part}</span>}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                                <p className="text-[10px] text-gray-500 mt-2 font-medium italic">* ทุกตัวอักษรจะเว้นวรรคไม่ได้ และถูกบังคับเป็นตัวพิมพ์เล็กโดยอัตโนมัติ</p>
                             </div>
                         )}
                     </div>

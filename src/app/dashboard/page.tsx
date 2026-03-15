@@ -128,9 +128,9 @@ export default async function DashboardPage() {
                                                             <Link href={`/dashboard/settings?id=${p.id}&lang=${p.translations?.[0]?.lang || 'th'}`} className="px-3 py-2 bg-brand-blue text-white rounded-lg text-xs font-bold hover:bg-blue-800 transition-colors">
                                                                 แก้ไขเนื้อหา
                                                             </Link>
-                                                            <a href={`/${org.slug}/${p.slug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/${p.translations?.[0]?.lang || 'th'}`} target="_blank" rel="noopener noreferrer" className="px-3 py-2 bg-gray-900 text-white rounded-lg text-xs font-bold hover:bg-black transition-colors">
-                                                                เปิดเว็บ
-                                                            </a>
+                                                             <a href={`/${org.slug.toLowerCase()}/${p.slug.toLowerCase().replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/${(p.translations?.[0]?.lang || 'th').toLowerCase()}`} target="_blank" rel="noopener noreferrer" className="px-3 py-2 bg-gray-900 text-white rounded-lg text-xs font-bold hover:bg-black transition-colors">
+                                                                 เปิดเว็บ
+                                                             </a>
                                                         </div>
                                                     </div>
                                                 );
