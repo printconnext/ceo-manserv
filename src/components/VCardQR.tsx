@@ -44,14 +44,14 @@ export default function VCardQR({
             {onClose && (
                 <button
                     onClick={onClose}
-                    className="absolute top-6 right-6 text-gray-400 hover:text-white transition-colors"
+                    className="absolute top-6 right-6 z-10 text-gray-400 hover:text-white transition-colors"
                 >
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             )}
 
             {/* Title */}
-            <div className="absolute top-8 left-1/2 -translate-x-1/2 w-full text-center px-4">
+            <div className="absolute top-8 left-1/2 -translate-x-1/2 w-full text-center px-4 pointer-events-none">
                 <h3 className="text-sm font-medium text-gray-300">{labels?.title || "QR Code Namecard"}</h3>
             </div>
 

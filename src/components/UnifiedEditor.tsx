@@ -571,8 +571,8 @@ export default function UnifiedEditor({
 
             {/* QR Modal Overlay */}
             {showQR && (
-                <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-                    <div className="relative w-full max-w-md animate-in zoom-in-95 duration-300">
+                <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" onClick={() => setShowQR(false)}>
+                    <div className="relative w-full max-w-md animate-in zoom-in-95 duration-300" onClick={(e) => e.stopPropagation()}>
                         <VCardQR
                             fullName={content.heroName || "CEO Profile"}
                             portraitUrl={media.heroImage || undefined}
