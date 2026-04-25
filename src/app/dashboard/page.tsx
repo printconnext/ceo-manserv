@@ -118,10 +118,10 @@ export default async function DashboardPage() {
                                                             <DuplicateProfileButton profileId={p.id} profileName={p.fullName} />
                                                             <div className="w-px h-6 bg-gray-100 mx-1"></div>
                                                             <DeleteProfileButton profileId={p.id} profileName={p.fullName} />
-                                                            <Link href={`/dashboard/settings?id=${p.id}&lang=${p.translations?.[0]?.lang || 'th'}`} className="px-3 py-2 bg-brand-blue text-white rounded-lg text-xs font-bold hover:bg-blue-800 transition-colors">
+                                                            <Link href={`/dashboard/settings?id=${p.id}&lang=${p.translations?.[0]?.lang || 'th'}`} className="flex items-center px-3 py-2 bg-brand-blue text-white rounded-xl text-xs font-bold hover:bg-blue-800 transition-colors border-2 border-brand-blue">
                                                                 แก้ไขเนื้อหา
                                                             </Link>
-                                                            <a href={`/${org.slug.toLowerCase()}/${p.slug.toLowerCase()}`} target="_blank" rel="noopener noreferrer" className="px-3 py-2 bg-gray-900 text-white rounded-lg text-xs font-bold hover:bg-black transition-colors">
+                                                            <a href={`/${org.slug.toLowerCase()}/${p.slug.toLowerCase()}`} target="_blank" rel="noopener noreferrer" className="flex items-center px-3 py-2 bg-gray-900 text-white rounded-xl text-xs font-bold hover:bg-black transition-colors border-2 border-gray-900">
                                                                 เปิดเว็บ
                                                             </a>
                                                             <Link
