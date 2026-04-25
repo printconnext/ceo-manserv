@@ -36,13 +36,11 @@ export function generateVCard(data: VCardData, isForQR: boolean = false): string
 
     if (isForQR) {
         // Minimalist version for QR (Easy Scan)
-        // Only FN + URL + TEL + NOTE for compact QR that scans reliably on all devices
+        // FN + NOTE (with URL) + TEL — compact QR, Android-compatible
         lines.push(`FN:${fullName}`);
         if (profileUrl || website) {
-            const url = profileUrl || website;
-            lines.push(`URL:${url}`);
-            // NOTE field as fallback — many Android contact apps skip URL but always import NOTE
-            lines.push(`NOTE:${url}`);
+            // Use NOTE instead of URL — all Android contact apps import NOTE reliably
+            lines.push(`NOTE:${profileUrl || website}`);
         }
         if (phone1) lines.push(`TEL:${normalizePhone(phone1)}`);
     } else {
