@@ -118,15 +118,17 @@ export default async function DashboardPage() {
                                                             <DuplicateProfileButton profileId={p.id} profileName={p.fullName} />
                                                             <div className="w-px h-6 bg-gray-100 mx-1"></div>
                                                             <DeleteProfileButton profileId={p.id} profileName={p.fullName} />
-                                                            <Link href={`/dashboard/settings?id=${p.id}&lang=${p.translations?.[0]?.lang || 'th'}`} className="flex items-center px-3 py-2 bg-brand-blue text-white rounded-xl text-xs font-bold hover:bg-blue-800 transition-colors border-2 border-brand-blue">
-                                                                แก้ไขเนื้อหา
+                                                            <Link href={`/dashboard/settings?id=${p.id}&lang=${p.translations?.[0]?.lang || 'th'}`} className="flex items-center gap-1.5 px-3 py-2 bg-brand-blue text-white rounded-xl text-xs font-bold hover:bg-blue-800 transition-colors border-2 border-brand-blue whitespace-nowrap">
+                                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                                                <span>แก้ไข</span>
                                                             </Link>
-                                                            <a href={`/${org.slug.toLowerCase()}/${p.slug.toLowerCase()}`} target="_blank" rel="noopener noreferrer" className="flex items-center px-3 py-2 bg-gray-900 text-white rounded-xl text-xs font-bold hover:bg-black transition-colors border-2 border-gray-900">
-                                                                เปิดเว็บ
+                                                            <a href={`/${org.slug.toLowerCase()}/${p.slug.toLowerCase()}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-2 bg-gray-900 text-white rounded-xl text-xs font-bold hover:bg-black transition-colors border-2 border-gray-900 whitespace-nowrap">
+                                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                                                                <span>WEB</span>
                                                             </a>
                                                             <Link
                                                                 href={`/dashboard/vcard?id=${p.id}`}
-                                                                className="flex items-center gap-1.5 px-3 py-2 border-2 border-amber-500 text-amber-600 rounded-xl hover:bg-amber-50 transition-all font-bold text-xs"
+                                                                className="flex items-center gap-1.5 px-3 py-2 border-2 border-amber-500 text-amber-600 rounded-xl hover:bg-amber-50 transition-all font-bold text-xs whitespace-nowrap"
                                                                 title="ดู QR Code นามบัตร"
                                                             >
                                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><rect x="7" y="7" width="3" height="3"></rect><rect x="14" y="7" width="3" height="3"></rect><rect x="7" y="14" width="3" height="3"></rect><rect x="14" y="14" width="3" height="3"></rect></svg>
