@@ -50,7 +50,7 @@ export default async function VCardPage({
         );
     }
 
-    const vCardString = generateVCard({
+    const vCardData = {
         fullName: profile.fullName,
         title: profile.title || "",
         organization: organization.name,
@@ -58,8 +58,11 @@ export default async function VCardPage({
         phone2: profile.phone2 || "",
         email: profile.email || "",
         website: profile.website || "",
-        profileUrl: `https://www.ceoprofile.site/${organization.slug}/${profile.slug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/th`
-    });
+        profileUrl: `https://www.ceoprofile.site/${organization.slug}/${profile.slug}`
+    };
+
+    const qrValue = generateVCard(vCardData, true); // Lean version
+    const fullVCardString = generateVCard(vCardData, false); // Full version
 
     return (
         <div className="p-6 max-w-lg mx-auto">
@@ -73,7 +76,8 @@ export default async function VCardPage({
             <VCardQR
                 fullName={profile.fullName}
                 portraitUrl={mediaConfig?.heroImage || undefined}
-                vCardString={vCardString}
+                qrValue={qrValue}
+                fullVCardString={fullVCardString}
                 primaryColor={themeConfig?.colors?.primary || "#00318C"}
             />
 

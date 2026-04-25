@@ -35,9 +35,9 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Permission denied" }, { status: 403 });
         }
 
-        // 2. Determine new slug (e.g. samalth-th -> samath-en)
-        const baseSlug = sourceProfile.slug.replace(/-[a-z]{2}(-[a-z]{2,4})?$/i, "");
-        const newSlug = `${baseSlug.toLowerCase()}-${targetLang.toLowerCase()}`;
+        // 2. Determine base slug (remove existing lang suffix if any)
+        const baseSlug = sourceProfile.slug.split('-')[0].toLowerCase();
+        const newSlug = `${baseSlug}-${targetLang.toLowerCase()}`;
 
         // Check if already exists
         const existing = await prisma.profile.findFirst({
@@ -53,19 +53,19 @@ export async function POST(req: NextRequest) {
 
         // 3. Perform duplication in a transaction
         const result = await prisma.$transaction(async (tx) => {
-            // Translate core profile data (Name and Title) using AI
+            // Translate core profile data (Name and Title/Company)
             const translatedSettings = await translateProfileSettings(
                 { fullName: sourceProfile.fullName || "", title: sourceProfile.title || "" },
                 targetLang.toLowerCase(),
                 referer
             );
 
-            // Create new profile record (Full metadata clone + Translated Settings)
+            // Create new profile record
             const newProfile = await tx.profile.create({
                 data: {
                     orgId: sourceProfile.orgId,
                     slug: newSlug,
-                    fullName: translatedSettings.fullName,
+                    fullName: sourceProfile.fullName, // Keep original name for linking
                     title: translatedSettings.title,
                     portraitUrl: sourceProfile.portraitUrl,
                     phone1: sourceProfile.phone1,
@@ -80,9 +80,12 @@ export async function POST(req: NextRequest) {
                 }
             });
 
-            // Clone and Translate content from the CURRENT source profile (as per Rule #2)
-            const sourceTrans = sourceProfile.translations.find(t => t.lang === sourceProfile.slug.split('-').pop()?.toLowerCase()) ||
-                sourceProfile.translations[0];
+            // Clone and Translate content
+            // Try to find translation matching source profile's current slug suffix, fallback to first
+            const sourceSlugParts = sourceProfile.slug.split('-');
+            const sourceLang = sourceSlugParts.length > 1 ? sourceSlugParts.pop()?.toLowerCase() : null;
+            
+            const sourceTrans = sourceProfile.translations.find(t => t.lang === sourceLang) || sourceProfile.translations[0];
 
             if (sourceTrans) {
                 const translatedData = await translateProfileContent(sourceTrans, targetLang.toLowerCase(), referer);
@@ -95,10 +98,9 @@ export async function POST(req: NextRequest) {
                         ...contentToClone,
                         profileId: newProfile.id,
                         lang: targetLang.toLowerCase(),
-                        // Ensure name and title in translation record also match translated settings
                         heroName: translatedSettings.fullName,
-                        heroTitle: translatedSettings.title,
-                        heroRole: translatedSettings.title,
+                        heroTitle: contentToClone.heroTitle, // Keep the translated company name from content
+                        heroRole: translatedSettings.title,  // Use the translated position for heroRole
                     }
                 });
             }
@@ -107,7 +109,7 @@ export async function POST(req: NextRequest) {
             return newProfile;
         });
 
-        const profileUrl = `/${sourceProfile.organization.slug}/${baseSlug}/${targetLang.toLowerCase()}`;
+        const profileUrl = `/${sourceProfile.organization.slug}/${newSlug}`;
 
         return NextResponse.json({
             success: true,

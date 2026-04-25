@@ -3,8 +3,6 @@
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { LOCALES } from "@/data/locales";
-
 export default function DashboardHeader() {
     const { data: session } = useSession();
     const [lang, setLang] = useState("th");
@@ -30,7 +28,10 @@ export default function DashboardHeader() {
         };
     }, []);
 
-    const labels = { ...LOCALES.en.editor, ...LOCALES[lang]?.editor };
+    const labels = {
+        sidebarOverview: "Dashboard (หน้าหลัก)",
+        logout: "Logout (ออกจากระบบ)"
+    };
 
     return (
         <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">

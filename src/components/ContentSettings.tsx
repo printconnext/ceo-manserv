@@ -155,6 +155,10 @@ export default function ContentSettings() {
                                 <label className="block text-sm text-gray-600 mb-1">ชื่อบริษัท / Title (สีตัวเน้น)</label>
                                 <input type="text" value={content.heroTitle || ""} onChange={(e) => handleChange("heroTitle", e.target.value)} placeholder="เช่น บริษัท แมน แมนเนจเม้นท์ เซอร์วิส จำกัด" className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
                             </div>
+                            <div>
+                                <label className="block text-sm text-gray-600 mb-1">ตำแหน่ง / Position (แสดงบนรูปภาพสั้นๆ)</label>
+                                <input type="text" value={content.heroRole || ""} onChange={(e) => handleChange("heroRole", e.target.value)} placeholder="เช่น Founder & CEO" className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                            </div>
                             <div className="col-span-1 md:col-span-2">
                                 <label className="block text-sm text-gray-600 mb-1">คำคม / สโลแกนสั้นๆ (สีเทา)</label>
                                 <textarea value={content.heroQuote || ""} onChange={(e) => handleChange("heroQuote", e.target.value)} placeholder="เช่น เราคือผู้เชี่ยวชาญด้าน..." className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" rows={2}></textarea>
@@ -281,7 +285,7 @@ export default function ContentSettings() {
                             </div>
                             <div className="col-span-1 md:col-span-2">
                                 <label className="block text-sm text-gray-600 mb-1">ที่ตั้งสำนักงาน (Office Address)</label>
-                                <textarea value={content.contactData?.officeValue || ""} onChange={(e) => handleNestedChange("contactData", "officeValue", e.target.value)} placeholder="ที่อยู่บริษัท..." className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" rows={2}></textarea>
+                                <textarea value={content.contactData?.office || ""} onChange={(e) => handleNestedChange("contactData", "office", e.target.value)} placeholder="ที่อยู่บริษัท..." className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" rows={2}></textarea>
                             </div>
                             <div>
                                 <label className="block text-sm text-gray-600 mb-1">เบอร์มือถือ (Mobile)</label>

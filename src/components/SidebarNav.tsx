@@ -2,15 +2,15 @@
 
 import Link from "next/link";
 import { useSearchParams, usePathname } from "next/navigation";
-import { LOCALES } from "@/data/locales";
-
 export default function SidebarNav() {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const id = searchParams.get("id");
     const lang = searchParams.get("lang") || "th";
 
-    const labels = LOCALES[lang]?.editor || LOCALES.th.editor;
+    const labels = {
+        sidebarOverview: "Overview (ภาพรวม)"
+    };
 
     const getLink = (base: string) => {
         const params = new URLSearchParams();

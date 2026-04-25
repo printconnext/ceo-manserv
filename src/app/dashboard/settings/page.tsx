@@ -4,8 +4,6 @@ import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import UnifiedEditor from "@/components/UnifiedEditor";
-import { LOCALES } from "@/data/locales";
-
 export default function SettingsPage() {
     const { data: session } = useSession();
     const [lang, setLang] = useState("th");
@@ -15,13 +13,29 @@ export default function SettingsPage() {
         if (typeof window !== "undefined") {
             const params = new URLSearchParams(window.location.search);
             const l = params.get("lang");
-            if (l && LOCALES[l]) {
+            if (l) {
                 setLang(l);
             }
         }
     }, []);
 
-    const labels = { ...LOCALES.en.editor, ...LOCALES[lang]?.editor };
+    const labels = {
+        pageTitle: "Profile Editor (เครื่องมือแก้ไขโปรไฟล์)",
+        pageDescription: "จัดการข้อมูล รูปภาพ และความสวยงามของโปรไฟล์คุณแบบแบ่งตามส่วน",
+        accountData: "ข้อมูลบัญชี",
+        loginProviders: "ผู้ให้บริการล็อกอิน",
+        package: "แพ็กเกจ",
+        privacy: "ความเป็นส่วนตัว",
+        showPublicProfile: "แสดงโปรไฟล์สาธารณะ",
+        allowPublicVisit: "อนุญาตให้ผู้อื่นเข้าชมโปรไฟล์ของคุณผ่าน URL สาธารณะ",
+        showEmail: "แสดงอีเมลในโปรไฟล์",
+        emailVisitors: "ผู้เข้าชมจะเห็นที่อยู่อีเมลของคุณ",
+        showPhone: "แสดงเบอร์โทรในโปรไฟล์",
+        phoneVisitors: "ผู้เข้าชมจะเห็นเบอร์โทรศัพท์ของคุณ",
+        dangerZone: "Danger Zone",
+        logout: "ออกจากระบบ",
+        logoutDesc: "คุณจะถูกนำกลับไปยังหน้าหลัก"
+    };
 
     return (
         <div className="p-6 max-w-6xl mx-auto space-y-8">

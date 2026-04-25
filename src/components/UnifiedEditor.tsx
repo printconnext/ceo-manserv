@@ -8,7 +8,7 @@ import { defaultTheme } from "@/components/ThemeProvider";
 import { ServiceIcons, defaultServiceIconOrder } from "./IconLibrary";
 import VCardQR from "./VCardQR";
 import { generateVCard } from "@/lib/vcard";
-import { LOCALES, LANG_NAMES } from "@/data/locales";
+import { LANG_NAMES } from "@/data/locales";
 
 const DEFAULT_CLIENTS = [
     { name: "KUBOTA", image: "kubota.png" }, { name: "SATI", "image": "sati.png" }, { name: "ATTG", "image": "attg.png" },
@@ -29,15 +29,13 @@ const DEFAULT_CLIENTS = [
 ];
 
 const getSections = (lang: string) => {
-    const labels = { ...LOCALES.en.editor, ...LOCALES[lang]?.editor };
     return [
-        { id: "hero", label: labels.heroSection || "Hero Section" },
-        { id: "about", label: labels.aboutSection || "About Section" },
-        { id: "services", label: labels.servicesSection || "Services Section" },
-
-        { id: "clients", label: labels.clientsSection || "Clients Section" },
-        { id: "contact", label: labels.contactSection || "Contact Section" },
-        { id: "aesthetics", label: labels.aestheticsSection || "Aesthetics" },
+        { id: "hero", label: "Hero Section (ข้อมูลส่วนแรก)" },
+        { id: "about", label: "About Section (ข้อมูลส่วนตัว)" },
+        { id: "services", label: "Services Section (บริการ/ความชำนาญ)" },
+        { id: "clients", label: "Clients Section (ลูกค้า/ผลงาน)" },
+        { id: "contact", label: "Contact Section (ช่องทางการติดต่อ)" },
+        { id: "aesthetics", label: "Aesthetics (ความสวยงาม)" },
     ];
 };
 
@@ -63,7 +61,7 @@ export default function UnifiedEditor({
     useEffect(() => {
         const searchParams = new URL(window.location.href).searchParams;
         const urlLang = searchParams.get("lang");
-        if (urlLang && LOCALES[urlLang]) {
+        if (urlLang) {
             setLang(urlLang);
         }
     }, []);
@@ -421,7 +419,83 @@ export default function UnifiedEditor({
         }
     };
 
-    const labels = { ...LOCALES.en.editor, ...LOCALES[lang]?.editor };
+    const labels = {
+        loading: "กำลังโหลด...",
+        showSection: "แสดงส่วนนี้",
+        viewQRCode: "ดู QR Code นามบัตร",
+        updateWebsite: "อัปเดตเว็บไซต์",
+        saving: "กำลังบันทึก...",
+        viewSite: "เปิดหน้าเว็บไซต์",
+        success: "บันทึกสำเร็จ!",
+        scanToAdd: "สแกนเพื่อเพิ่มเพื่อน",
+        shareQRCode: "แชร์ QR Code นามบัตร",
+        heroSection: "Hero Section (ข้อมูลส่วนแรก)",
+        heroSectionDesc: "จัดการข้อมูลและรูปภาพในส่วนแรกของเว็บไซต์",
+        heroBadgeLabel: "Badge",
+        heroBadgePlace: "เช่น ผู้ก่อตั้งและซีอีโอ",
+        heroNameLabel: "ชื่อ-นามสกุล",
+        heroNamePlace: "เช่น สามารถ ไชยะ",
+        heroOrgLabel: "ชื่อองค์กร/บริษัท",
+        heroOrgPlace: "เช่น บริษัท แมน แมนเนจเม้นท์ เซอร์วิส จำกัด",
+        heroQuoteLabel: "คำคม/สโลแกน (Quote)",
+        heroQuotePlace: "เช่น \"เราคือ ผู้นำเชี่ยวชาญด้านการเดินทาง...\"",
+        heroContactBtnLabel: "ปุ่มติดต่อเรา",
+        heroContactBtnPlace: "เช่น Contact Us",
+        heroStandardBtnLabel: "ปุ่มมาตรฐานของเรา",
+        heroStandardBtnPlace: "เช่น Our Standard",
+        websiteLogo: "Website Logo",
+        portraitProfile: "Portrait Profile",
+        portrait: "Portrait",
+        badge: "Badge",
+        standardBadges: "Standard Badges (2 Slots)",
+        businessGallery: "Business Gallery (รูปภาพกิจการ สูงสุด 4 รูป)",
+        photo: "Photo",
+        change: "Change",
+        upload: "Upload",
+        aboutSection: "About Section (ข้อมูลส่วนตัว)",
+        aboutSectionDesc: "วิสัยทัศน์ และตัวเลขความสำเร็จ",
+        visionBadge: "Vision Badge",
+        visionTitle: "Vision Title",
+        desc1: "Description 1 (ข้อความเน้น)",
+        desc2: "Description 2 (รายละเอียดสมทบ)",
+        statsNumbers: "Stats Numbers (สถิติความสำเร็จ)",
+        servicesSection: "Services Section (บริการ/ความชำนาญ)",
+        servicesSectionDesc: "บริการและความเชี่ยวชาญ",
+        servicesTitleLabel: "Section Title",
+        servicesSubtitleLabel: "Section Subtitle",
+        serviceImage: "Service Image",
+        serviceTitle: "Service Title",
+        descriptionPlace: "Description...",
+        contactSection: "Contact Section (ช่องทางการติดต่อ)",
+        contactSectionDesc: "ช่องทางการติดต่อและโซเชียลมีเดีย",
+        officeAddress: "Office Address",
+        mobilePhone: "Mobile Phone",
+        email: "Email",
+        website: "Website",
+        lineId: "Line ID",
+        visualTheme: "Visual Theme",
+        visualThemeDesc: "จัดการโทนสีและรูปแบบของเว็บไซต์",
+        colorPalette: "Color Palette",
+        brandPrimaryColor: "Brand Primary Color",
+        uiElements: "UI Elements",
+        buttonShape: "Button Shape",
+        clientsSection: "Clients Section (ลูกค้า/ผลงาน)",
+        clientsSectionDesc: "จัดการรายชื่อลูกค้าและพาร์ทเนอร์",
+        clientsKeyTitleLabel: "Key Customers Section Title",
+        clientsKeyBadgeLabel: "Key Customers Badge",
+        clientLogos: "Client Logos",
+        addClientLogo: "Add Client",
+        uploadLogo: "Upload Logo",
+        clientName: "Client Name",
+        clientsLookTitleLabel: "Looking For Section Title",
+        clientsLookBadgeLabel: "Looking For Badge",
+        clientsLookDescLabel: "Looking For Description",
+        itemsList: "Bullet Items",
+        addLookForItem: "Add Item",
+        associationLogo: "Association/Partner Logos",
+        addAssocLogo: "Add Association",
+        assocName: "Association Name"
+    };
     const currentSections = getSections(lang);
 
     if (loading) return <div className="p-8 text-center animate-pulse text-gray-500 font-bold uppercase tracking-widest">{labels.loading || "กำลังโหลด..."}</div>;
@@ -480,7 +554,7 @@ export default function UnifiedEditor({
 
                     {profileMetadata?.orgSlug && profileMetadata?.profileSlug && (
                         <a
-                            href={`/${profileMetadata.orgSlug}/${profileMetadata.profileSlug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/${lang}`}
+                            href={`/${profileMetadata.orgSlug}/${profileMetadata.profileSlug}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-full rounded-2xl border-2 border-brand-blue py-3.5 text-sm font-bold text-brand-blue hover:bg-blue-50 transition-all uppercase tracking-widest flex items-center justify-center gap-2"
@@ -507,17 +581,26 @@ export default function UnifiedEditor({
                             labels={{
                                 title: labels.viewQRCode || "QR Code Namecard",
                                 scanMe: labels.scanToAdd || "Scan to add me",
-                                shareBtn: labels.shareQRCode || "Share QR Code Namecard"
+                                downloadFullBtn: labels.shareQRCode || "Share QR Code Namecard"
                             }}
-                            vCardString={generateVCard({
+                            qrValue={generateVCard({
                                 fullName: content.heroName || "",
                                 title: content.heroRole || "",
                                 organization: content.heroTitle || "",
                                 phone1: content.contactData?.mobile || "",
                                 email: content.contactData?.email || "",
                                 website: content.contactData?.website || "",
-                                profileUrl: profileMetadata ? `https://www.ceoprofile.site/${profileMetadata.orgSlug}/${profileMetadata.profileSlug.replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/th` : ""
-                            })}
+                                profileUrl: profileMetadata ? `https://www.ceoprofile.site/${profileMetadata.orgSlug}/${profileMetadata.profileSlug}` : ""
+                            }, true)}
+                            fullVCardString={generateVCard({
+                                fullName: content.heroName || "",
+                                title: content.heroRole || "",
+                                organization: content.heroTitle || "",
+                                phone1: content.contactData?.mobile || "",
+                                email: content.contactData?.email || "",
+                                website: content.contactData?.website || "",
+                                profileUrl: profileMetadata ? `https://www.ceoprofile.site/${profileMetadata.orgSlug}/${profileMetadata.profileSlug}` : ""
+                            }, false)}
                         />
                     </div>
                 </div>

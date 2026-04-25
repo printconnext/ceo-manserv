@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { LOCALES, LANG_NAMES } from "@/data/locales";
+import { LANG_NAMES } from "@/data/locales";
 
 interface ProfileData {
     orgName: string;
@@ -77,13 +77,44 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
     useEffect(() => {
         const searchParams = new URL(window.location.href).searchParams;
         const lang = searchParams.get("lang");
-        if (lang && LOCALES[lang]) {
+        if (lang) {
             setUiLang(lang);
         }
     }, []);
     const [availableLangs, setAvailableLangs] = useState(["th"]);
 
-    const labels = { ...LOCALES.en.editor, ...LOCALES[uiLang]?.editor };
+    const labels = {
+        profileSettingTitle: "Profile Setting (ตั้งค่าโปรไฟล์)",
+        profileSettingDesc: "Manage your basic profile information (จัดการข้อมูลพื้นฐานของคุณ)",
+        official: "Official Profile",
+        personalTitle: "Personal Information (ข้อมูลส่วนตัว)",
+        personalDesc: "Your name, title and basic contact info",
+        fullName: "Full Name (ชื่อ-นามสกุล)",
+        fullNamePlace: "e.g. John Doe",
+        title: "Title / Company (ตำแหน่ง / บริษัท)",
+        titlePlace: "e.g. Founder & CEO at ABC Co.",
+        email: "Email (อีเมล)",
+        emailPlace: "e.g. john@example.com",
+        website: "Website (เว็บไซต์)",
+        websitePlace: "e.g. https://www.example.com",
+        contactTitle: "Contact Information (ข้อมูลการติดต่อ)",
+        contactDesc: "Phone numbers and social links",
+        phone1: "Phone 1 (เบอร์โทรศัพท์ 1)",
+        phone2: "Phone 2 (เบอร์โทรศัพท์ 2)",
+        line: "Line Link (ลิงก์ไอดีไลน์)",
+        orgTitle: "Organization & URL (องค์กรและที่อยู่เว็บ)",
+        orgDesc: "Identify your company and unique profile link",
+        orgName: "Organization Name (ชื่อองค์กร)",
+        orgNamePlace: "e.g. ABC Company",
+        orgSlug: "Organization Slug (URL องค์กร)",
+        profileSlug: "Profile Slug (URL โปรไฟล์)",
+        urlPreview: "URL PREVIEW",
+        save: "Save Changes",
+        saving: "Saving...",
+        success: "Saved successfully!",
+        ready: "Your profile is ready!",
+        viewProfile: "View Profile",
+    };
 
     // Fetch saved profile data from API on mount
     const loadProfile = useCallback(async () => {
@@ -108,7 +139,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                         const mapped = mapResponseToForm({ organization: { ...data.organization, profiles: [specific] } });
                         if (mapped) {
                             setForm(mapped);
-                            setProfileUrl(`/${mapped.orgSlug}/${mapped.profileSlug.replace(/-[a-z]{2}(-[a-z]{2,4})?$/i, "")}/${specific.translations?.[0]?.lang || "th"}`);
+                            setProfileUrl(`/${mapped.orgSlug}/${mapped.profileSlug}`);
 
                             // SYNC LANGUAGE: Set the UI language based on the profile's translation
                             const profileLang = specific.translations?.[0]?.lang;
@@ -138,7 +169,7 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
                     if (mapped) {
                         setForm(mapped);
                         if (mapped.orgSlug && mapped.profileSlug) {
-                            setProfileUrl(`/${mapped.orgSlug}/${mapped.profileSlug.replace(/-[a-z]{2}(-[a-z]{2,4})?$/i, "")}/${uiLang}`);
+                            setProfileUrl(`/${mapped.orgSlug}/${mapped.profileSlug}`);
                         }
                     }
                 }
@@ -225,10 +256,8 @@ export default function ProfileForm({ initialData }: { initialData?: any }) {
     };
 
     const getPreviewUrl = () => {
-        if (!form.orgSlug || !form.fullName) return "";
-        let slug = form.profileSlug || slugify(form.fullName);
-        slug = slug.replace(/-[a-z]{2}(-[a-z]{2,4})?$/i, "");
-        return `/${form.orgSlug}/${slug}/${uiLang.toLowerCase()}`;
+        if (!form.orgSlug || !form.profileSlug) return "";
+        return `/${form.orgSlug}/${form.profileSlug}`;
     };
 
     const previewUrl = getPreviewUrl();

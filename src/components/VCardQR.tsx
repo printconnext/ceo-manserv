@@ -8,29 +8,38 @@ import Image from "next/image";
 interface VCardQRProps {
     fullName: string;
     portraitUrl?: string;
-    vCardString: string;
+    qrValue: string;        // Simple vCard for QR
+    fullVCardString: string; // Full vCard for Download
     onClose?: () => void;
     primaryColor?: string;
     labels?: {
         title?: string;
         scanMe?: string;
-        shareBtn?: string;
+        downloadFullBtn?: string;
     };
 }
 
-export default function VCardQR({ fullName, portraitUrl, vCardString, onClose, primaryColor = "#00318C", labels }: VCardQRProps) {
+export default function VCardQR({ 
+    fullName, 
+    portraitUrl, 
+    qrValue, 
+    fullVCardString, 
+    onClose, 
+    primaryColor = "#00318C", 
+    labels 
+}: VCardQRProps) {
     const handleDownload = () => {
         const element = document.createElement("a");
-        const file = new Blob([vCardString], { type: 'text/vcard' });
+        const file = new Blob([fullVCardString], { type: 'text/vcard' });
         element.href = URL.createObjectURL(file);
-        element.download = `${fullName.replace(/\s+/g, '_')}.vcf`;
+        element.download = `${fullName.replace(/\s+/g, '_')}_full.vcf`;
         document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-[500px] w-full max-w-md mx-auto bg-[#0a0a0a] text-white p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+        <div className="flex flex-col items-center justify-center min-h-[550px] w-full max-w-md mx-auto bg-[#0a0a0a] text-white p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
             {/* Close Button if modal */}
             {onClose && (
                 <button
@@ -41,7 +50,7 @@ export default function VCardQR({ fullName, portraitUrl, vCardString, onClose, p
                 </button>
             )}
 
-            {/* Title from screenshot */}
+            {/* Title */}
             <div className="absolute top-8 left-1/2 -translate-x-1/2 w-full text-center px-4">
                 <h3 className="text-sm font-medium text-gray-300">{labels?.title || "QR Code Namecard"}</h3>
             </div>
@@ -68,9 +77,9 @@ export default function VCardQR({ fullName, portraitUrl, vCardString, onClose, p
             {/* QR Code Container */}
             <div className="bg-white p-6 rounded-3xl shadow-lg border border-gray-100 flex flex-col items-center justify-center">
                 <QRCodeSVG
-                    value={vCardString}
-                    size={220}
-                    level="M"
+                    value={qrValue}
+                    size={350}
+                    level="L"
                     includeMargin={false}
                 />
             </div>
@@ -83,10 +92,10 @@ export default function VCardQR({ fullName, portraitUrl, vCardString, onClose, p
             {/* Action Button */}
             <button
                 onClick={handleDownload}
-                className="mt-10 w-full py-4 text-white rounded-full font-bold transition-all transform active:scale-95 shadow-xl shadow-black/20"
+                className="mt-10 w-full py-4 px-6 text-white rounded-full font-bold transition-all transform active:scale-95 shadow-xl shadow-black/20 text-center"
                 style={{ backgroundColor: primaryColor }}
             >
-                {labels?.shareBtn || "Share QR Code Namecard"}
+                {labels?.downloadFullBtn || "Save Full Contact (.vcf)"}
             </button>
         </div>
     );

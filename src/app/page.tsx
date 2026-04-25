@@ -1,5 +1,4 @@
 import Footer from "@/components/Footer";
-import { th } from "@/data/locales/th";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -348,7 +347,7 @@ export default function SaaSLandingPage() {
             </main>
 
             {/* Existing Footer styling will apply, ensure it is imported correctly */}
-            <Footer data={th.footer} />
+            <Footer data={{ rights: "CEO Profile. All rights reserved." }} />
         </div>
     );
 }

@@ -104,7 +104,7 @@ export default async function DashboardPage() {
                                                                         {pageLang}
                                                                     </span>
                                                                 </div>
-                                                                <p className="text-xs text-gray-500">/{org.slug.toLowerCase()}/{p.slug.toLowerCase().replace(/-[a-z]{2}(-[a-z]{2,4})?$/i, "")}/{(p.translations?.[0]?.lang || 'th').toLowerCase()}</p>
+                                                                <p className="text-xs text-gray-500">/{org.slug.toLowerCase()}/{p.slug.toLowerCase()}</p>
                                                             </div>
                                                         </div>
                                                         <div className="flex items-center gap-2">
@@ -115,22 +115,23 @@ export default async function DashboardPage() {
                                                             >
                                                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1-2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                                                             </Link>
-                                                            <Link
-                                                                href={`/dashboard/vcard?id=${p.id}`}
-                                                                className="p-2 border border-gray-200 text-gray-500 rounded-lg hover:bg-gray-50 transition-colors"
-                                                                title="ดู QR Code นามบัตร"
-                                                            >
-                                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><rect x="7" y="7" width="3" height="3"></rect><rect x="14" y="7" width="3" height="3"></rect><rect x="7" y="14" width="3" height="3"></rect><rect x="14" y="14" width="3" height="3"></rect></svg>
-                                                            </Link>
+                                                            <DuplicateProfileButton profileId={p.id} profileName={p.fullName} />
                                                             <div className="w-px h-6 bg-gray-100 mx-1"></div>
                                                             <DeleteProfileButton profileId={p.id} profileName={p.fullName} />
-                                                            <DuplicateProfileButton profileId={p.id} profileName={p.fullName} />
                                                             <Link href={`/dashboard/settings?id=${p.id}&lang=${p.translations?.[0]?.lang || 'th'}`} className="px-3 py-2 bg-brand-blue text-white rounded-lg text-xs font-bold hover:bg-blue-800 transition-colors">
                                                                 แก้ไขเนื้อหา
                                                             </Link>
-                                                             <a href={`/${org.slug.toLowerCase()}/${p.slug.toLowerCase().replace(/-(th|en|ch|jp|lo|hi|fr|it|es|de|ru|fa|pt|br|vi|my|ph|id)$/i, "")}/${(p.translations?.[0]?.lang || 'th').toLowerCase()}`} target="_blank" rel="noopener noreferrer" className="px-3 py-2 bg-gray-900 text-white rounded-lg text-xs font-bold hover:bg-black transition-colors">
-                                                                 เปิดเว็บ
-                                                             </a>
+                                                            <a href={`/${org.slug.toLowerCase()}/${p.slug.toLowerCase()}`} target="_blank" rel="noopener noreferrer" className="px-3 py-2 bg-gray-900 text-white rounded-lg text-xs font-bold hover:bg-black transition-colors">
+                                                                เปิดเว็บ
+                                                            </a>
+                                                            <Link
+                                                                href={`/dashboard/vcard?id=${p.id}`}
+                                                                className="flex items-center gap-1.5 px-3 py-2 border-2 border-amber-500 text-amber-600 rounded-xl hover:bg-amber-50 transition-all font-bold text-xs"
+                                                                title="ดู QR Code นามบัตร"
+                                                            >
+                                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><rect x="7" y="7" width="3" height="3"></rect><rect x="14" y="7" width="3" height="3"></rect><rect x="7" y="14" width="3" height="3"></rect><rect x="14" y="14" width="3" height="3"></rect></svg>
+                                                                <span>QR</span>
+                                                            </Link>
                                                         </div>
                                                     </div>
                                                 );

@@ -1,29 +1,4 @@
 
-import { LOCALES } from "@/data/locales";
-
-/**
- * Builds a bi-directional map of strings to their paths for a given locale.
- * Example: "พนักงานขับรถผู้บริหาร" -> "services.items[0].title"
- */
-function buildStringMap(obj: any, prefix = ""): Record<string, string> {
-    const map: Record<string, string> = {};
-
-    if (typeof obj === 'string') {
-        map[obj] = prefix;
-    } else if (Array.isArray(obj)) {
-        obj.forEach((item, index) => {
-            Object.assign(map, buildStringMap(item, `${prefix}[${index}]`));
-        });
-    } else if (typeof obj === 'object' && obj !== null) {
-        for (const key in obj) {
-            const newPrefix = prefix ? `${prefix}.${key}` : key;
-            Object.assign(map, buildStringMap(obj[key], newPrefix));
-        }
-    }
-
-    return map;
-}
-
 /**
  * Retrieves a value from an object given a dot-notated/array-indexed path.
  */
@@ -35,41 +10,6 @@ function getValueByPath(obj: any, path: string): any {
         current = current[part];
     }
     return current;
-}
-
-/**
- * Smart translator that uses path-based mapping.
- * If a string in source matches a string in the 'th' mockup, 
- * it swaps it for the string at the same path in 'targetLang'.
- */
-function smartTranslate(obj: any, targetLang: string, sourceMap: Record<string, string>): any {
-    const targetLocale = LOCALES[targetLang] || LOCALES.th;
-
-    if (typeof obj === 'string') {
-        const path = sourceMap[obj];
-        if (path) {
-            const translatedValue = getValueByPath(targetLocale, path);
-            if (typeof translatedValue === 'string') {
-                return translatedValue;
-            }
-        }
-        return obj;
-    }
-
-    if (Array.isArray(obj)) {
-        return obj.map(item => smartTranslate(item, targetLang, sourceMap));
-    }
-
-    if (typeof obj === 'object' && obj !== null) {
-        // Special handling for common JSON objects to avoid deep recursion on weird objects
-        const newObj: any = {};
-        for (const key in obj) {
-            newObj[key] = smartTranslate(obj[key], targetLang, sourceMap);
-        }
-        return newObj;
-    }
-
-    return obj;
 }
 
 /**
@@ -106,7 +46,17 @@ async function googleTranslateBatch(texts: string[], targetLang: string, referer
 
             const data = await res.json();
             if (data.data?.translations) {
-                results.push(...data.data.translations.map((t: any) => t.translatedText));
+                // Google V2 API returns HTML entities like &quot; which we need to decode
+                const decoded = data.data.translations.map((t: any) => {
+                    let text = t.translatedText;
+                    return text
+                        .replace(/&quot;/g, '"')
+                        .replace(/&#39;/g, "'")
+                        .replace(/&amp;/g, "&")
+                        .replace(/&lt;/g, "<")
+                        .replace(/&gt;/g, ">");
+                });
+                results.push(...decoded);
             } else {
                 console.error(`[GoogleTranslateBatch] Error (${targetLang}):`, {
                     status: res.status,
@@ -128,62 +78,45 @@ async function googleTranslateBatch(texts: string[], targetLang: string, referer
 
 /**
  * Enhanced smart translator that handles both template-based and AI-based translation.
- * Now supports collecting strings for batching.
+ * Now simplified to rely 100% on AI translation for profile content.
  */
-function collectStringsToTranslate(obj: any, targetLang: string, sourceMap: Record<string, string>, collection: { text: string; path: string | null }[]) {
+function collectStringsToTranslate(obj: any, collection: { text: string; path: string | null }[]) {
     if (obj instanceof Date) return;
     if (typeof obj === 'string') {
-        const isUrl = /^(https?:\/\/|\/|supabase\.co)/i.test(obj);
+        const isUrl = /^(https?:\/\/|\/|supabase\.co|drive\.google\.com)/i.test(obj);
         const isId = /^[c-z][a-z0-7]{24}$/.test(obj);
-        const isNumberStr = !isNaN(Number(obj)) && obj.trim() !== "" && obj.length < 10;
+        // Skip IDs, URLs, and numeric strings
+        const isNumberStr = !isNaN(Number(obj.replace(/[%+,]/g, ''))) && obj.trim() !== "" && obj.length < 20;
         
         if (isUrl || isId || isNumberStr || obj.trim() === "") return;
 
-        const path = sourceMap[obj];
-        const targetLocale = LOCALES[targetLang];
-        
-        // If it's in the mockup, check if the target locale has a hardcoded translation
-        if (path && targetLocale) {
-            const translatedValue = getValueByPath(targetLocale, path);
-            if (typeof translatedValue === 'string') {
-                return; // Has a hardcoded translation, skip AI
-            }
-        }
-
-        // If not in mockup or not in target locale, use AI
+        // Collect every other non-empty string for AI translation
         collection.push({ text: obj, path: null });
     } else if (Array.isArray(obj)) {
-        obj.forEach(item => collectStringsToTranslate(item, targetLang, sourceMap, collection));
+        obj.forEach(item => collectStringsToTranslate(item, collection));
     } else if (typeof obj === 'object' && obj !== null) {
-        Object.values(obj).forEach(val => collectStringsToTranslate(val, targetLang, sourceMap, collection));
+        Object.values(obj).forEach(val => collectStringsToTranslate(val, collection));
     }
 }
 
 /**
  * Replaces strings with their translations from a provided map.
  */
-function applyTranslations(obj: any, targetLang: string, sourceMap: Record<string, string>, translationMap: Record<string, string>): any {
-    const targetLocale = LOCALES[targetLang] || LOCALES.th;
-
+function applyTranslations(obj: any, translationMap: Record<string, string>): any {
     if (obj instanceof Date) return obj;
 
     if (typeof obj === 'string') {
-        const path = sourceMap[obj];
-        if (path) {
-            const translatedValue = getValueByPath(targetLocale, path);
-            if (typeof translatedValue === 'string') return translatedValue;
-        }
         return translationMap[obj] || obj;
     }
 
     if (Array.isArray(obj)) {
-        return obj.map(item => applyTranslations(item, targetLang, sourceMap, translationMap));
+        return obj.map(item => applyTranslations(item, translationMap));
     }
 
     if (typeof obj === 'object' && obj !== null) {
         const newObj: any = {};
         for (const key in obj) {
-            newObj[key] = applyTranslations(obj[key], targetLang, sourceMap, translationMap);
+            newObj[key] = applyTranslations(obj[key], translationMap);
         }
         return newObj;
     }
@@ -204,10 +137,10 @@ export async function translateProfileSettings(data: { fullName: string, title: 
 }
 
 /**
- * Optimized profile content translation using batching.
+ * Optimized profile content translation using 100% AI batching.
+ * Decoupled from hardcoded locale files as per user request.
  */
 export async function translateProfileContent(content: any, targetLang: string, referer?: string) {
-    const thMap = buildStringMap(LOCALES.th);
     const result = JSON.parse(JSON.stringify(content));
 
     // 1. Collect all unique strings that need AI translation
@@ -216,17 +149,17 @@ export async function translateProfileContent(content: any, targetLang: string, 
     // Explicitly add top-level fields to ensure they are captured regardless of object structure
     const topLevelFields = [
         'heroBadge', 'heroName', 'heroTitle', 'heroQuote', 'heroContact', 'heroStandard',
-        'heroStandardBtn', 'heroContactBtn', 'navAbout', 'navServices', 'navCustomers', 
-        'navLookingFor', 'navContact'
+        'heroStandardBtn', 'heroContactBtn', 'heroRole', 'navAbout', 'navServices', 
+        'navCustomers', 'navLookingFor', 'navContact'
     ];
     topLevelFields.forEach(field => {
         if (typeof result[field] === 'string' && result[field].trim() !== "") {
-            collectStringsToTranslate(result[field], targetLang, thMap, stringsToTranslate);
+            collectStringsToTranslate(result[field], stringsToTranslate);
         }
     });
 
     // Recursively collect from the whole object (for JSON fields like servicesData, etc.)
-    collectStringsToTranslate(result, targetLang, thMap, stringsToTranslate);
+    collectStringsToTranslate(result, stringsToTranslate);
     
     const uniqueTexts = Array.from(new Set(stringsToTranslate.map(s => s.text)));
 
@@ -239,17 +172,7 @@ export async function translateProfileContent(content: any, targetLang: string, 
     });
 
     // 3. Apply translations
-    const translated = applyTranslations(result, targetLang, thMap, translationMap);
-
-    // 4. Force core nav from locales if they exist
-    const targetLocale = LOCALES[targetLang];
-    if (targetLocale) {
-        translated.navAbout = targetLocale.header?.about || translated.navAbout;
-        translated.navServices = targetLocale.header?.services || translated.navServices;
-        translated.navCustomers = targetLocale.header?.keyCustomers || translated.navCustomers;
-        translated.navLookingFor = targetLocale.header?.lookingFor || translated.navLookingFor;
-        translated.navContact = targetLocale.header?.contact || translated.navContact;
-    }
+    const translated = applyTranslations(result, translationMap);
 
     return translated;
 }

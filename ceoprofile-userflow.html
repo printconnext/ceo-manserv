@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEO Profile — User Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A96E;
+    --gold-light: #E8D5A3;
+    --gold-dark: #8B6914;
+    --ink: #0D0D0D;
+    --ink-soft: #1A1A1A;
+    --smoke: #F5F2EC;
+    --paper: #FAFAF7;
+    --mist: #E8E4DC;
+    --teal: #2A6B6B;
+    --teal-light: #3D8585;
+    --rose: #8B3A3A;
+    --slate: #4A5568;
+    --line: rgba(201,169,110,0.25);
+
+    /* Node Colors */
+    --n-entry: #1A3A4A;
+    --n-auth: #2A4A2A;
+    --n-dash: #3A2A4A;
+    --n-profile: #4A3A1A;
+    --n-public: #1A3A3A;
+    --n-action: #4A1A1A;
+    --n-decision: #3A3A1A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--smoke);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: var(--ink);
+    padding: 28px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--gold-dark);
+  }
+  .logo-wrap { display: flex; flex-direction: column; gap: 2px; }
+  .logo-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+  }
+  .logo-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .badge {
+    background: rgba(201,169,110,0.12);
+    border: 1px solid var(--gold-dark);
+    padding: 6px 16px;
+    border-radius: 2px;
+    font-size: 11px;
+    color: var(--gold-light);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ─── LEGEND ─── */
+  .legend {
+    background: var(--ink-soft);
+    padding: 16px 48px;
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    flex-wrap: wrap;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .legend-label { font-size: 10px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.15em; margin-right: 4px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 2px;
+  }
+  .legend-text { font-size: 11px; color: rgba(255,255,255,0.55); }
+
+  /* ─── MAIN CANVAS ─── */
+  .canvas {
+    padding: 48px;
+    overflow-x: auto;
+    min-height: calc(100vh - 120px);
+  }
+
+  .flow-wrapper {
+    min-width: 1200px;
+    position: relative;
+  }
+
+  /* ─── SECTION LANES ─── */
+  .lanes {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 0;
+  }
+  .lane-labels {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-top: 8px;
+  }
+  .lane-label {
+    writing-mode: horizontal-tb;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.35);
+    border-right: 2px solid var(--mist);
+    padding-right: 16px;
+  }
+
+  /* ─── FLOW ROWS ─── */
+  .flow-section {
+    position: relative;
+    padding: 32px 0;
+    border-bottom: 1px dashed var(--mist);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .flow-section:last-child { border-bottom: none; }
+
+  .flow-section-title {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.3);
+    margin-bottom: 24px;
+    padding: 0 16px;
+  }
+
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0 16px;
+    flex-wrap: nowrap;
+    margin-bottom: 16px;
+    min-height: 56px;
+  }
+
+  /* ─── NODES ─── */
+  .node {
+    position: relative;
+    border-radius: 4px;
+    padding: 10px 18px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    flex-shrink: 0;
+  }
+  .node:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+  .node-start {
+    background: var(--ink);
+    color: var(--gold);
+    border-color: var(--gold-dark);
+    border-radius: 24px;
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    padding: 10px 22px;
+  }
+
+  .node-page {
+    background: var(--n-entry);
+    color: #A8D0E6;
+    border-color: rgba(168,208,230,0.3);
+  }
+  .node-auth {
+    background: var(--n-auth);
+    color: #A8E6A8;
+    border-color: rgba(168,230,168,0.3);
+  }
+  .node-dash {
+    background: var(--n-dash);
+    color: #D0A8E6;
+    border-color: rgba(208,168,230,0.3);
+  }
+  .node-profile {
+    background: var(--n-profile);
+    color: #E6CCA8;
+    border-color: rgba(230,204,168,0.3);
+  }
+  .node-public {
+    background: var(--n-public);
+    color: #A8E6E6;
+    border-color: rgba(168,230,230,0.3);
+  }
+  .node-action {
+    background: var(--n-action);
+    color: #E6A8A8;
+    border-color: rgba(230,168,168,0.3);
+  }
+  .node-decision {
+    background: var(--n-decision);
+    color: #E6E6A8;
+    border-color: rgba(230,230,168,0.3);
+    border-radius: 0;
+    transform: skewX(-6deg);
+    padding: 10px 24px;
+  }
+  .node-decision span { display: inline-block; transform: skewX(6deg); }
+
+  .node-end {
+    background: var(--gold-dark);
+    color: #fff;
+    border-radius: 24px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    font-size: 11px;
+  }
+
+  .node-feature {
+    background: rgba(201,169,110,0.08);
+    color: var(--gold-dark);
+    border: 1px dashed var(--gold);
+    border-radius: 4px;
+    font-size: 11px;
+    padding: 8px 14px;
+  }
+
+  .node-note {
+    background: transparent;
+    border: 1px dashed rgba(0,0,0,0.15);
+    color: rgba(0,0,0,0.4);
+    font-size: 10px;
+    font-style: italic;
+    padding: 6px 12px;
+    border-radius: 4px;
+  }
+
+  /* ─── ARROWS ─── */
+  .arrow {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .arrow-line {
+    height: 1.5px;
+    background: var(--gold);
+    opacity: 0.4;
+    min-width: 24px;
+  }
+  .arrow-line.long { min-width: 48px; }
+  .arrow-line.xl { min-width: 72px; }
+  .arrow-head {
+    width: 0; height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 7px solid rgba(201,169,110,0.5);
+    flex-shrink: 0;
+  }
+
+  .arrow-down {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20px;
+    margin: 4px auto;
+  }
+  .arrow-down-line {
+    width: 1.5px;
+    height: 20px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+  .arrow-down-head {
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 7px solid rgba(201,169,110,0.5);
+  }
+
+  /* Label on arrow */
+  .arrow-label {
+    font-size: 9px;
+    color: var(--gold-dark);
+    background: var(--smoke);
+    padding: 2px 6px;
+    border-radius: 2px;
+    white-space: nowrap;
+    position: relative;
+    top: -12px;
+    letter-spacing: 0.05em;
+  }
+
+  .arrow-labeled {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .arrow-labeled .arrow { margin-top: -8px; }
+
+  /* ─── VERTICAL CONNECTOR ─── */
+  .v-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 40px;
+    margin: -4px 0;
+    gap: 0;
+  }
+
+  /* ─── BRANCH ROW ─── */
+  .branch-container {
+    padding: 0 16px;
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+    margin-top: -8px;
+  }
+
+  .branch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    padding: 0 8px;
+  }
+
+  .branch-line-h {
+    height: 1.5px;
+    background: rgba(201,169,110,0.35);
+    width: 100%;
+  }
+
+  /* ─── SUB FLOWS ─── */
+  .subflow {
+    background: rgba(255,255,255,0.5);
+    border: 1px solid var(--mist);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 8px 16px;
+  }
+  .subflow-title {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,0.4);
+    margin-bottom: 16px;
+  }
+
+  /* ─── TOOLTIP ─── */
+  .node[data-tip]:hover::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink);
+    color: rgba(255,255,255,0.85);
+    font-size: 10px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    border: 1px solid var(--gold-dark);
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  /* ─── PHASE BADGES ─── */
+  .phase {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 2px;
+    margin-bottom: 4px;
+    flex-shrink: 0;
+  }
+  .phase-1 { background: rgba(26,58,74,0.12); color: var(--n-entry); }
+  .phase-2 { background: rgba(42,74,42,0.12); color: var(--n-auth); }
+  .phase-3 { background: rgba(58,42,74,0.12); color: var(--n-dash); }
+  .phase-4 { background: rgba(74,58,26,0.12); color: var(--n-profile); }
+  .phase-5 { background: rgba(26,58,58,0.12); color: var(--n-public); }
+  .phase-6 { background: rgba(74,26,26,0.12); color: var(--n-action); }
+
+  /* ─── GRID LAYOUT ─── */
+  .main-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 28px;
+    margin-top: 0;
+  }
+
+  .flow-card {
+    background: var(--paper);
+    border: 1px solid var(--mist);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .flow-card-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--mist);
+  }
+
+  .flow-card-num {
+    width: 28px; height: 28px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .flow-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: var(--ink);
+  }
+
+  .flow-card-body {
+    padding: 20px;
+  }
+
+  .step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .step-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(0,0,0,0.06);
+    align-items: flex-start;
+  }
+  .step-item:last-child { border-bottom: none; }
+
+  .step-icon {
+    width: 32px; height: 32px;
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .step-content { flex: 1; }
+  .step-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .step-desc { font-size: 11px; color: var(--slate); line-height: 1.5; }
+
+  .step-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .step-tag {
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 2px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ─── MAIN FLOW DIAGRAM ─── */
+  .diagram-area {
+    background: var(--paper);
+    border: 1px solid var(--mist);
+    border-radius: 8px;
+    padding: 40px 32px;
+    margin-bottom: 32px;
+    overflow-x: auto;
+  }
+
+  .diagram-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .diagram-sub {
+    font-size: 11px;
+    color: var(--slate);
+    margin-bottom: 32px;
+    letter-spacing: 0.05em;
+  }
+
+  .flow-linear {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: flex-start;
+    max-width: 900px;
+  }
+
+  .flow-step-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: nowrap;
+    width: 100%;
+    margin-bottom: 2px;
+  }
+
+  .flow-step-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .fsb-phase {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(0,0,0,0.35);
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .arrow-h {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0 4px;
+    flex-shrink: 0;
+    min-width: 60px;
+  }
+  .ah-line {
+    flex: 1;
+    height: 1.5px;
+    background: linear-gradient(90deg, rgba(201,169,110,0.5), rgba(201,169,110,0.2));
+  }
+  .ah-head {
+    width:0; height:0;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 6px solid rgba(201,169,110,0.5);
+  }
+
+  .connector-v {
+    margin-left: 32px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    height: 32px;
+  }
+  .cv-line {
+    width: 1.5px;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(201,169,110,0.5), rgba(201,169,110,0.2));
+    margin-left: 24px;
+  }
+
+  /* Branch */
+  .branch-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding-left: 80px;
+    width: 100%;
+    margin: 8px 0;
+  }
+  .branch-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .branch-up {
+    width: 1.5px;
+    height: 24px;
+    background: rgba(201,169,110,0.4);
+  }
+  .branch-label-sm {
+    font-size: 9px;
+    color: rgba(0,0,0,0.35);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink);
+    padding: 20px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.1em;
+    margin-top: 48px;
+  }
+  footer span { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <div class="logo-title">CEO Profile</div>
+    <div class="logo-sub">User Flow Documentation</div>
+  </div>
+  <div style="display:flex;gap:12px;align-items:center;">
+    <div class="badge">v1.0</div>
+    <div class="badge">ceoprofile.site</div>
+  </div>
+</header>
+
+<div style="background:var(--ink-soft);padding:10px 48px;display:flex;gap:24px;align-items:center;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,0.06);">
+  <span class="legend-label">Legend:</span>
+  <div class="legend-item"><div class="legend-dot" style="background:#1A3A4A;border:1px solid rgba(168,208,230,0.4)"></div><span class="legend-text">หน้าเว็บ (Page)</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:#2A4A2A;border:1px solid rgba(168,230,168,0.4)"></div><span class="legend-text">Authentication</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:#3A2A4A;border:1px solid rgba(208,168,230,0.4)"></div><span class="legend-text">Dashboard</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:#4A3A1A;border:1px solid rgba(230,204,168,0.4)"></div><span class="legend-text">Profile Editor</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:#1A3A3A;border:1px solid rgba(168,230,230,0.4)"></div><span class="legend-text">Public Profile</span></div>
+  <div class="legend-item"><div class="legend-dot" style="background:rgba(201,169,110,0.15);border:1px dashed #C9A96E"></div><span class="legend-text">Feature/Action</span></div>
+</div>
+
+<div class="canvas">
+  <div class="flow-wrapper">
+
+    <!-- ─── MASTER FLOW DIAGRAM ─── -->
+    <div class="diagram-area">
+      <div class="diagram-title">Master User Flow</div>
+      <div class="diagram-sub">ภาพรวมเส้นทางผู้ใช้งานทั้งหมดของแพลตฟอร์ม CEO Profile</div>
+
+      <!-- ROW 1: Entry -->
+      <div class="flow-step-row">
+        <div class="flow-step-block">
+          <div class="fsb-phase">Entry</div>
+          <div class="node node-start">🌐 ผู้ใช้เข้าเว็บไซต์</div>
+        </div>
+        <div class="arrow-h" style="min-width:48px"><div class="ah-line"></div><div class="ah-head"></div></div>
+        <div class="flow-step-block">
+          <div class="fsb-phase">Landing</div>
+          <div class="node node-page" data-tip="Hero · Features · Solutions · Reviews · Pricing">🏠 Landing Page</div>
+        </div>
+        <div class="arrow-h" style="min-width:48px"><div class="ah-line"></div><div class="ah-head"></div></div>
+        <div class="flow-step-block">
+          <div class="fsb-phase">CTA</div>
+          <div class="node node-decision"><span>⚡ คลิก CTA</span></div>
+        </div>
+      </div>
+
+      <!-- Connector down -->
+      <div class="connector-v" style="margin-left:calc(48px + 130px + 48px + 130px + 10px)">
+        <div class="cv-line"></div>
+      </div>
+
+      <!-- ROW 2: Auth -->
+      <div class="flow-step-row" style="padding-left:calc(48px + 130px + 48px + 130px)">
+        <div class="flow-step-block" style="margin-left:4px">
+          <div class="fsb-phase">Auth</div>
+          <div class="node node-auth" data-tip="Google OAuth · Facebook OAuth">🔐 Sign In Page</div>
+        </div>
+      </div>
+
+      <!-- Branch: Google / Facebook -->
+      <div style="margin-left:calc(48px + 130px + 48px + 130px + 10px);display:flex;flex-direction:column;align-items:flex-start;">
+        <div style="width:1.5px;height:20px;background:rgba(201,169,110,0.4);margin-left:55px;"></div>
+        <div style="display:flex;gap:32px;align-items:flex-start;padding-left:8px;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <div style="font-size:9px;color:rgba(0,0,0,0.35);letter-spacing:0.1em;text-transform:uppercase;">Google</div>
+            <div class="node node-auth" style="font-size:11px;padding:6px 14px;">🔵 Google OAuth</div>
+          </div>
+          <div style="width:40px;height:1.5px;background:rgba(201,169,110,0.3);margin-top:38px;"></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:0">
+            <div style="font-size:9px;color:rgba(0,0,0,0.35);letter-spacing:0.1em;text-transform:uppercase;">Facebook</div>
+            <div class="node node-auth" style="font-size:11px;padding:6px 14px;">🔷 Facebook OAuth</div>
+          </div>
+          <div style="width:40px;height:1.5px;background:rgba(201,169,110,0.3);margin-top:38px;"></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <div style="font-size:9px;color:rgba(0,0,0,0.35);letter-spacing:0.1em;text-transform:uppercase;">Result</div>
+            <div class="node node-decision" style="font-size:11px;padding:6px 20px;"><span>✅ Auth Success?</span></div>
+          </div>
+        </div>
+        <div style="width:1.5px;height:20px;background:rgba(201,169,110,0.4);margin-left:calc(8px + 110px + 40px + 110px + 40px + 55px)"></div>
+      </div>
+
+      <!-- ROW 3: Dashboard -->
+      <div class="flow-step-row" style="padding-left:calc(48px + 130px + 48px + 130px + 8px + 110px + 40px + 110px + 40px)">
+        <div class="flow-step-block">
+          <div class="fsb-phase">Dashboard</div>
+          <div class="node node-dash" data-tip="Overview · Stats · Quick Edit">📊 Dashboard</div>
+        </div>
+      </div>
+
+      <!-- Arrow down from dashboard -->
+      <div style="display:flex;flex-direction:column;gap:0;margin-left:calc(48px + 130px + 48px + 130px + 8px + 110px + 40px + 110px + 40px + 10px)">
+        <div style="width:1.5px;height:24px;background:rgba(201,169,110,0.4);margin-left:48px;"></div>
+      </div>
+
+      <!-- ROW 4: Dashboard Features branch -->
+      <div style="display:flex;gap:12px;flex-wrap:wrap;padding-left:calc(48px + 130px + 48px + 130px + 8px + 110px + 40px)">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div class="node node-profile" style="font-size:11px;" data-tip="แก้ไขข้อมูลส่วนตัว ภาพ ตำแหน่ง">✏️ แก้ไขโปรไฟล์</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div class="node node-dash" style="font-size:11px;" data-tip="ตั้งค่าภาษา EN/TH/ZH/JP">🌐 จัดการภาษา</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div class="node node-dash" style="font-size:11px;" data-tip="ควบคุมการมองเห็นข้อมูล">🔒 Privacy Settings</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <div class="node node-action" style="font-size:11px;" data-tip="ดู QR Code / .vcf">📇 นามบัตรดิจิทัล</div>
+        </div>
+      </div>
+
+      <!-- Arrows down -->
+      <div style="display:flex;gap:0;padding-left:calc(48px + 130px + 48px + 130px + 8px + 110px + 40px);margin-top:6px;">
+        <div style="width:1.5px;height:24px;background:rgba(201,169,110,0.35);margin-left:calc(75px)"></div>
+      </div>
+
+      <!-- ROW 5: Public Profile -->
+      <div class="flow-step-row" style="padding-left:calc(48px + 130px + 48px + 130px + 8px + 110px + 40px)">
+        <div class="flow-step-block">
+          <div class="fsb-phase">Public</div>
+          <div class="node node-public" data-tip="ceoprofile.site/[slug]">🌍 โปรไฟล์สาธารณะ</div>
+        </div>
+        <div class="arrow-h"><div class="ah-line"></div><div class="ah-head"></div></div>
+        <div class="flow-step-block">
+          <div class="fsb-phase">Visitor</div>
+          <div class="node node-action" data-tip="ดูโปรไฟล์ · แสกน QR · ดาวน์โหลด vCard">👁 Visitor View</div>
+        </div>
+        <div class="arrow-h"><div class="ah-line"></div><div class="ah-head"></div></div>
+        <div class="flow-step-block">
+          <div class="fsb-phase">End</div>
+          <div class="node node-end">💼 บันทึกผู้ติดต่อ</div>
+        </div>
+      </div>
+    </div><!-- /diagram-area -->
+
+
+    <!-- ─── PHASE CARDS ─── -->
+    <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--ink);margin-bottom:8px;">รายละเอียดแต่ละ Phase</div>
+    <div style="font-size:12px;color:var(--slate);margin-bottom:24px;">คลิกที่ node ใดๆ เพื่อดู tooltip รายละเอียด</div>
+
+    <div class="main-grid">
+
+      <!-- CARD 1: Landing -->
+      <div class="flow-card">
+        <div class="flow-card-header" style="background:rgba(26,58,74,0.06);">
+          <div class="flow-card-num" style="background:rgba(26,58,74,0.15);color:#1A3A4A;">1</div>
+          <div>
+            <div class="flow-card-title">Landing Page</div>
+            <div style="font-size:10px;color:var(--slate);text-transform:uppercase;letter-spacing:0.1em;">Discovery & Awareness</div>
+          </div>
+        </div>
+        <div class="flow-card-body">
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(26,58,74,0.1);">🏠</div>
+              <div class="step-content">
+                <div class="step-name">Hero Section</div>
+                <div class="step-desc">ข้อความหลัก "ยกระดับภาพลักษณ์ผู้บริหาร" พร้อม CTA ปุ่ม "เริ่มต้นใช้งาน" และ "ดูตัวอย่าง"</div>
+                <div class="step-tags">
+                  <span class="step-tag" style="background:rgba(26,58,74,0.1);color:#1A3A4A;">CTA</span>
+                  <span class="step-tag" style="background:rgba(201,169,110,0.1);color:#8B6914;">First Impression</span>
+                </div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(26,58,74,0.1);">⚙️</div>
+              <div class="step-content">
+                <div class="step-name">Features Section (#features)</div>
+                <div class="step-desc">รองรับ 4 ภาษา · นามบัตรดิจิทัล QR · เพิ่มความน่าเชื่อถือ · แสดงผลงาน</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(26,58,74,0.1);">💬</div>
+              <div class="step-content">
+                <div class="step-name">Testimonials (#testimonials)</div>
+                <div class="step-desc">รีวิวจาก CEO · Managing Director · Founder เพื่อสร้างความไว้ใจ</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(26,58,74,0.1);">💰</div>
+              <div class="step-content">
+                <div class="step-name">Pricing Section (#pricing)</div>
+                <div class="step-desc">แผนราคา (ยังไม่แสดงรายละเอียด → พื้นที่พัฒนาต่อ)</div>
+                <div class="step-tags">
+                  <span class="step-tag" style="background:rgba(230,168,168,0.2);color:#8B3A3A;">🔧 ต้องพัฒนา</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2: Auth -->
+      <div class="flow-card">
+        <div class="flow-card-header" style="background:rgba(42,74,42,0.06);">
+          <div class="flow-card-num" style="background:rgba(42,74,42,0.15);color:#2A4A2A;">2</div>
+          <div>
+            <div class="flow-card-title">Authentication</div>
+            <div style="font-size:10px;color:var(--slate);text-transform:uppercase;letter-spacing:0.1em;">Sign In / Register</div>
+          </div>
+        </div>
+        <div class="flow-card-body">
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(42,74,42,0.1);">🔵</div>
+              <div class="step-content">
+                <div class="step-name">Sign In with Google</div>
+                <div class="step-desc">OAuth 2.0 ผ่าน Google — redirect กลับมาที่ /dashboard</div>
+                <div class="step-tags">
+                  <span class="step-tag" style="background:rgba(42,74,42,0.1);color:#2A4A2A;">Primary</span>
+                </div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(42,74,42,0.1);">🔷</div>
+              <div class="step-content">
+                <div class="step-name">Sign In with Facebook</div>
+                <div class="step-desc">OAuth 2.0 ผ่าน Facebook — redirect กลับมาที่ /dashboard</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(42,74,42,0.1);">🔀</div>
+              <div class="step-content">
+                <div class="step-name">New vs Returning User</div>
+                <div class="step-desc">ผู้ใช้ใหม่ → สร้างโปรไฟล์ใหม่ | ผู้ใช้เก่า → โหลดข้อมูลเดิม</div>
+                <div class="step-tags">
+                  <span class="step-tag" style="background:rgba(230,230,168,0.3);color:#5A5A00;">Decision Point</span>
+                </div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(230,168,168,0.15);">❌</div>
+              <div class="step-content">
+                <div class="step-name">Auth Failed</div>
+                <div class="step-desc">แสดง error message → กลับไป Sign In page</div>
+                <div class="step-tags">
+                  <span class="step-tag" style="background:rgba(230,168,168,0.2);color:#8B3A3A;">Error State</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 3: Dashboard -->
+      <div class="flow-card">
+        <div class="flow-card-header" style="background:rgba(58,42,74,0.06);">
+          <div class="flow-card-num" style="background:rgba(58,42,74,0.15);color:#3A2A4A;">3</div>
+          <div>
+            <div class="flow-card-title">Dashboard</div>
+            <div style="font-size:10px;color:var(--slate);text-transform:uppercase;letter-spacing:0.1em;">Control Center</div>
+          </div>
+        </div>
+        <div class="flow-card-body">
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(58,42,74,0.1);">📊</div>
+              <div class="step-content">
+                <div class="step-name">Overview Panel</div>
+                <div class="step-desc">สถิติการเข้าชม · Profile Views · QR Scans · Link Clicks</div>
+                <div class="step-tags">
+                  <span class="step-tag" style="background:rgba(230,168,168,0.2);color:#8B3A3A;">🔧 ต้องพัฒนา</span>
+                </div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(58,42,74,0.1);">✏️</div>
+              <div class="step-content">
+                <div class="step-name">Quick Edit</div>
+                <div class="step-desc">แก้ไขข้อมูลพื้นฐานได้จาก dashboard โดยตรง</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(58,42,74,0.1);">🔗</div>
+              <div class="step-content">
+                <div class="step-name">Share Link</div>
+                <div class="step-desc">ceoprofile.site/[slug] · Copy URL · Share to Social</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(58,42,74,0.1);">👁</div>
+              <div class="step-content">
+                <div class="step-name">Preview Profile</div>
+                <div class="step-desc">ดูตัวอย่างโปรไฟล์ในมุมมอง Visitor ก่อน publish</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 4: Profile Editor -->
+      <div class="flow-card">
+        <div class="flow-card-header" style="background:rgba(74,58,26,0.06);">
+          <div class="flow-card-num" style="background:rgba(74,58,26,0.15);color:#4A3A1A;">4</div>
+          <div>
+            <div class="flow-card-title">Profile Editor</div>
+            <div style="font-size:10px;color:var(--slate);text-transform:uppercase;letter-spacing:0.1em;">Content Management</div>
+          </div>
+        </div>
+        <div class="flow-card-body">
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(74,58,26,0.1);">👤</div>
+              <div class="step-content">
+                <div class="step-name">ข้อมูลส่วนตัว</div>
+                <div class="step-desc">ชื่อ · ตำแหน่ง · บริษัท · รูปโปรไฟล์ · Bio · Social Links</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(74,58,26,0.1);">🌐</div>
+              <div class="step-content">
+                <div class="step-name">Multi-Language</div>
+                <div class="step-desc">เพิ่มเนื้อหาเป็น EN · TH · ZH · JP แยกแต่ละภาษา</div>
+                <div class="step-tags">
+                  <span class="step-tag" style="background:rgba(74,58,26,0.1);color:#4A3A1A;">4 Langs</span>
+                </div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(74,58,26,0.1);">🏆</div>
+              <div class="step-content">
+                <div class="step-name">Experience & Awards</div>
+                <div class="step-desc">ประวัติการทำงาน · ผลงานโดดเด่น · รางวัล · ตำแหน่งในบอร์ด</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(74,58,26,0.1);">🔒</div>
+              <div class="step-content">
+                <div class="step-name">Privacy Controls</div>
+                <div class="step-desc">เลือกแสดง/ซ่อนข้อมูลแต่ละส่วน · Public vs Private</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(74,58,26,0.1);">💾</div>
+              <div class="step-content">
+                <div class="step-name">Auto-Save / Publish</div>
+                <div class="step-desc">บันทึกแบบ Draft หรือ Publish แบบ Real-time</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 5: Digital Business Card -->
+      <div class="flow-card">
+        <div class="flow-card-header" style="background:rgba(74,26,26,0.06);">
+          <div class="flow-card-num" style="background:rgba(74,26,26,0.15);color:#8B3A3A;">5</div>
+          <div>
+            <div class="flow-card-title">Digital Business Card</div>
+            <div style="font-size:10px;color:var(--slate);text-transform:uppercase;letter-spacing:0.1em;">Share & Connect</div>
+          </div>
+        </div>
+        <div class="flow-card-body">
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(74,26,26,0.1);">📱</div>
+              <div class="step-content">
+                <div class="step-name">QR Code Generator</div>
+                <div class="step-desc">สร้าง QR Code อัตโนมัติจาก URL โปรไฟล์ · ดาวน์โหลดได้</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(74,26,26,0.1);">📥</div>
+              <div class="step-content">
+                <div class="step-name">vCard (.vcf) Download</div>
+                <div class="step-desc">ดาวน์โหลดไฟล์ .vcf บันทึกลงสมาร์ทโฟนอัตโนมัติ</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(74,26,26,0.1);">📡</div>
+              <div class="step-content">
+                <div class="step-name">NFC / Link Share</div>
+                <div class="step-desc">แชร์ผ่าน NFC หรือ Copy URL ส่งผ่าน Line/WhatsApp/Email</div>
+                <div class="step-tags">
+                  <span class="step-tag" style="background:rgba(230,168,168,0.2);color:#8B3A3A;">🔧 ต้องพัฒนา</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 6: Public Profile (Visitor) -->
+      <div class="flow-card">
+        <div class="flow-card-header" style="background:rgba(26,58,58,0.06);">
+          <div class="flow-card-num" style="background:rgba(26,58,58,0.15);color:#1A3A3A;">6</div>
+          <div>
+            <div class="flow-card-title">Public Profile (Visitor)</div>
+            <div style="font-size:10px;color:var(--slate);text-transform:uppercase;letter-spacing:0.1em;">ceoprofile.site/[slug]</div>
+          </div>
+        </div>
+        <div class="flow-card-body">
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(26,58,58,0.1);">🌍</div>
+              <div class="step-content">
+                <div class="step-name">View Profile</div>
+                <div class="step-desc">ดูข้อมูลผู้บริหาร · รูปภาพ · ตำแหน่ง · ประวัติ · รางวัล</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(26,58,58,0.1);">🔄</div>
+              <div class="step-content">
+                <div class="step-name">Switch Language</div>
+                <div class="step-desc">สลับภาษา EN/TH/ZH/JP ได้จากหน้า Public Profile</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(26,58,58,0.1);">📱</div>
+              <div class="step-content">
+                <div class="step-name">Scan QR / Save Contact</div>
+                <div class="step-desc">แสกน QR Code เพื่อดาวน์โหลด .vcf → บันทึกลง Address Book</div>
+              </div>
+            </div>
+            <div class="step-item">
+              <div class="step-icon" style="background:rgba(26,58,58,0.1);">🔗</div>
+              <div class="step-content">
+                <div class="step-name">Contact / Social Links</div>
+                <div class="step-desc">คลิก Email · LinkedIn · Website · โทรศัพท์ได้จาก Profile</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main-grid -->
+
+
+    <!-- ─── DEVELOPMENT OPPORTUNITIES ─── -->
+    <div style="margin-top:40px;font-family:'Playfair Display',serif;font-size:22px;color:var(--ink);margin-bottom:8px;">โอกาสในการพัฒนาต่อยอด</div>
+    <div style="font-size:12px;color:var(--slate);margin-bottom:20px;">จากการสำรวจเว็บไซต์พบ Gaps และ Feature Ideas ที่น่าพัฒนา</div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
+
+      <div style="background:var(--paper);border:1px solid var(--mist);border-radius:8px;padding:20px;border-left:3px solid #C9A96E;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <span style="font-size:18px;">📊</span>
+          <div style="font-weight:600;font-size:14px;">Analytics Dashboard</div>
+        </div>
+        <div style="font-size:12px;color:var(--slate);line-height:1.6;">ระบบวิเคราะห์สถิติ Profile Views, QR Scan count, Geographic data, Visitor demographics เพื่อให้ CEO วัดผล ROI ได้</div>
+      </div>
+
+      <div style="background:var(--paper);border:1px solid var(--mist);border-radius:8px;padding:20px;border-left:3px solid #2A6B6B;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <span style="font-size:18px;">💰</span>
+          <div style="font-weight:600;font-size:14px;">Pricing & Subscription</div>
+        </div>
+        <div style="font-size:12px;color:var(--slate);line-height:1.6;">หน้า Pricing ปัจจุบันมี anchor link แต่ยังไม่มีเนื้อหา ควรพัฒนา Free/Pro/Enterprise tiers พร้อม Billing system</div>
+      </div>
+
+      <div style="background:var(--paper);border:1px solid var(--mist);border-radius:8px;padding:20px;border-left:3px solid #3A2A4A;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <span style="font-size:18px;">🎨</span>
+          <div style="font-weight:600;font-size:14px;">Theme Customization</div>
+        </div>
+        <div style="font-size:12px;color:var(--slate);line-height:1.6;">ให้ CEO เลือก Theme/Color ที่ตรง Corporate Identity เพิ่ม White-label options สำหรับองค์กร</div>
+      </div>
+
+      <div style="background:var(--paper);border:1px solid var(--mist);border-radius:8px;padding:20px;border-left:3px solid #4A3A1A;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <span style="font-size:18px;">📡</span>
+          <div style="font-weight:600;font-size:14px;">NFC Business Card</div>
+        </div>
+        <div style="font-size:12px;color:var(--slate);line-height:1.6;">Physical NFC card ที่ tap แล้วเปิด Digital Profile ทันที เหมาะกับงาน Networking events</div>
+      </div>
+
+      <div style="background:var(--paper);border:1px solid var(--mist);border-radius:8px;padding:20px;border-left:3px solid #8B3A3A;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <span style="font-size:18px;">👥</span>
+          <div style="font-weight:600;font-size:14px;">Team / Corporate Plan</div>
+        </div>
+        <div style="font-size:12px;color:var(--slate);line-height:1.6;">Admin dashboard สำหรับ HR จัดการโปรไฟล์ผู้บริหารทั้งองค์กร Bulk import, Brand consistency enforcement</div>
+      </div>
+
+      <div style="background:var(--paper);border:1px solid var(--mist);border-radius:8px;padding:20px;border-left:3px solid #1A3A4A;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <span style="font-size:18px;">🔐</span>
+          <div style="font-weight:600;font-size:14px;">Password Protected Profile</div>
+        </div>
+        <div style="font-size:12px;color:var(--slate);line-height:1.6;">โปรไฟล์แบบ Private ที่ต้องใส่รหัส สำหรับแชร์กับ Partner เฉพาะกลุ่ม ไม่ public ทั่วไป</div>
+      </div>
+
+    </div>
+
+  </div><!-- /flow-wrapper -->
+</div>
+
+<footer>
+  <div>CEO Profile — User Flow Document · <span>ceoprofile.site</span></div>
+  <div>สร้างโดย Claude Sonnet · March 2026</div>
+</footer>
+
+</body>
+</html>

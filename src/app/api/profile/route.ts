@@ -374,8 +374,8 @@ export async function POST(req: NextRequest) {
                             lang: targetLang.toLowerCase(),
                             // Override with translated settings for sync
                             heroName: profileData.fullName || translatedSettings.fullName || contentToClone.heroName,
-                            heroTitle: profileData.title || translatedSettings.title || contentToClone.heroTitle,
-                            heroRole: profileData.title || translatedSettings.title || contentToClone.heroRole || "",
+                            heroTitle: organization.name || contentToClone.heroTitle, // Default to Org Name
+                            heroRole: profileData.title || translatedSettings.title || contentToClone.heroRole || "", // Map position to heroRole
                             // Merge contact data with user inputs
                             contactData: {
                                 ...(contentToClone.contactData || {}),
@@ -429,8 +429,8 @@ export async function POST(req: NextRequest) {
                     profileId: profile.id,
                     lang: targetLang,
                     heroName: profile.fullName,
-                    heroTitle: profile.title || "",
-                    heroRole: profile.title || "",
+                    heroTitle: organization.name || "", // Default to Org Name
+                    heroRole: profile.title || "",      // Map position to heroRole
                     heroContact: targetLang === 'th' ? 'ติดต่อ' : 'Contact',
                     heroStandard: targetLang === 'th' ? 'มาตรฐานของเรา' : 'Our Standard',
                     navAbout: targetLang === 'th' ? 'เกี่ยวกับ' : 'About',
@@ -446,8 +446,8 @@ export async function POST(req: NextRequest) {
                 },
                 update: {
                     heroName: profile.fullName,
-                    heroTitle: profile.title || "",
-                    heroRole: profile.title || "",
+                    heroTitle: organization.name || "", // Ensure org name is updated if changed
+                    // heroRole is intentionally not updated here to avoid overwriting with company title
                     experienceData: experience ? { items: experience } : undefined,
                     contactData: mergedContactData,
                 },
@@ -455,7 +455,7 @@ export async function POST(req: NextRequest) {
         }
 
         // Return the clean URL structure
-        const profileUrl = `/${organization.slug}/${profile.slug.replace(/-[a-z]{2}(-[a-z]{2,4})?$/i, "")}/${targetLang}`;
+        const profileUrl = `/${organization.slug}/${profile.slug}`;
 
         return NextResponse.json({
             organization,

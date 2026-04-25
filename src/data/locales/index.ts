@@ -1,25 +1,3 @@
-import { th } from "./th";
-import { en } from "./en";
-import { zh } from "./zh";
-import { ja } from "./ja";
-import { hi } from "./hi";
-import { fr } from "./fr";
-import { it } from "./it";
-import { es } from "./es";
-import { de } from "./de";
-import { ru } from "./ru";
-import { fa } from "./fa";
-import { pt } from "./pt";
-import { br } from "./br";
-import { vi } from "./vi";
-import { lo } from "./lo";
-import { my } from "./my";
-import { tl } from "./tl";
-import { id } from "./id";
-
-export const LOCALES: Record<string, any> = {
-    th, en, zh, ja, hi, fr, it, es, de, ru, fa, pt, br, vi, lo, my, tl, id
-};
 
 export const LANG_NAMES: Record<string, string> = {
     af: "Afrikaans",

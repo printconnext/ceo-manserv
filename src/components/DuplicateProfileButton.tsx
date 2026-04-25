@@ -46,14 +46,13 @@ export default function DuplicateProfileButton({ profileId, profileName }: Dupli
         <>
             <button
                 onClick={() => setIsOpen(true)}
-                className="flex items-center gap-1.5 px-4 py-2 border-2 border-amber-500 text-amber-600 rounded-xl hover:bg-amber-50 transition-all font-bold text-xs uppercase tracking-widest"
+                className="p-2 border border-gray-200 text-gray-500 rounded-lg hover:bg-gray-50 transition-colors"
                 title="ทำสำเนา (Duplicate)"
             >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                 </svg>
-                <span>ทำสำเนา</span>
             </button>
 
             {isOpen && (

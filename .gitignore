@@ -46,5 +46,7 @@ next-env.d.ts
 
 # secrets
 goole_OAuth client created.txt
+client_secret_*.json
+goole-ceo-profile-translator-api-key.txt
 
 /tmp/
