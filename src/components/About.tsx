@@ -33,10 +33,6 @@ export default function About({ data }: AboutProps) {
                             </p>
                         </div>
 
-                        {/* Signature (Placeholder text/font) */}
-                        <div className="mt-10">
-                            <p className="font-handwriting text-2xl text-gray-500 italic">{data.signature}</p>
-                        </div>
                     </div>
 
                     {/* Stats/Visual Column */}

@@ -6,6 +6,9 @@ import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import prisma from "@/lib/prisma";
 
+// Master admin email
+export const ADMIN_EMAIL = "printconnext@gmail.com";
+
 // Build providers list conditionally based on environment variables
 const providers = [];
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
@@ -58,6 +61,7 @@ export const authOptions: AuthOptions = {
             if (user) {
                 token.id = user.id;
                 token.plan = (user as any).plan || "free";
+                token.isAdmin = user.email === ADMIN_EMAIL;
             } else if (token.id) {
                 // Periodically sync plan from DB if not provided in user object (refresh)
                 const dbUser = await prisma.user.findUnique({
@@ -74,6 +78,7 @@ export const authOptions: AuthOptions = {
             if (session.user) {
                 session.user.id = token.sub || token.id;
                 session.user.plan = token.plan || "free";
+                session.user.isAdmin = token.isAdmin || false;
             }
             return session;
         },
