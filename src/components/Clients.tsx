@@ -44,7 +44,7 @@ export default function Clients({ data }: ClientsProps) {
                                             src={imagePath}
                                             alt={name || "Client Logo"}
                                             fill
-                                            className="object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                                            className="object-contain"
                                             unoptimized
                                         />
                                     </div>
@@ -86,14 +86,14 @@ export default function Clients({ data }: ClientsProps) {
                     </div>
 
                     <div className="mt-8 pt-8 border-t border-white/20 sm:flex-row items-center justify-between gap-4">
-                        <div className="flex flex-wrap items-center gap-6 mb-4 sm:mb-0">
+                        <div className="flex flex-wrap items-center justify-center gap-8 lg:gap-12">
                             {(data.associations || []).map((assoc: any, idx: number) => (
-                                <div key={idx} className="relative h-20 w-40 sm:w-56 opacity-90 transition-opacity hover:opacity-100">
+                                <div key={idx} className="relative h-20 w-40 sm:w-56">
                                     <Image
                                         src={assoc.image ? (assoc.image.startsWith('http') ? assoc.image : `/images/${assoc.image}`) : "/images/bni-logo.png"}
                                         alt={assoc.name || "Association Logo"}
                                         fill
-                                        className="object-contain object-left"
+                                        className="object-contain"
                                         unoptimized
                                     />
                                 </div>

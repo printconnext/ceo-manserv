@@ -127,6 +127,13 @@ export default function UnifiedEditor({
                         fetchedContent.clientsData.items = DEFAULT_CLIENTS;
                     }
 
+                    if (!fetchedContent.servicesData) {
+                        fetchedContent.servicesData = {};
+                    }
+                    if (!fetchedContent.servicesData.items) {
+                        fetchedContent.servicesData.items = [{}, {}, {}, {}, {}, {}];
+                    }
+
                     // Pre-fill contact data from profile if empty
                     const profileData = contentData.profileData;
                     if (!fetchedContent.contactData) fetchedContent.contactData = {};
@@ -783,12 +790,20 @@ export default function UnifiedEditor({
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pt-4">
-                                    {[0, 1, 2, 3, 4, 5].map((idx) => (
-                                        <div key={idx} className="p-6 bg-gray-50 rounded-3xl border border-gray-100 space-y-4 hover:border-brand-blue transition-colors">
+                                    {(content.servicesData?.items || []).map((item: any, idx: number) => (
+                                        <div key={idx} className="p-6 bg-gray-50 rounded-3xl border border-gray-100 space-y-4 hover:border-brand-blue transition-colors relative group/card">
+                                            {/* Remove button */}
+                                            <button 
+                                                onClick={() => removeArrayItem("servicesData", idx, "items")}
+                                                className="absolute -top-3 -right-3 bg-red-100 text-red-500 w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-all hover:bg-red-500 hover:text-white shadow-sm z-10 scale-90 group-hover/card:scale-100"
+                                                title="Remove Service"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                            </button>
                                             {/* Service Image Upload */}
                                             <div className="relative h-32 w-full bg-white rounded-2xl border-2 border-dashed border-gray-200 overflow-hidden group hover:border-brand-blue transition-colors cursor-pointer shadow-sm">
-                                                {content.servicesData?.items?.[idx]?.image ? (
-                                                    <img src={content.servicesData.items[idx].image} className="w-full h-full object-cover" />
+                                                {item?.image ? (
+                                                    <img src={item.image} className="w-full h-full object-cover" />
                                                 ) : (
                                                     <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 group-hover:text-brand-blue transition-colors">
                                                         <svg className="w-6 h-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -802,7 +817,7 @@ export default function UnifiedEditor({
                                                 <span className="w-6 h-6 bg-brand-blue text-white rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0">{idx + 1}</span>
                                                 <input
                                                     type="text"
-                                                    value={content.servicesData?.items?.[idx]?.title || ""}
+                                                    value={item?.title || ""}
                                                     onChange={(e) => handleArrayItemChange("servicesData", idx, "title", e.target.value)}
                                                     className="flex-grow text-gray-900 rounded-xl border-none bg-white p-2 text-sm shadow-sm"
                                                     placeholder={labels.serviceTitle || "Service Title"}
@@ -815,7 +830,7 @@ export default function UnifiedEditor({
                                                     <span className="text-xs font-bold text-gray-500 uppercase tracking-widest mr-2 ml-1">Icon</span>
                                                     <select
                                                         value={(() => {
-                                                            const raw = content.servicesData?.items?.[idx]?.icon || defaultServiceIconOrder[idx % defaultServiceIconOrder.length];
+                                                            const raw = item?.icon || defaultServiceIconOrder[idx % defaultServiceIconOrder.length];
                                                             const legacyIconMap: Record<string, string> = { car: 'user', crown: 'van', shield: 'location', plane: 'globe' };
                                                             return legacyIconMap[raw] || raw;
                                                         })()}
@@ -837,7 +852,7 @@ export default function UnifiedEditor({
                                                 {/* Right icon box */}
                                                 <div className="w-10 h-10 flex text-teal-700 bg-teal-50/50 rounded-xl items-center justify-center p-2 shadow-sm border border-teal-50 flex-shrink-0">
                                                     {(() => {
-                                                        const raw = content.servicesData?.items?.[idx]?.icon || defaultServiceIconOrder[idx % defaultServiceIconOrder.length];
+                                                        const raw = item?.icon || defaultServiceIconOrder[idx % defaultServiceIconOrder.length];
                                                         const legacyIconMap: Record<string, string> = { car: 'user', crown: 'van', shield: 'location', plane: 'globe' };
                                                         const resolved = legacyIconMap[raw] || raw;
                                                         return React.createElement(ServiceIcons[resolved] || ServiceIcons.star, { className: 'w-full h-full' });
@@ -845,7 +860,7 @@ export default function UnifiedEditor({
                                                 </div>
                                             </div>
                                             <textarea
-                                                value={content.servicesData?.items?.[idx]?.description || ""}
+                                                value={item?.description || ""}
                                                 onChange={(e) => handleArrayItemChange("servicesData", idx, "description", e.target.value)}
                                                 className="w-full text-gray-900 rounded-xl border-none bg-white p-3 text-sm shadow-sm"
                                                 rows={3}
@@ -853,6 +868,16 @@ export default function UnifiedEditor({
                                             />
                                         </div>
                                     ))}
+                                    
+                                    <button 
+                                        onClick={() => addArrayItem("servicesData", {}, "items")}
+                                        className="p-6 rounded-3xl border-2 border-dashed border-gray-200 text-gray-400 hover:text-brand-blue hover:border-brand-blue hover:bg-blue-50 flex flex-col items-center justify-center space-y-3 transition-all min-h-[300px]"
+                                    >
+                                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm">
+                                            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" /></svg>
+                                        </div>
+                                        <span className="text-sm font-bold uppercase tracking-widest">เพิ่มบริการ</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -905,6 +930,34 @@ export default function UnifiedEditor({
                     {activeSection === "aesthetics" && (
                         <div className="space-y-12 animate-in fade-in slide-in-from-bottom-6 duration-700">
                             <SectionHeader title={labels.visualTheme || "Visual Theme"} desc={labels.visualThemeDesc || "ปรับแต่งสีสันและอารมณ์ของโปรไฟล์ให้เป็นเอกลักษณ์"} />
+                            
+                            <div className="space-y-6">
+                                <h4 className="text-sm font-bold text-gray-900 border-l-4 border-brand-blue pl-3 uppercase tracking-widest">Profile Template (รูปแบบโครงสร้าง)</h4>
+                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                                    {[
+                                        { id: 'classic', name: 'Classic', desc: 'มาตรฐานทางการ', icon: 'M4 6h16M4 12h16M4 18h16' },
+                                        { id: 'bento', name: 'Bento Grid', desc: 'กล่องจัดระเบียบ', icon: 'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z' },
+                                        { id: 'minimal', name: 'Minimal', desc: 'สะอาด อ่านง่าย', icon: 'M6 6h12M6 12h8M6 18h10' },
+                                        { id: 'darktech', name: 'Dark Tech', desc: 'ล้ำสมัย มืดเข้ม', icon: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' },
+                                        { id: 'glass', name: 'Glass', desc: 'โปร่งแสง พรีเมียม', icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4' }
+                                    ].map((tpl) => (
+                                        <button
+                                            key={tpl.id}
+                                            onClick={() => handleThemeChange("templateId", tpl.id)}
+                                            className={`p-4 rounded-2xl border-2 transition-all duration-300 transform flex flex-col items-center justify-center gap-2 ${theme.templateId === tpl.id || (!theme.templateId && tpl.id === 'classic') ? "bg-brand-blue border-brand-blue text-white shadow-2xl -translate-y-1" : "bg-white border-gray-100 text-gray-400 hover:border-blue-100 hover:-translate-y-0.5"}`}
+                                        >
+                                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${theme.templateId === tpl.id || (!theme.templateId && tpl.id === 'classic') ? "bg-white/20" : "bg-gray-50"}`}>
+                                                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={tpl.icon} /></svg>
+                                            </div>
+                                            <div className="text-center">
+                                                <div className={`text-xs font-bold uppercase tracking-wider ${theme.templateId === tpl.id || (!theme.templateId && tpl.id === 'classic') ? "text-white" : "text-gray-900"}`}>{tpl.name}</div>
+                                                <div className={`text-[10px] mt-0.5 ${theme.templateId === tpl.id || (!theme.templateId && tpl.id === 'classic') ? "text-blue-100" : "text-gray-500"}`}>{tpl.desc}</div>
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                                 <div className="space-y-6">
                                     <h4 className="text-sm font-bold text-gray-900 border-l-4 border-brand-blue pl-3 uppercase tracking-widest">{labels.colorPalette || "Color Palette"}</h4>

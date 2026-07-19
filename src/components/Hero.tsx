@@ -82,20 +82,20 @@ export default function Hero({ data }: HeroProps) {
                                 </Link>
 
                                 {/* Trust Badges / Certifications - Moved Under Button */}
-                                <div className="flex items-center gap-4">
-                                    {data.badges.slice(0, 2).map((badge, idx) => (
-                                        <Image
-                                            key={idx}
-                                            src={badge.src}
-                                            alt={badge.alt}
-                                            width={0}
-                                            height={0}
-                                            sizes="100vw"
-                                            className="w-auto h-[60px] sm:h-[80px] object-contain opacity-90 hover:opacity-100 transition-opacity"
-                                            unoptimized
-                                        />
-                                    ))}
-                                </div>
+                                        <div className="flex items-center gap-4">
+                                            {data.badges.slice(0, 2).map((badge, idx) => (
+                                                <Image
+                                                    key={idx}
+                                                    src={badge.src}
+                                                    alt={badge.alt}
+                                                    width={0}
+                                                    height={0}
+                                                    sizes="100vw"
+                                                    className="w-auto h-[60px] sm:h-[80px] object-contain"
+                                                    unoptimized
+                                                />
+                                            ))}
+                                        </div>
                             </div>
                         </div>
                     </div>

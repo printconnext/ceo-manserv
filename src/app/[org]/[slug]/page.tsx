@@ -9,6 +9,11 @@ import Contact from "@/components/Contact";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ThemeProvider from "@/components/ThemeProvider";
+import ClassicLayout from "@/components/templates/ClassicLayout";
+import BentoLayout from "@/components/templates/BentoLayout";
+import MinimalLayout from "@/components/templates/MinimalLayout";
+import DarkTechLayout from "@/components/templates/DarkTechLayout";
+import GlassLayout from "@/components/templates/GlassLayout";
 import { theme as defaultTheme } from "@/config/theme";
 import { layout as defaultLayout } from "@/config/layout";
 import { media as defaultMedia } from "@/config/media";
@@ -128,7 +133,8 @@ export default async function ProfilePage({ params }: PageProps) {
         font: { ...defaultTheme.font, ...(dbThemeConfig.font || {}) },
         borderRadius: dbThemeConfig.borderRadius || defaultTheme.borderRadius,
         buttonStyle: dbThemeConfig.buttonStyle || defaultTheme.buttonStyle,
-        layout: { ...defaultLayout, ...(dbThemeConfig.layout || {}) }
+        layout: { ...defaultLayout, ...(dbThemeConfig.layout || {}) },
+        templateId: dbThemeConfig.templateId || "classic"
     };
 
     const layoutConfig = mergedThemeConfig.layout;
@@ -225,18 +231,35 @@ export default async function ProfilePage({ params }: PageProps) {
         linkedin: footerData.linkedin || null,
     };
 
-    return (
-        <ThemeProvider themeConfig={mergedThemeConfig} className={`flex flex-col min-h-screen lang-${resolvedLang}`}>
-            <Header data={headerData as any} />
-            <main className="flex-grow">
-                {layoutConfig.showHero && <Hero data={heroData} />}
-                {layoutConfig.showAbout && <About data={aboutDataFormatted} />}
-                {layoutConfig.showServices && <Services data={servicesDataFormatted} />}
-                {layoutConfig.showExperience && <Experience data={experienceDataFormatted} />}
-                {layoutConfig.showClients && <Clients data={clientsDataFormatted} />}
-                {layoutConfig.showContact && <Contact data={contactDataFormatted} />}
-            </main>
-            <Footer data={footerDataFormatted} />
-        </ThemeProvider>
-    );
+    const layoutProps = {
+        themeConfig: mergedThemeConfig,
+        resolvedLang,
+        layoutConfig,
+        headerData: headerData as any,
+        heroData,
+        aboutDataFormatted,
+        servicesDataFormatted,
+        experienceDataFormatted,
+        clientsDataFormatted,
+        contactDataFormatted,
+        footerDataFormatted
+    };
+
+    if (mergedThemeConfig.templateId === 'bento') {
+        return <BentoLayout {...layoutProps} />;
+    }
+
+    if (mergedThemeConfig.templateId === 'minimal') {
+        return <MinimalLayout {...layoutProps} />;
+    }
+
+    if (mergedThemeConfig.templateId === 'darktech') {
+        return <DarkTechLayout {...layoutProps} />;
+    }
+
+    if (mergedThemeConfig.templateId === 'glass') {
+        return <GlassLayout {...layoutProps} />;
+    }
+
+    return <ClassicLayout {...layoutProps} />;
 }

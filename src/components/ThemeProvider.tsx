@@ -25,6 +25,7 @@ interface ThemeConfig {
         showContact?: boolean;
         showExperience?: boolean;
     };
+    templateId?: string;
 }
 
 export const defaultTheme: ThemeConfig = {
@@ -47,7 +48,8 @@ export const defaultTheme: ThemeConfig = {
         showTestimonials: true,
         showContact: true,
         showExperience: true,
-    }
+    },
+    templateId: "classic"
 };
 
 interface ThemeContextType {
