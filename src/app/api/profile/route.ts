@@ -413,6 +413,8 @@ export async function POST(req: NextRequest) {
             mobile: profile.phone1 || existingContactData.mobile || "",
             email: profile.email || existingContactData.email || "",
             website: profile.website || existingContactData.website || "",
+            lineTitle: profile.lineUrl || existingContactData.lineTitle || existingContactData.lineValue || "",
+            lineValue: profile.lineUrl || existingContactData.lineValue || existingContactData.lineTitle || "",
         };
 
         // Update translation for the profile (only ONE translation per profile record now)
@@ -447,7 +449,7 @@ export async function POST(req: NextRequest) {
                 update: {
                     heroName: profile.fullName,
                     heroTitle: organization.name || "", // Ensure org name is updated if changed
-                    // heroRole is intentionally not updated here to avoid overwriting with company title
+                    heroRole: profile.title || "", // Updated to sync with user input from Profile Settings
                     experienceData: experience ? { items: experience } : undefined,
                     contactData: mergedContactData,
                 },
