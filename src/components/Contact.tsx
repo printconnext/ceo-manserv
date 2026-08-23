@@ -84,7 +84,7 @@ export default function Contact({ data }: ContactProps) {
                         </div>
 
                         {/* Website */}
-                        <div className="flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow sm:col-span-2 lg:col-span-2">
                             <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest mb-2">{data.websiteLabel || "Website"}</h3>
                             {data.websites && data.websites.length > 0 ? (
                                 <div className="flex flex-col gap-2">
