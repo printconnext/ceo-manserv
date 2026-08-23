@@ -1,4 +1,4 @@
-// i:\ceo-profile\src\lib\vcard.ts
+// src/lib/vcard.ts
 
 export interface VCardData {
     fullName: string;
@@ -9,9 +9,17 @@ export interface VCardData {
     email?: string;
     website?: string;
     profileUrl?: string;
+    photoBase64?: string;
+    photoUrl?: string;
 }
 
-export function generateVCard(data: VCardData, isForQR: boolean = false): string {
+/**
+ * Generate MECARD string for QR codes.
+ * MECARD is specifically designed for QR code scanning and is natively
+ * supported by Google Lens, Samsung Camera, iOS Camera, etc.
+ * Unlike vCard in QR codes, MECARD reliably triggers the "Add Contact" action.
+ */
+export function generateMeCard(data: VCardData): string {
     const {
         fullName,
         title,
@@ -29,37 +37,80 @@ export function generateVCard(data: VCardData, isForQR: boolean = false): string
         return cleaned;
     };
 
+    // MECARD format: MECARD:N:Last,First;ORG:Company;TEL:Phone;EMAIL:Email;URL:url;NOTE:note;;
+    const nameParts = fullName.trim().split(/\s+/);
+    let firstName = fullName;
+    let lastName = "";
+    if (nameParts.length > 1) {
+        lastName = nameParts[nameParts.length - 1];
+        firstName = nameParts.slice(0, -1).join(" ");
+    }
+
+    const parts: string[] = [];
+    parts.push(`N:${lastName},${firstName}`);
+    if (organization) parts.push(`ORG:${organization}`);
+    if (phone1) parts.push(`TEL:${normalizePhone(phone1)}`);
+    if (phone2) parts.push(`TEL:${normalizePhone(phone2)}`);
+    if (email) parts.push(`EMAIL:${email}`);
+    if (profileUrl || website) parts.push(`URL:${profileUrl || website}`);
+    // Put title in NOTE since MECARD doesn't have a TITLE field
+    if (title) parts.push(`NOTE:${title}`);
+
+    return `MECARD:${parts.join(";")};;`;
+}
+
+/**
+ * Generate full vCard 3.0 string for .vcf file download.
+ * This format includes all fields and optionally a base64-encoded photo.
+ */
+export function generateVCard(data: VCardData): string {
+    const {
+        fullName,
+        title,
+        organization,
+        phone1,
+        phone2,
+        email,
+        website,
+        profileUrl,
+        photoBase64,
+        photoUrl
+    } = data;
+
+    const normalizePhone = (num: string) => {
+        const cleaned = num.replace(/\D/g, "");
+        if (cleaned.startsWith("0")) return "+66" + cleaned.substring(1);
+        return cleaned;
+    };
+
     const lines = [
         "BEGIN:VCARD",
-        isForQR ? "VERSION:3.0" : "VERSION:3.0",
+        "VERSION:3.0",
     ];
 
-    if (isForQR) {
-        // Minimalist version for QR (Easy Scan)
-        // FN + NOTE (with URL) + TEL — compact QR, Android-compatible
-        lines.push(`FN:${fullName}`);
-        if (profileUrl || website) {
-            // Use NOTE instead of URL — all Android contact apps import NOTE reliably
-            lines.push(`NOTE:${profileUrl || website}`);
-        }
-        if (phone1) lines.push(`TEL:${normalizePhone(phone1)}`);
-    } else {
-        // Full version for VCF download
-        const nameParts = fullName.trim().split(/\s+/);
-        let firstName = fullName;
-        let lastName = "";
-        if (nameParts.length > 1) {
-            lastName = nameParts[nameParts.length - 1];
-            firstName = nameParts.slice(0, -1).join(" ");
-        }
-        lines.push(`N:${lastName};${firstName};;;`);
-        lines.push(`FN:${fullName}`);
-        if (profileUrl || website) lines.push(`URL;type=pref:${profileUrl || website}`);
-        if (phone1) lines.push(`TEL;TYPE=CELL;TYPE=PREF:${normalizePhone(phone1)}`);
-        if (phone2) lines.push(`TEL;TYPE=WORK:${normalizePhone(phone2)}`);
-        if (email) lines.push(`EMAIL;TYPE=WORK;TYPE=INTERNET:${email}`);
-        if (organization) lines.push(`ORG:${organization}`);
-        if (title) lines.push(`TITLE:${title}`);
+    const nameParts = fullName.trim().split(/\s+/);
+    let firstName = fullName;
+    let lastName = "";
+    if (nameParts.length > 1) {
+        lastName = nameParts[nameParts.length - 1];
+        firstName = nameParts.slice(0, -1).join(" ");
+    }
+
+    lines.push(`N:${lastName};${firstName};;;`);
+    lines.push(`FN:${fullName}`);
+    if (organization) lines.push(`ORG:${organization}`);
+    if (title) lines.push(`TITLE:${title}`);
+    if (phone1) lines.push(`TEL;TYPE=CELL:${normalizePhone(phone1)}`);
+    if (phone2) lines.push(`TEL;TYPE=WORK:${normalizePhone(phone2)}`);
+    if (email) lines.push(`EMAIL;TYPE=WORK:${email}`);
+    if (profileUrl || website) lines.push(`URL:${profileUrl || website}`);
+
+    // Photo: embed base64 for file download
+    if (photoBase64) {
+        const base64Data = photoBase64.replace(/^data:image\/\w+;base64,/, "");
+        lines.push(`PHOTO;ENCODING=b;TYPE=JPEG:${base64Data}`);
+    } else if (photoUrl) {
+        lines.push(`PHOTO;VALUE=URI:${photoUrl}`);
     }
 
     lines.push("END:VCARD");

@@ -26,19 +26,42 @@ export default async function VCardPage({
     if (profileId) {
         profile = await prisma.profile.findFirst({
             where: { id: profileId, organization: { userId: session.user.id } },
-            include: { organization: true }
+            include: { organization: true, translations: { where: { lang: "th" } } }
         });
         organization = profile?.organization;
     } else {
         organization = await prisma.organization.findFirst({
             where: { userId: session.user.id },
-            include: { profiles: true }
+            include: { profiles: { include: { translations: { where: { lang: "th" } } } } }
         });
         profile = organization?.profiles?.[0];
     }
 
     const mediaConfig = profile?.mediaConfig as any;
     const themeConfig = profile?.themeConfig as any;
+    const portraitUrl = profile?.portraitUrl || mediaConfig?.heroImage || undefined;
+    const translation = profile?.translations?.[0] as any;
+    const contactData = translation?.contactData as any || {};
+
+    let photoBase64 = "";
+    if (portraitUrl) {
+        try {
+            if (portraitUrl.startsWith("http")) {
+                const res = await fetch(portraitUrl);
+                const buffer = await res.arrayBuffer();
+                photoBase64 = Buffer.from(buffer).toString("base64");
+            } else if (portraitUrl.startsWith("/")) {
+                const fs = require("fs");
+                const path = require("path");
+                const filePath = path.join(process.cwd(), "public", portraitUrl);
+                if (fs.existsSync(filePath)) {
+                    photoBase64 = fs.readFileSync(filePath, { encoding: "base64" });
+                }
+            }
+        } catch (e) {
+            console.error("Failed to load heroImage for vcard", e);
+        }
+    }
 
     if (!profile || !organization) {
         return (
@@ -51,18 +74,20 @@ export default async function VCardPage({
     }
 
     const vCardData = {
-        fullName: profile.fullName,
-        title: profile.title || "",
-        organization: organization.name,
-        phone1: profile.phone1 || "",
+        fullName: translation?.heroName || profile.fullName,
+        title: translation?.heroRole || translation?.heroQuote || profile.title || "",
+        organization: translation?.heroTitle || organization.name,
+        phone1: contactData?.mobile || contactData?.office || profile.phone1 || "",
         phone2: profile.phone2 || "",
-        email: profile.email || "",
-        website: profile.website || "",
-        profileUrl: `https://www.ceoprofile.site/${organization.slug}/${profile.slug}`
+        email: contactData?.email || profile.email || "",
+        website: contactData?.website || profile.website || "",
+        profileUrl: `https://www.ceoprofile.site/${organization.slug}/${profile.slug}`,
+        photoBase64: photoBase64 || undefined,
+        photoUrl: portraitUrl // For QR code to avoid size limits
     };
 
-    const qrValue = generateVCard(vCardData, true); // Lean version
-    const fullVCardString = generateVCard(vCardData, false); // Full version
+    const qrValue = `https://www.ceoprofile.site/api/vcard?org=${organization.slug}&profile=${profile.slug}`; // URL triggers .vcf download on scan
+    const fullVCardString = generateVCard(vCardData); // Full vCard 3.0 for .vcf download button
 
     return (
         <div className="p-6 max-w-lg mx-auto">

@@ -79,7 +79,7 @@ export default function VCardQR({
                 <QRCodeSVG
                     value={qrValue}
                     size={350}
-                    level="L"
+                    level="M"
                     includeMargin={false}
                 />
             </div>

@@ -590,15 +590,7 @@ export default function UnifiedEditor({
                                 scanMe: labels.scanToAdd || "Scan to add me",
                                 downloadFullBtn: labels.shareQRCode || "Share QR Code Namecard"
                             }}
-                            qrValue={generateVCard({
-                                fullName: content.heroName || "",
-                                title: content.heroRole || "",
-                                organization: content.heroTitle || "",
-                                phone1: content.contactData?.mobile || "",
-                                email: content.contactData?.email || "",
-                                website: content.contactData?.website || "",
-                                profileUrl: profileMetadata ? `https://www.ceoprofile.site/${profileMetadata.orgSlug}/${profileMetadata.profileSlug}` : ""
-                            }, true)}
+                            qrValue={profileMetadata ? `https://www.ceoprofile.site/api/vcard?org=${profileMetadata.orgSlug}&profile=${profileMetadata.profileSlug}` : ""}
                             fullVCardString={generateVCard({
                                 fullName: content.heroName || "",
                                 title: content.heroRole || "",
@@ -607,7 +599,7 @@ export default function UnifiedEditor({
                                 email: content.contactData?.email || "",
                                 website: content.contactData?.website || "",
                                 profileUrl: profileMetadata ? `https://www.ceoprofile.site/${profileMetadata.orgSlug}/${profileMetadata.profileSlug}` : ""
-                            }, false)}
+                            })}
                         />
                     </div>
                 </div>
