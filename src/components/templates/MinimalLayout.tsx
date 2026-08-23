@@ -248,9 +248,10 @@ export default function MinimalLayout(props: ProfileLayoutProps) {
                                 <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-8">
                                     {[
                                         { label: contactDataFormatted.officeLabel, value: contactDataFormatted.officeValue },
+                                        { label: contactDataFormatted.officePhoneLabel, value: contactDataFormatted.officePhoneValue, href: contactDataFormatted.officePhoneValue ? `tel:${contactDataFormatted.officePhoneValue.replace(/[^0-9+]/g, '')}` : null },
                                         { label: contactDataFormatted.mobileLabel, value: contactDataFormatted.mobileValue, href: contactDataFormatted.mobileValue ? `tel:${contactDataFormatted.mobileValue.replace(/[^0-9+]/g, '')}` : null },
                                         { label: contactDataFormatted.emailLabel, value: contactDataFormatted.emailValue, href: contactDataFormatted.emailValue ? `mailto:${contactDataFormatted.emailValue}` : null },
-                                        { label: contactDataFormatted.websiteLabel, value: contactDataFormatted.websiteValue, href: contactDataFormatted.websiteValue ? (contactDataFormatted.websiteValue.startsWith('http') ? contactDataFormatted.websiteValue : `https://${contactDataFormatted.websiteValue}`) : null },
+                                        ...(contactDataFormatted.websites || []).map((w: string) => ({ label: contactDataFormatted.websiteLabel, value: w, href: w ? (w.startsWith('http') ? w : `https://${w}`) : null })),
                                     ].filter(c => c.value).map((c, idx) => (
                                         <div key={idx} className="bg-white/10 backdrop-blur-sm p-8 rounded-3xl border border-white/20 hover:bg-white/20 transition-colors">
                                             <p className="text-xs text-white/60 uppercase tracking-widest mb-2 font-bold">{c.label}</p>

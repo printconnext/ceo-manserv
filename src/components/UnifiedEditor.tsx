@@ -881,36 +881,52 @@ export default function UnifiedEditor({
                     {activeSection === "contact" && (
                         <div className="space-y-10 animate-in fade-in duration-500">
                             <SectionHeader title={labels.contactSection || "Contact Section"} desc={labels.contactSectionDesc || "ช่องทางการติดต่อและโซเชีลมีเดีย"} layoutKey="showContact" />
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="grid grid-cols-1 gap-8 max-w-2xl">
                                 <div className="space-y-6">
                                     <div>
                                         <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1 mb-2">{labels.servicesTitleLabel || "Section Title"}</label>
-                                        <input type="text" value={content.contactData?.title || ""} onChange={(e) => handleNestedChange("contactData", "title", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" />
+                                        <input type="text" value={content.contactData?.title || ""} onChange={(e) => handleNestedChange("contactData", "title", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" />
                                     </div>
                                     <div>
                                         <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1 mb-2">{labels.servicesSubtitleLabel || "Section Subtitle"}</label>
-                                        <input type="text" value={content.contactData?.subtitle || ""} onChange={(e) => handleNestedChange("contactData", "subtitle", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm" />
+                                        <input type="text" value={content.contactData?.subtitle || ""} onChange={(e) => handleNestedChange("contactData", "subtitle", e.target.value)} className="w-full text-gray-900 rounded-2xl border-gray-100 bg-gray-50 p-4 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" />
                                     </div>
-                                </div>
-                                <div className="grid grid-cols-1 gap-6 p-8 bg-gray-50 rounded-[2rem] border border-gray-100 shadow-inner">
                                     <div className="space-y-4">
                                         <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.officeAddress || "Office Address"}</label>
-                                        <textarea value={content.contactData?.office || content.contactData?.officeValue || ""} onChange={(e) => handleNestedChange("contactData", "office", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-6 text-sm font-medium shadow-sm focus:ring-2 focus:ring-brand-blue leading-relaxed" rows={2} placeholder="Address..." />
+                                        <textarea value={content.contactData?.office || content.contactData?.officeValue || ""} onChange={(e) => handleNestedChange("contactData", "office", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-6 text-sm font-medium shadow-sm bg-gray-50 focus:ring-2 focus:ring-brand-blue leading-relaxed" rows={2} placeholder="Address..." />
                                     </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                        <div className="space-y-4">
-                                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.mobilePhone || "Mobile Phone"}</label>
-                                            <input type="text" value={content.contactData?.mobile || content.contactData?.mobileValue || ""} onChange={(e) => handleNestedChange("contactData", "mobile", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Phone..." />
-                                        </div>
-                                        <div className="space-y-4">
-                                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.email || "Email"}</label>
-                                            <input type="text" value={content.contactData?.email || content.contactData?.emailValue || ""} onChange={(e) => handleNestedChange("contactData", "email", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Email..." />
-                                        </div>
-                                        <div className="space-y-4">
-                                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.website || "Website"}</label>
-                                            <input type="text" value={content.contactData?.website || content.contactData?.websiteValue || ""} onChange={(e) => handleNestedChange("contactData", "website", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Website URL..." />
-                                        </div>
-
+                                    <div className="space-y-4">
+                                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">Office Phone</label>
+                                        <input type="text" value={content.contactData?.officePhone || ""} onChange={(e) => handleNestedChange("contactData", "officePhone", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm bg-gray-50 focus:ring-2 focus:ring-brand-blue" placeholder="Office Phone..." />
+                                    </div>
+                                    <div className="space-y-4">
+                                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.mobilePhone || "Mobile Phone"}</label>
+                                        <input type="text" value={content.contactData?.mobile || content.contactData?.mobileValue || ""} onChange={(e) => handleNestedChange("contactData", "mobile", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm bg-gray-50 focus:ring-2 focus:ring-brand-blue" placeholder="Mobile Phone..." />
+                                    </div>
+                                    <div className="space-y-4">
+                                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.email || "Email"}</label>
+                                        <input type="text" value={content.contactData?.email || content.contactData?.emailValue || ""} onChange={(e) => handleNestedChange("contactData", "email", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm bg-gray-50 focus:ring-2 focus:ring-brand-blue" placeholder="Email..." />
+                                    </div>
+                                    <div className="space-y-4">
+                                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1 flex justify-between items-center">
+                                            <span>{labels.website || "Website"}</span>
+                                            <button onClick={() => addArrayStringItem("contactData", "websites", "")} className="text-brand-blue hover:text-blue-800 flex items-center gap-1">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> Add Website
+                                            </button>
+                                        </label>
+                                        {(Array.isArray(content.contactData?.websites) ? content.contactData.websites : (content.contactData?.website ? [content.contactData.website] : [])).map((websiteUrl: string, idx: number) => (
+                                            <div key={idx} className="flex items-center gap-2 mb-2">
+                                                <input type="text" value={websiteUrl} onChange={(e) => handleArrayStringChange("contactData", "websites", idx, e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm bg-gray-50 focus:ring-2 focus:ring-brand-blue" placeholder="https://..." />
+                                                <button onClick={() => removeArrayStringItem("contactData", "websites", idx)} className="p-3 text-red-500 hover:bg-red-50 rounded-xl transition-colors">
+                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                                                </button>
+                                            </div>
+                                        ))}
+                                        {!(Array.isArray(content.contactData?.websites) ? content.contactData.websites : (content.contactData?.website ? [content.contactData.website] : [])).length && (
+                                            <div className="text-center p-6 border-2 border-dashed border-gray-200 rounded-2xl bg-gray-50">
+                                                <p className="text-sm text-gray-400">No websites added</p>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>

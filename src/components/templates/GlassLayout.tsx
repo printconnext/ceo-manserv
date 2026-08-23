@@ -279,9 +279,10 @@ export default function GlassLayout(props: ProfileLayoutProps) {
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
                                     {[
                                         { label: contactDataFormatted.officeLabel, value: contactDataFormatted.officeValue },
+                                        { label: contactDataFormatted.officePhoneLabel, value: contactDataFormatted.officePhoneValue, href: contactDataFormatted.officePhoneValue ? `tel:${contactDataFormatted.officePhoneValue.replace(/[^0-9+]/g, '')}` : null },
                                         { label: contactDataFormatted.mobileLabel, value: contactDataFormatted.mobileValue, href: contactDataFormatted.mobileValue ? `tel:${contactDataFormatted.mobileValue.replace(/[^0-9+]/g, '')}` : null },
                                         { label: contactDataFormatted.emailLabel, value: contactDataFormatted.emailValue, href: contactDataFormatted.emailValue ? `mailto:${contactDataFormatted.emailValue}` : null },
-                                        { label: contactDataFormatted.websiteLabel, value: contactDataFormatted.websiteValue, href: contactDataFormatted.websiteValue ? (contactDataFormatted.websiteValue.startsWith('http') ? contactDataFormatted.websiteValue : `https://${contactDataFormatted.websiteValue}`) : null },
+                                        ...(contactDataFormatted.websites || []).map((w: string) => ({ label: contactDataFormatted.websiteLabel, value: w, href: w ? (w.startsWith('http') ? w : `https://${w}`) : null })),
                                     ].filter(c => c.value).map((c, idx) => (
                                         <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition-colors">
                                             <p className="text-xs text-white/40 uppercase tracking-wider mb-1">{c.label}</p>

@@ -230,9 +230,10 @@ export default function DarkTechLayout(props: ProfileLayoutProps) {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {[
                                     { label: contactDataFormatted.officeLabel, value: contactDataFormatted.officeValue },
+                                    { label: contactDataFormatted.officePhoneLabel, value: contactDataFormatted.officePhoneValue, href: contactDataFormatted.officePhoneValue ? `tel:${contactDataFormatted.officePhoneValue.replace(/[^0-9+]/g, '')}` : null },
                                     { label: contactDataFormatted.mobileLabel, value: contactDataFormatted.mobileValue, href: contactDataFormatted.mobileValue ? `tel:${contactDataFormatted.mobileValue.replace(/[^0-9+]/g, '')}` : null },
                                     { label: contactDataFormatted.emailLabel, value: contactDataFormatted.emailValue, href: contactDataFormatted.emailValue ? `mailto:${contactDataFormatted.emailValue}` : null },
-                                    { label: contactDataFormatted.websiteLabel, value: contactDataFormatted.websiteValue, href: contactDataFormatted.websiteValue ? (contactDataFormatted.websiteValue.startsWith('http') ? contactDataFormatted.websiteValue : `https://${contactDataFormatted.websiteValue}`) : null },
+                                    ...(contactDataFormatted.websites || []).map((w: string) => ({ label: contactDataFormatted.websiteLabel, value: w, href: w ? (w.startsWith('http') ? w : `https://${w}`) : null })),
                                 ].filter(c => c.value).map((c, idx) => (
                                     <div key={idx} className="p-6 border border-white/10 bg-white/[0.02] text-left hover:border-white/20 transition-colors">
                                         <p className="text-xs font-mono text-gray-600 uppercase tracking-wider mb-2">{c.label}</p>

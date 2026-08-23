@@ -12,11 +12,14 @@ interface ContactProps {
         mobileLabel: string;
         mobileValue: string;
 
+        officePhoneLabel?: string;
+        officePhoneValue?: string;
+
         emailLabel: string;
         emailValue: string;
 
         websiteLabel: string;
-        websiteValue: string;
+        websites?: string[];
 
         lineLabel: string;
         lineValue: string;
@@ -46,6 +49,16 @@ export default function Contact({ data }: ContactProps) {
                             <p className="text-lg font-semibold text-brand-blue text-center">{data.officeValue || "-"}</p>
                         </div>
 
+                        {/* Office Phone */}
+                        {data.officePhoneValue && (
+                            <div className="flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                                <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest mb-2">{data.officePhoneLabel || "Office Phone"}</h3>
+                                <a href={`tel:${data.officePhoneValue.replace(/[^0-9+]/g, '')}`} className="text-lg font-semibold text-brand-blue hover:text-brand-red transition-colors flex items-center justify-center gap-2">
+                                    <span>{data.officePhoneValue}</span>
+                                </a>
+                            </div>
+                        )}
+
                         {/* Mobile Phone */}
                         <div className="flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
                             <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest mb-2">{data.mobileLabel || "Mobile Phone"}</h3>
@@ -73,10 +86,14 @@ export default function Contact({ data }: ContactProps) {
                         {/* Website */}
                         <div className="flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
                             <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest mb-2">{data.websiteLabel || "Website"}</h3>
-                            {data.websiteValue ? (
-                                <a href={data.websiteValue.startsWith('http') ? data.websiteValue : `https://${data.websiteValue}`} target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-brand-blue hover:text-brand-red transition-colors text-center break-all">
-                                    {data.websiteValue}
-                                </a>
+                            {data.websites && data.websites.length > 0 ? (
+                                <div className="flex flex-col gap-2">
+                                    {data.websites.map((url, idx) => (
+                                        <a key={idx} href={url.startsWith('http') ? url : `https://${url}`} target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-brand-blue hover:text-brand-red transition-colors text-center break-all">
+                                            {url}
+                                        </a>
+                                    ))}
+                                </div>
                             ) : (
                                 <p className="text-lg font-semibold text-gray-300">-</p>
                             )}
