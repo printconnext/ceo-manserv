@@ -51,8 +51,9 @@ export default function VCardQR({
             )}
 
             {/* Title */}
-            <div className="absolute top-8 left-1/2 -translate-x-1/2 w-full text-center px-4 pointer-events-none">
+            <div className="absolute top-8 left-1/2 -translate-x-1/2 w-full text-center px-4 pointer-events-none flex flex-col items-center">
                 <h3 className="text-sm font-medium text-gray-300">{labels?.title || "QR Code Namecard"}</h3>
+                <span className="text-[10px] font-bold text-amber-500 mt-1 bg-amber-500/10 px-2 py-0.5 rounded-full">[TEST: {new Date().toLocaleTimeString('th-TH')}]</span>
             </div>
 
             {/* Profile Picture */}

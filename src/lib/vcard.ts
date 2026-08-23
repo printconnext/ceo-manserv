@@ -12,7 +12,6 @@ export interface VCardData {
     photoBase64?: string;
     photoType?: string;
     photoUrl?: string;
-    note?: string;
 }
 
 /**
@@ -79,8 +78,7 @@ export function generateVCard(data: VCardData): string {
         profileUrl,
         photoBase64,
         photoType = "JPEG",
-        photoUrl,
-        note
+        photoUrl
     } = data;
 
     const normalizePhone = (num: any) => {
@@ -112,7 +110,6 @@ export function generateVCard(data: VCardData): string {
     if (phone2) lines.push(`TEL;TYPE=WORK:${normalizePhone(phone2)}`);
     if (email) lines.push(`EMAIL;TYPE=WORK:${email}`);
     if (profileUrl || website) lines.push(`URL:${profileUrl || website}`);
-    if (note) lines.push(`NOTE:${note}`);
 
     // Photo: embed base64 for file download
     if (photoBase64) {
