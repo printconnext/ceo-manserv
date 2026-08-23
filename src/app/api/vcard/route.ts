@@ -38,35 +38,29 @@ export async function GET(request: NextRequest) {
         // Fetch photo as base64 if available
         let photoBase64 = "";
         let photoType = "JPEG"; // Default
-        let debugNote = `[DEBUG: ${new Date().toLocaleTimeString('th-TH')}] `;
+        
+        let absolutePortraitUrl = portraitUrl;
+        if (absolutePortraitUrl && absolutePortraitUrl.startsWith("/")) {
+            absolutePortraitUrl = `https://www.ceoprofile.site${absolutePortraitUrl}`;
+        }
 
-        if (portraitUrl) {
-            debugNote += `| URL: ${portraitUrl.substring(0, 40)}... `;
+        if (absolutePortraitUrl) {
             try {
-                if (portraitUrl.startsWith("http")) {
-                    const res = await fetch(portraitUrl);
+                if (absolutePortraitUrl.startsWith("http")) {
+                    const res = await fetch(absolutePortraitUrl);
                     if (res.ok) {
                         const contentType = res.headers.get("content-type") || "";
-                        debugNote += `| Content-Type: ${contentType} `;
                         if (contentType.includes("png")) photoType = "PNG";
                         else if (contentType.includes("webp")) photoType = "WEBP";
                         else if (contentType.includes("gif")) photoType = "GIF";
                         
                         const buffer = await res.arrayBuffer();
                         photoBase64 = Buffer.from(buffer).toString("base64");
-                        debugNote += `| Base64 Size: ${photoBase64.length} `;
-                    } else {
-                        debugNote += `| Fetch failed: ${res.status} `;
                     }
-                } else {
-                    debugNote += `| Not HTTP `;
                 }
             } catch (e: any) {
                 console.error("Failed to fetch photo for vcard download:", e);
-                debugNote += `| Error: ${e.message} `;
             }
-        } else {
-            debugNote += `| NO URL. portraitUrl=${profileData.portraitUrl}, mediaConfig=${JSON.stringify(mediaConfig).substring(0, 30)} `;
         }
 
         const vCardData = {
@@ -79,8 +73,7 @@ export async function GET(request: NextRequest) {
             website: String(contactData?.website || profileData.website || ""),
             profileUrl: `https://www.ceoprofile.site/${org}/${profile}`,
             photoBase64: photoBase64 || undefined,
-            photoType: photoType,
-            note: debugNote
+            photoType: photoType
         };
 
         const vcfContent = generateVCard(vCardData);
