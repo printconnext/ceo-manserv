@@ -34,11 +34,17 @@ export async function GET(request: NextRequest) {
 
         // Fetch photo as base64 if available
         let photoBase64 = "";
+        let photoType = "JPEG"; // Default
         if (portraitUrl) {
             try {
                 if (portraitUrl.startsWith("http")) {
                     const res = await fetch(portraitUrl);
                     if (res.ok) {
+                        const contentType = res.headers.get("content-type") || "";
+                        if (contentType.includes("png")) photoType = "PNG";
+                        else if (contentType.includes("webp")) photoType = "WEBP";
+                        else if (contentType.includes("gif")) photoType = "GIF";
+                        
                         const buffer = await res.arrayBuffer();
                         photoBase64 = Buffer.from(buffer).toString("base64");
                     }
@@ -57,7 +63,8 @@ export async function GET(request: NextRequest) {
             email: String(contactData?.email || profileData.email || ""),
             website: String(contactData?.website || profileData.website || ""),
             profileUrl: `https://www.ceoprofile.site/${org}/${profile}`,
-            photoBase64: photoBase64 || undefined
+            photoBase64: photoBase64 || undefined,
+            photoType: photoType
         };
 
         const vcfContent = generateVCard(vCardData);
