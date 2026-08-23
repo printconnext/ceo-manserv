@@ -218,7 +218,7 @@ export default async function ProfilePage({ params }: PageProps) {
         websiteLabel: defaultLabels.contact.websiteLabel,
         websiteValue: pick(contactData.website, contactData.websiteValue, profile.website),
         lineLabel: defaultLabels.contact.lineLabel,
-        lineValue: pick(contactData.lineTitle, contactData.lineValue, profile.lineUrl),
+        lineValue: "", // Removed Line ID
         clickToAdd: pick(contactData.clickToAdd, defaultLabels.contact.clickToAdd),
         clickToCall: "",
         preferEmail: pick(contactData.preferEmail, defaultLabels.contact.preferEmail),

@@ -910,10 +910,7 @@ export default function UnifiedEditor({
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.website || "Website"}</label>
                                             <input type="text" value={content.contactData?.website || content.contactData?.websiteValue || ""} onChange={(e) => handleNestedChange("contactData", "website", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Website URL..." />
                                         </div>
-                                        <div className="space-y-4">
-                                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.lineId || "Line ID / Add Line Link"}</label>
-                                            <input type="text" value={content.contactData?.lineTitle || content.contactData?.lineValue || ""} onChange={(e) => handleNestedChange("contactData", "lineTitle", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder="Line Link..." />
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
