@@ -598,7 +598,8 @@ export default function UnifiedEditor({
                                 phone1: content.contactData?.mobile || "",
                                 email: content.contactData?.email || "",
                                 website: content.contactData?.website || "",
-                                profileUrl: profileMetadata ? `https://www.ceoprofile.site/${profileMetadata.orgSlug}/${profileMetadata.profileSlug}` : ""
+                                profileUrl: profileMetadata ? `https://www.ceoprofile.site/${profileMetadata.orgSlug}/${profileMetadata.profileSlug}` : "",
+                                photoUrl: media.heroImage || ""
                             })}
                         />
                     </div>
