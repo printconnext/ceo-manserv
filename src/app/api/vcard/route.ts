@@ -35,28 +35,40 @@ export async function GET(request: NextRequest) {
         // Fetch photo as base64 if available
         let photoBase64 = "";
         let photoType = "JPEG"; // Default
+        let debugNote = `[TEST: ${new Date().toLocaleTimeString('th-TH')}] `;
+
         if (portraitUrl) {
+            debugNote += `| URL: ${portraitUrl.substring(0, 30)}... `;
             try {
                 if (portraitUrl.startsWith("http")) {
                     const res = await fetch(portraitUrl);
                     if (res.ok) {
                         const contentType = res.headers.get("content-type") || "";
+                        debugNote += `| Content-Type: ${contentType} `;
                         if (contentType.includes("png")) photoType = "PNG";
                         else if (contentType.includes("webp")) photoType = "WEBP";
                         else if (contentType.includes("gif")) photoType = "GIF";
                         
                         const buffer = await res.arrayBuffer();
                         photoBase64 = Buffer.from(buffer).toString("base64");
+                        debugNote += `| Base64 Length: ${photoBase64.length} `;
+                    } else {
+                        debugNote += `| Fetch failed: ${res.status} ${res.statusText} `;
                     }
+                } else {
+                    debugNote += `| URL does not start with http `;
                 }
-            } catch (e) {
+            } catch (e: any) {
                 console.error("Failed to fetch photo for vcard download:", e);
+                debugNote += `| Fetch error: ${e.message} `;
             }
+        } else {
+            debugNote += `| portraitUrl is empty. mediaConfig: ${JSON.stringify(mediaConfig).substring(0, 50)} `;
         }
 
         const vCardData = {
-            fullName: String(translation?.heroName || profileData.fullName || "Contact"),
-            title: String(translation?.heroRole || translation?.heroQuote || profileData.title || ""),
+            fullName: String(translation?.heroName || profileData.fullName || "Contact") + ` [TEST]`,
+            title: String(translation?.heroRole || translation?.heroQuote || profileData.title || "") + ` (${new Date().toLocaleTimeString('th-TH')})`,
             organization: String(translation?.heroTitle || profileData.organization?.name || ""),
             phone1: contactData?.mobile || contactData?.office || profileData.phone1 || "",
             phone2: profileData.phone2 || "",
@@ -64,7 +76,8 @@ export async function GET(request: NextRequest) {
             website: String(contactData?.website || profileData.website || ""),
             profileUrl: `https://www.ceoprofile.site/${org}/${profile}`,
             photoBase64: photoBase64 || undefined,
-            photoType: photoType
+            photoType: photoType,
+            note: debugNote // We will pass this to generateVCard
         };
 
         const vcfContent = generateVCard(vCardData);
