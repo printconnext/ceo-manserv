@@ -116,7 +116,7 @@ export function generateVCard(data: VCardData): string {
         const base64Data = photoBase64.replace(/^data:image\/\w+;base64,/, "");
         // Fold the base64 string to 74 characters per line (standard vCard folding)
         const foldedBase64 = base64Data.match(/.{1,74}/g)?.join("\r\n ") || base64Data;
-        lines.push(`PHOTO;ENCODING=b;TYPE=${photoType}:${foldedBase64}`);
+        lines.push(`PHOTO;ENCODING=BASE64;TYPE=${photoType}:${foldedBase64}`);
     } else if (photoUrl) {
         lines.push(`PHOTO;VALUE=URI:${photoUrl}`);
     }

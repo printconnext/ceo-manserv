@@ -29,6 +29,10 @@ export default function VCardQR({
     labels 
 }: VCardQRProps) {
     const handleDownload = () => {
+        if (qrValue && qrValue.startsWith('http')) {
+            window.location.href = qrValue;
+            return;
+        }
         const element = document.createElement("a");
         const file = new Blob([fullVCardString], { type: 'text/vcard' });
         element.href = URL.createObjectURL(file);

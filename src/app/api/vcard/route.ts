@@ -27,8 +27,11 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ error: "Profile not found" }, { status: 404 });
         }
 
-        const mediaConfig = profileData.mediaConfig as any;
         const translation = profileData.translations?.[0] as any;
+        let mediaConfig = profileData.mediaConfig as any;
+        if (typeof mediaConfig === "string") {
+            try { mediaConfig = JSON.parse(mediaConfig); } catch (e) {}
+        }
         const contactData = translation?.contactData as any || {};
         const portraitUrl = profileData.portraitUrl || mediaConfig?.heroImage || undefined;
 
