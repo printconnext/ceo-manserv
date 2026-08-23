@@ -31,15 +31,17 @@ export function generateMeCard(data: VCardData): string {
         profileUrl
     } = data;
 
-    const normalizePhone = (num: string) => {
-        const cleaned = num.replace(/\D/g, "");
+    const normalizePhone = (num: any) => {
+        if (!num) return "";
+        const cleaned = String(num).replace(/\D/g, "");
         if (cleaned.startsWith("0")) return "+66" + cleaned.substring(1);
         return cleaned;
     };
 
     // MECARD format: MECARD:N:Last,First;ORG:Company;TEL:Phone;EMAIL:Email;URL:url;NOTE:note;;
-    const nameParts = fullName.trim().split(/\s+/);
-    let firstName = fullName;
+    const safeFullName = String(fullName || "");
+    const nameParts = safeFullName.trim().split(/\s+/);
+    let firstName = safeFullName;
     let lastName = "";
     if (nameParts.length > 1) {
         lastName = nameParts[nameParts.length - 1];
@@ -77,8 +79,9 @@ export function generateVCard(data: VCardData): string {
         photoUrl
     } = data;
 
-    const normalizePhone = (num: string) => {
-        const cleaned = num.replace(/\D/g, "");
+    const normalizePhone = (num: any) => {
+        if (!num) return "";
+        const cleaned = String(num).replace(/\D/g, "");
         if (cleaned.startsWith("0")) return "+66" + cleaned.substring(1);
         return cleaned;
     };
@@ -88,8 +91,9 @@ export function generateVCard(data: VCardData): string {
         "VERSION:3.0",
     ];
 
-    const nameParts = fullName.trim().split(/\s+/);
-    let firstName = fullName;
+    const safeFullName = String(fullName || "");
+    const nameParts = safeFullName.trim().split(/\s+/);
+    let firstName = safeFullName;
     let lastName = "";
     if (nameParts.length > 1) {
         lastName = nameParts[nameParts.length - 1];

@@ -11,22 +11,22 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ error: "Missing org or profile" }, { status: 400 });
     }
 
-    const profileData = await prisma.profile.findFirst({
-        where: {
-            slug: profile,
-            organization: { slug: org }
-        },
-        include: {
-            organization: true,
-            translations: { where: { lang: "th" } }
-        }
-    });
-
-    if (!profileData || !profileData.organization) {
-        return NextResponse.json({ error: "Profile not found" }, { status: 404 });
-    }
-
     try {
+        const profileData = await prisma.profile.findFirst({
+            where: {
+                slug: profile,
+                organization: { slug: org }
+            },
+            include: {
+                organization: true,
+                translations: { where: { lang: "th" } }
+            }
+        });
+
+        if (!profileData || !profileData.organization) {
+            return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+        }
+
         const mediaConfig = profileData.mediaConfig as any;
         const translation = profileData.translations?.[0] as any;
         const contactData = translation?.contactData as any || {};
@@ -49,13 +49,13 @@ export async function GET(request: NextRequest) {
         }
 
         const vCardData = {
-            fullName: translation?.heroName || profileData.fullName || "Contact",
-            title: translation?.heroRole || translation?.heroQuote || profileData.title || "",
-            organization: translation?.heroTitle || profileData.organization?.name || "",
+            fullName: String(translation?.heroName || profileData.fullName || "Contact"),
+            title: String(translation?.heroRole || translation?.heroQuote || profileData.title || ""),
+            organization: String(translation?.heroTitle || profileData.organization?.name || ""),
             phone1: contactData?.mobile || contactData?.office || profileData.phone1 || "",
             phone2: profileData.phone2 || "",
-            email: contactData?.email || profileData.email || "",
-            website: contactData?.website || profileData.website || "",
+            email: String(contactData?.email || profileData.email || ""),
+            website: String(contactData?.website || profileData.website || ""),
             profileUrl: `https://www.ceoprofile.site/${org}/${profile}`,
             photoBase64: photoBase64 || undefined
         };
@@ -74,6 +74,6 @@ export async function GET(request: NextRequest) {
         });
     } catch (e) {
         console.error("Error generating vcard:", e);
-        return NextResponse.json({ error: "Failed to generate vcard" }, { status: 500 });
+        return new NextResponse("Internal Server Error", { status: 500 });
     }
 }
