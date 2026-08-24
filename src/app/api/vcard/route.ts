@@ -88,8 +88,8 @@ export async function GET(request: NextRequest) {
                 "Cache-Control": "no-cache, no-store, must-revalidate",
             }
         });
-    } catch (e) {
+    } catch (e: any) {
         console.error("Error generating vcard:", e);
-        return new NextResponse("Internal Server Error", { status: 500 });
+        return new NextResponse(`Internal Server Error: ${e.message}\n${e.stack}`, { status: 500 });
     }
 }
