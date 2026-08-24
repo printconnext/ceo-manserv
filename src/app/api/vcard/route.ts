@@ -1,7 +1,6 @@
 import prisma from "@/lib/prisma";
 import { generateVCard } from "@/lib/vcard";
 import { NextRequest, NextResponse } from "next/server";
-import sharp from "sharp";
 
 export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
@@ -51,19 +50,15 @@ export async function GET(request: NextRequest) {
                     const res = await fetch(absolutePortraitUrl);
                     if (res.ok) {
                         const contentType = res.headers.get("content-type") || "";
+                        if (contentType.includes("png")) photoType = "PNG";
+                        else if (contentType.includes("webp")) photoType = "WEBP";
+                        else if (contentType.includes("gif")) photoType = "GIF";
                         const buffer = await res.arrayBuffer();
-                        try {
-                            const resizedBuffer = await sharp(buffer)
-                                .resize(256, 256, { fit: 'cover' })
-                                .jpeg({ quality: 70 })
-                                .toBuffer();
-                            photoBase64 = resizedBuffer.toString("base64");
-                            photoType = "JPEG"; // We force JPEG
-                        } catch (err) {
-                            console.warn("Sharp resizing failed, falling back to original:", err);
-                            if (buffer.byteLength < 250000) {
-                                photoBase64 = Buffer.from(buffer).toString("base64");
-                            }
+                        if (buffer.byteLength < 250000) {
+                            photoBase64 = Buffer.from(buffer).toString("base64");
+                        } else {
+                            // If too large, we won't embed it in base64. 
+                            console.warn("Image too large, skipping base64 embedding.");
                         }
                     }
                 }
