@@ -635,6 +635,7 @@ export default function UnifiedEditor({
                                 photoUrl: media.heroImage || ""
                             })}
                             markdownString={generateMarkdown(content, content.heroTitle || "", content.heroName || "")}
+                            copyUrl={profileMetadata ? `https://www.ceoprofile.site/${profileMetadata.orgSlug}/${profileMetadata.profileSlug}` : undefined}
                         />
                     </div>
                 </div>

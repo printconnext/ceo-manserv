@@ -11,6 +11,7 @@ interface VCardQRProps {
     qrValue: string;        // Simple vCard for QR
     fullVCardString: string; // Full vCard for Download
     markdownString?: string; // Markdown for AI Prompt
+    copyUrl?: string; // The URL to copy
     onClose?: () => void;
     primaryColor?: string;
     labels?: {
@@ -18,6 +19,7 @@ interface VCardQRProps {
         scanMe?: string;
         downloadFullBtn?: string;
         downloadMdBtn?: string;
+        copyLinkBtn?: string;
     };
 }
 
@@ -27,10 +29,13 @@ export default function VCardQR({
     qrValue, 
     fullVCardString, 
     markdownString,
+    copyUrl,
     onClose, 
     primaryColor = "#00318C", 
     labels 
 }: VCardQRProps) {
+    const [copied, setCopied] = React.useState(false);
+
     const handleDownload = () => {
         if (qrValue && qrValue.startsWith('http')) {
             window.location.href = qrValue;
@@ -43,6 +48,14 @@ export default function VCardQR({
         document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);
+    };
+
+    const handleCopyUrl = () => {
+        if (!copyUrl) return;
+        navigator.clipboard.writeText(copyUrl).then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        });
     };
 
     const handleDownloadMarkdown = () => {
@@ -118,6 +131,25 @@ export default function VCardQR({
                     {labels?.downloadFullBtn || "Save Full Contact (.vcf)"}
                 </button>
                 
+                {copyUrl && (
+                    <button
+                        onClick={handleCopyUrl}
+                        className={`w-full py-3 px-6 rounded-full font-medium transition-all text-sm flex items-center justify-center gap-2 ${copied ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}
+                    >
+                        {copied ? (
+                            <>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                คัดลอกสำเร็จ! (Copied)
+                            </>
+                        ) : (
+                            <>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                {labels?.copyLinkBtn || "คัดลอก LINK"}
+                            </>
+                        )}
+                    </button>
+                )}
+
                 {markdownString && (
                     <button
                         onClick={handleDownloadMarkdown}

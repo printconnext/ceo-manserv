@@ -107,6 +107,7 @@ export default async function VCardPage({
                 qrValue={qrValue}
                 fullVCardString={fullVCardString}
                 markdownString={markdownString}
+                copyUrl={`https://www.ceoprofile.site/${organization.slug}/${profile.slug}`}
                 primaryColor={themeConfig?.colors?.primary || "#00318C"}
             />
 
