@@ -247,21 +247,38 @@ export default async function ProfilePage({ params }: PageProps) {
         footerDataFormatted
     };
 
-    if (mergedThemeConfig.templateId === 'bento') {
-        return <BentoLayout {...layoutProps} />;
-    }
+    const schema = {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        "dateCreated": profile.createdAt.toISOString(),
+        "dateModified": profile.updatedAt.toISOString(),
+        "mainEntity": {
+            "@type": "Person",
+            "name": heroData.name,
+            "jobTitle": heroData.role || heroData.quote,
+            "image": heroData.heroImage || heroData.media.logo,
+            "url": `https://www.ceoprofile.site/${org}/${slug}`,
+            "email": contactDataFormatted.emailValue || undefined,
+            "telephone": contactDataFormatted.mobileValue || contactDataFormatted.officePhoneValue || undefined,
+            "worksFor": {
+                "@type": "Organization",
+                "name": heroData.title,
+                "logo": heroData.media.logo
+            }
+        }
+    };
 
-    if (mergedThemeConfig.templateId === 'minimal') {
-        return <MinimalLayout {...layoutProps} />;
-    }
-
-    if (mergedThemeConfig.templateId === 'darktech') {
-        return <DarkTechLayout {...layoutProps} />;
-    }
-
-    if (mergedThemeConfig.templateId === 'glass') {
-        return <GlassLayout {...layoutProps} />;
-    }
-
-    return <ClassicLayout {...layoutProps} />;
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+            />
+            {mergedThemeConfig.templateId === 'bento' && <BentoLayout {...layoutProps} />}
+            {mergedThemeConfig.templateId === 'minimal' && <MinimalLayout {...layoutProps} />}
+            {mergedThemeConfig.templateId === 'darktech' && <DarkTechLayout {...layoutProps} />}
+            {mergedThemeConfig.templateId === 'glass' && <GlassLayout {...layoutProps} />}
+            {!['bento', 'minimal', 'darktech', 'glass'].includes(mergedThemeConfig.templateId) && <ClassicLayout {...layoutProps} />}
+        </>
+    );
 }
