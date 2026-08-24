@@ -62,6 +62,18 @@ export default function UnifiedEditor({
         }
     };
 
+    const handleDownloadMarkdown = () => {
+        const markdownString = generateMarkdown(content, content.heroTitle || "", content.heroName || "");
+        if (!markdownString) return;
+        const element = document.createElement("a");
+        const file = new Blob([markdownString], { type: 'text/markdown;charset=utf-8' });
+        element.href = URL.createObjectURL(file);
+        element.download = `${(content.heroName || "CEO").replace(/\s+/g, '_')}_AIPrompt.md`;
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    };
+
     // Use external lang if provided, otherwise internal
     const lang = externalLang || internalLang;
     const setLang = (l: string) => {
@@ -599,6 +611,14 @@ export default function UnifiedEditor({
                                     </>
                                 )}
                             </button>
+
+                            <button
+                                onClick={handleDownloadMarkdown}
+                                className="w-full rounded-2xl bg-gray-800 py-3.5 text-sm font-bold text-white hover:bg-gray-700 transition-all uppercase tracking-widest flex items-center justify-center gap-2 mt-1"
+                            >
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                AI Prompt (.md)
+                            </button>
                         </>
                     )}
 
@@ -634,7 +654,6 @@ export default function UnifiedEditor({
                                 profileUrl: profileMetadata ? `https://www.ceoprofile.site/${profileMetadata.orgSlug}/${profileMetadata.profileSlug}` : "",
                                 photoUrl: media.heroImage || ""
                             })}
-                            markdownString={generateMarkdown(content, content.heroTitle || "", content.heroName || "")}
                             copyUrl={profileMetadata ? `https://www.ceoprofile.site/${profileMetadata.orgSlug}/${profileMetadata.profileSlug}` : undefined}
                         />
                     </div>
