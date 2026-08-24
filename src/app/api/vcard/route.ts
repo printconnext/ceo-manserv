@@ -79,12 +79,13 @@ export async function GET(request: NextRequest) {
         const vcfContent = generateVCard(vCardData);
         const safeName = (profileData.fullName || "contact").replace(/[^a-zA-Z0-9\u0E00-\u0E7F\s_-]/g, "").replace(/\s+/g, "_");
         const fileName = `${safeName}.vcf`;
+        const encodedFileName = encodeURIComponent(fileName);
 
         return new NextResponse(vcfContent, {
             status: 200,
             headers: {
                 "Content-Type": "text/vcard; charset=utf-8",
-                "Content-Disposition": `attachment; filename="${fileName}"`,
+                "Content-Disposition": `attachment; filename="contact.vcf"; filename*=UTF-8''${encodedFileName}`,
                 "Cache-Control": "no-cache, no-store, must-revalidate",
             }
         });
