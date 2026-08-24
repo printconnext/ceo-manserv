@@ -53,9 +53,12 @@ export async function GET(request: NextRequest) {
                         if (contentType.includes("png")) photoType = "PNG";
                         else if (contentType.includes("webp")) photoType = "WEBP";
                         else if (contentType.includes("gif")) photoType = "GIF";
-                        
                         const buffer = await res.arrayBuffer();
-                        photoBase64 = Buffer.from(buffer).toString("base64");
+                        if (buffer.byteLength < 250000) { // Limit to 250KB to prevent vCard import crashes on phones
+                            photoBase64 = Buffer.from(buffer).toString("base64");
+                        } else {
+                            console.warn("Photo too large for vCard embedding:", buffer.byteLength, "bytes");
+                        }
                     }
                 }
             } catch (e: any) {
@@ -74,7 +77,8 @@ export async function GET(request: NextRequest) {
             websites: Array.isArray(contactData?.websites) && contactData.websites.length > 0 ? contactData.websites : (contactData?.website ? [String(contactData.website)] : []),
             profileUrl: `https://www.ceoprofile.site/${org}/${profile}`,
             photoBase64: photoBase64 || undefined,
-            photoType: photoType
+            photoType: photoType,
+            photoUrl: absolutePortraitUrl
         };
 
         const vcfContent = generateVCard(vCardData);
