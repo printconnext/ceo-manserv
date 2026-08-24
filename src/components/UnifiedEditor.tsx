@@ -626,7 +626,7 @@ export default function UnifiedEditor({
                                 title: content.heroRole || "",
                                 organization: content.heroTitle || "",
                                 phone1: content.contactData?.mobile || "",
-                                phone2: content.contactData?.officePhone || content.contactData?.office || "",
+                                phone2: "", // User requested ONLY mobile phone
                                 email: content.contactData?.email || "",
                                 website: "",
                                 websites: [], // User requested to only show ceoprofile.site link in vCard

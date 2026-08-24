@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { generateVCard } from "@/lib/vcard";
 import { NextRequest, NextResponse } from "next/server";
+import sharp from "sharp";
 
 export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
@@ -50,14 +51,19 @@ export async function GET(request: NextRequest) {
                     const res = await fetch(absolutePortraitUrl);
                     if (res.ok) {
                         const contentType = res.headers.get("content-type") || "";
-                        if (contentType.includes("png")) photoType = "PNG";
-                        else if (contentType.includes("webp")) photoType = "WEBP";
-                        else if (contentType.includes("gif")) photoType = "GIF";
                         const buffer = await res.arrayBuffer();
-                        if (buffer.byteLength < 250000) { // Limit to 250KB to prevent vCard import crashes on phones
-                            photoBase64 = Buffer.from(buffer).toString("base64");
-                        } else {
-                            console.warn("Photo too large for vCard embedding:", buffer.byteLength, "bytes");
+                        try {
+                            const resizedBuffer = await sharp(buffer)
+                                .resize(256, 256, { fit: 'cover' })
+                                .jpeg({ quality: 70 })
+                                .toBuffer();
+                            photoBase64 = resizedBuffer.toString("base64");
+                            photoType = "JPEG"; // We force JPEG
+                        } catch (err) {
+                            console.warn("Sharp resizing failed, falling back to original:", err);
+                            if (buffer.byteLength < 250000) {
+                                photoBase64 = Buffer.from(buffer).toString("base64");
+                            }
                         }
                     }
                 }
@@ -71,7 +77,7 @@ export async function GET(request: NextRequest) {
             title: String(translation?.heroRole || translation?.heroQuote || profileData.title || ""),
             organization: String(translation?.heroTitle || profileData.organization?.name || ""),
             phone1: contactData?.mobile || "",
-            phone2: contactData?.officePhone || contactData?.office || "",
+            phone2: "", // User requested ONLY mobile phone
             email: String(contactData?.email || ""),
             website: "",
             websites: [], // User requested to only show ceoprofile.site link in vCard

@@ -78,7 +78,7 @@ export default async function VCardPage({
         title: translation?.heroRole || translation?.heroQuote || profile.title || "",
         organization: translation?.heroTitle || organization.name,
         phone1: contactData?.mobile || "",
-        phone2: contactData?.officePhone || contactData?.office || "",
+        phone2: "", // User requested ONLY mobile phone
         email: contactData?.email || "",
         website: "",
         websites: [], // User requested to only show ceoprofile.site link in vCard
