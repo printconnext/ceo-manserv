@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
             phone2: contactData?.officePhone || contactData?.office || "",
             email: String(contactData?.email || ""),
             website: "",
-            websites: Array.isArray(contactData?.websites) && contactData.websites.length > 0 ? contactData.websites : (contactData?.website ? [String(contactData.website)] : []),
+            websites: [], // User requested to only show ceoprofile.site link in vCard
             profileUrl: `https://www.ceoprofile.site/${org}/${profile}`,
             photoBase64: photoBase64 || undefined,
             photoType: photoType,

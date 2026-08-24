@@ -629,7 +629,7 @@ export default function UnifiedEditor({
                                 phone2: content.contactData?.officePhone || content.contactData?.office || "",
                                 email: content.contactData?.email || "",
                                 website: "",
-                                websites: content.contactData?.websites || (content.contactData?.website ? [content.contactData.website] : []),
+                                websites: [], // User requested to only show ceoprofile.site link in vCard
                                 profileUrl: profileMetadata ? `https://www.ceoprofile.site/${profileMetadata.orgSlug}/${profileMetadata.profileSlug}` : "",
                                 photoUrl: media.heroImage || ""
                             })}

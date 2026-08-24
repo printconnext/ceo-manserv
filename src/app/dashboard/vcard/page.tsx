@@ -81,7 +81,7 @@ export default async function VCardPage({
         phone2: contactData?.officePhone || contactData?.office || "",
         email: contactData?.email || "",
         website: "",
-        websites: Array.isArray(contactData?.websites) && contactData.websites.length > 0 ? contactData.websites : (contactData?.website ? [contactData.website] : []),
+        websites: [], // User requested to only show ceoprofile.site link in vCard
         profileUrl: `https://www.ceoprofile.site/${organization.slug}/${profile.slug}`,
         photoBase64: photoBase64 || undefined,
         photoUrl: mediaConfig?.heroImage || portraitUrl // Priority to mediaConfig
