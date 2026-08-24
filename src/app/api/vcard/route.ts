@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { generateVCard } from "@/lib/vcard";
 import { NextRequest, NextResponse } from "next/server";
+import Jimp from "jimp";
 
 export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
@@ -54,11 +55,21 @@ export async function GET(request: NextRequest) {
                         else if (contentType.includes("webp")) photoType = "WEBP";
                         else if (contentType.includes("gif")) photoType = "GIF";
                         const buffer = await res.arrayBuffer();
-                        if (buffer.byteLength < 250000) {
-                            photoBase64 = Buffer.from(buffer).toString("base64");
-                        } else {
-                            // If too large, we won't embed it in base64. 
-                            console.warn("Image too large, skipping base64 embedding.");
+                        
+                        try {
+                            const image = await Jimp.read(Buffer.from(buffer));
+                            image.cover(256, 256);
+                            image.quality(70);
+                            const resizedBuffer = await image.getBufferAsync(Jimp.MIME_JPEG);
+                            photoBase64 = resizedBuffer.toString("base64");
+                            photoType = "JPEG";
+                        } catch (err) {
+                            console.warn("Jimp resizing failed, falling back:", err);
+                            if (buffer.byteLength < 250000) {
+                                photoBase64 = Buffer.from(buffer).toString("base64");
+                            } else {
+                                console.warn("Image too large, skipping base64 embedding.");
+                            }
                         }
                     }
                 }
