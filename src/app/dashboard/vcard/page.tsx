@@ -77,13 +77,14 @@ export default async function VCardPage({
         fullName: translation?.heroName || profile.fullName,
         title: translation?.heroRole || translation?.heroQuote || profile.title || "",
         organization: translation?.heroTitle || organization.name,
-        phone1: contactData?.mobile || contactData?.office || profile.phone1 || "",
-        phone2: profile.phone2 || "",
-        email: contactData?.email || profile.email || "",
-        website: contactData?.website || profile.website || "",
+        phone1: contactData?.mobile || "",
+        phone2: contactData?.officePhone || contactData?.office || "",
+        email: contactData?.email || "",
+        website: "",
+        websites: Array.isArray(contactData?.websites) && contactData.websites.length > 0 ? contactData.websites : (contactData?.website ? [contactData.website] : []),
         profileUrl: `https://www.ceoprofile.site/${organization.slug}/${profile.slug}`,
         photoBase64: photoBase64 || undefined,
-        photoUrl: portraitUrl // For QR code to avoid size limits
+        photoUrl: mediaConfig?.heroImage || portraitUrl // Priority to mediaConfig
     };
 
     const qrValue = `https://www.ceoprofile.site/api/vcard?org=${organization.slug}&profile=${profile.slug}`; // URL triggers .vcf download on scan

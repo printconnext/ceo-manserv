@@ -626,8 +626,10 @@ export default function UnifiedEditor({
                                 title: content.heroRole || "",
                                 organization: content.heroTitle || "",
                                 phone1: content.contactData?.mobile || "",
+                                phone2: content.contactData?.officePhone || content.contactData?.office || "",
                                 email: content.contactData?.email || "",
-                                website: content.contactData?.website || "",
+                                website: "",
+                                websites: content.contactData?.websites || (content.contactData?.website ? [content.contactData.website] : []),
                                 profileUrl: profileMetadata ? `https://www.ceoprofile.site/${profileMetadata.orgSlug}/${profileMetadata.profileSlug}` : "",
                                 photoUrl: media.heroImage || ""
                             })}

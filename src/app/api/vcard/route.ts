@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
             try { mediaConfig = JSON.parse(mediaConfig); } catch (e) {}
         }
         const contactData = translation?.contactData as any || {};
-        const portraitUrl = profileData.portraitUrl || mediaConfig?.heroImage || undefined;
+        const portraitUrl = mediaConfig?.heroImage || profileData.portraitUrl || undefined;
 
         // Fetch photo as base64 if available
         let photoBase64 = "";
@@ -67,10 +67,11 @@ export async function GET(request: NextRequest) {
             fullName: String(translation?.heroName || profileData.fullName || "Contact"),
             title: String(translation?.heroRole || translation?.heroQuote || profileData.title || ""),
             organization: String(translation?.heroTitle || profileData.organization?.name || ""),
-            phone1: contactData?.mobile || contactData?.office || profileData.phone1 || "",
-            phone2: profileData.phone2 || "",
-            email: String(contactData?.email || profileData.email || ""),
-            website: String(contactData?.website || profileData.website || ""),
+            phone1: contactData?.mobile || "",
+            phone2: contactData?.officePhone || contactData?.office || "",
+            email: String(contactData?.email || ""),
+            website: "",
+            websites: Array.isArray(contactData?.websites) && contactData.websites.length > 0 ? contactData.websites : (contactData?.website ? [String(contactData.website)] : []),
             profileUrl: `https://www.ceoprofile.site/${org}/${profile}`,
             photoBase64: photoBase64 || undefined,
             photoType: photoType

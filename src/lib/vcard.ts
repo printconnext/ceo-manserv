@@ -8,6 +8,7 @@ export interface VCardData {
     phone2?: string;
     email?: string;
     website?: string;
+    websites?: string[];
     profileUrl?: string;
     photoBase64?: string;
     photoType?: string;
@@ -30,6 +31,7 @@ export function generateMeCard(data: VCardData): string {
         phone2,
         email,
         website,
+        websites,
         profileUrl
     } = data;
 
@@ -56,7 +58,12 @@ export function generateMeCard(data: VCardData): string {
     if (phone1) parts.push(`TEL:${normalizePhone(phone1)}`);
     if (phone2) parts.push(`TEL:${normalizePhone(phone2)}`);
     if (email) parts.push(`EMAIL:${email}`);
-    if (profileUrl || website) parts.push(`URL:${profileUrl || website}`);
+    if (profileUrl) parts.push(`URL:${profileUrl}`);
+    if (websites && websites.length > 0) {
+        websites.forEach(w => parts.push(`URL:${w}`));
+    } else if (website) {
+        parts.push(`URL:${website}`);
+    }
     // Put title in NOTE since MECARD doesn't have a TITLE field
     if (title) parts.push(`NOTE:${title}`);
 
@@ -76,6 +83,7 @@ export function generateVCard(data: VCardData): string {
         phone2,
         email,
         website,
+        websites,
         profileUrl,
         photoBase64,
         photoType = "JPEG",
@@ -111,7 +119,12 @@ export function generateVCard(data: VCardData): string {
     if (phone1) lines.push(`TEL;TYPE=CELL:${normalizePhone(phone1)}`);
     if (phone2) lines.push(`TEL;TYPE=WORK:${normalizePhone(phone2)}`);
     if (email) lines.push(`EMAIL;TYPE=WORK:${email}`);
-    if (profileUrl || website) lines.push(`URL:${profileUrl || website}`);
+    if (profileUrl) lines.push(`URL:${profileUrl}`);
+    if (websites && websites.length > 0) {
+        websites.forEach(w => lines.push(`URL:${w}`));
+    } else if (website) {
+        lines.push(`URL:${website}`);
+    }
     if (note) lines.push(`NOTE:${note}`);
 
     // Photo: embed base64 for file download
