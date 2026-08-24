@@ -8,6 +8,7 @@ import { defaultTheme } from "@/components/ThemeProvider";
 import { ServiceIcons, defaultServiceIconOrder } from "./IconLibrary";
 import VCardQR from "./VCardQR";
 import { generateVCard } from "@/lib/vcard";
+import { generateMarkdown } from "@/lib/markdown";
 import { LANG_NAMES } from "@/data/locales";
 
 const DEFAULT_CLIENTS = [
@@ -633,6 +634,7 @@ export default function UnifiedEditor({
                                 profileUrl: profileMetadata ? `https://www.ceoprofile.site/${profileMetadata.orgSlug}/${profileMetadata.profileSlug}` : "",
                                 photoUrl: media.heroImage || ""
                             })}
+                            markdownString={generateMarkdown(content, content.heroTitle || "", content.heroName || "")}
                         />
                     </div>
                 </div>

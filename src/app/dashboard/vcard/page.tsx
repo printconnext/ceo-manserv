@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import Link from "next/link";
 import VCardQR from "@/components/VCardQR";
 import { generateVCard } from "@/lib/vcard";
+import { generateMarkdown } from "@/lib/markdown";
 import { redirect } from "next/navigation";
 
 export default async function VCardPage({
@@ -89,6 +90,7 @@ export default async function VCardPage({
 
     const qrValue = `https://www.ceoprofile.site/api/vcard?org=${organization.slug}&profile=${profile.slug}`; // URL triggers .vcf download on scan
     const fullVCardString = generateVCard(vCardData); // Full vCard 3.0 for .vcf download button
+    const markdownString = generateMarkdown(translation || {}, organization.name, profile.fullName);
 
     return (
         <div className="p-6 max-w-lg mx-auto">
@@ -104,6 +106,7 @@ export default async function VCardPage({
                 portraitUrl={mediaConfig?.heroImage || undefined}
                 qrValue={qrValue}
                 fullVCardString={fullVCardString}
+                markdownString={markdownString}
                 primaryColor={themeConfig?.colors?.primary || "#00318C"}
             />
 
