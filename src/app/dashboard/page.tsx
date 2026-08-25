@@ -58,11 +58,6 @@ export default async function DashboardPage() {
                     <div className="flex items-center justify-between">
                         <h2 className="text-xl font-bold text-gray-900">โปรไฟล์ของคุณ</h2>
                         <div className="flex gap-2">
-                            {currentPlan.canMultiOrg && (
-                                <Link href="/dashboard/profile/new?newOrg=true" className="px-4 py-2 bg-gray-900 text-white rounded-lg text-xs font-bold hover:bg-black transition-colors">
-                                    + องค์กรใหม่
-                                </Link>
-                            )}
                             {(currentPlan.canMultiProfile || totalProfiles === 0) && (
                                 <Link href="/dashboard/profile/new" className="px-4 py-2 bg-brand-blue text-white rounded-lg text-xs font-bold hover:bg-blue-800 transition-colors">
                                     + สร้างหน้าใหม่
