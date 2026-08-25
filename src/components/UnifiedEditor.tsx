@@ -684,6 +684,10 @@ export default function UnifiedEditor({
                                             <input type="text" value={content.heroTitle || ""} onChange={(e) => handleContentChange("heroTitle", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroOrgPlace || "เช่น บริษัท แมน แมนเนจเม้นท์ เซอร์วิส จำกัด"} />
                                         </div>
                                         <div className="col-span-full space-y-4">
+                                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.heroRoleLabel || "ตำแหน่ง (Position)"}</label>
+                                            <input type="text" value={content.heroRole || ""} onChange={(e) => handleContentChange("heroRole", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroRolePlace || "เช่น Sale Manager"} />
+                                        </div>
+                                        <div className="col-span-full space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.heroQuoteLabel || "คำคม/สโลแกน (Quote)"}</label>
                                             <textarea value={content.heroQuote || ""} onChange={(e) => handleContentChange("heroQuote", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-6 text-sm font-medium shadow-sm focus:ring-2 focus:ring-brand-blue leading-relaxed" rows={3} placeholder={labels.heroQuotePlace || "เช่น \"เราคือ ผู้นำเชี่ยวชาญด้านการเดินทาง...\""} />
                                         </div>
