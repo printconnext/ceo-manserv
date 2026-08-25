@@ -138,41 +138,77 @@ export async function translateProfileSettings(data: { fullName: string, title: 
 
 /**
  * Optimized profile content translation using 100% AI batching.
- * Decoupled from hardcoded locale files as per user request.
+ * Walks the entire object tree, collects translatable strings (skipping URLs, IDs, numbers),
+ * sends them to Google Translate in one batch, then rebuilds the object with translated values.
  */
 export async function translateProfileContent(content: any, targetLang: string, referer?: string) {
     const result = JSON.parse(JSON.stringify(content));
 
-    // 1. Collect all unique strings that need AI translation
-    const stringsToTranslate: { text: string; path: string | null }[] = [];
-    
-    // Explicitly add top-level fields to ensure they are captured regardless of object structure
-    const topLevelFields = [
-        'heroBadge', 'heroName', 'heroTitle', 'heroQuote', 'heroContact', 'heroStandard',
-        'heroStandardBtn', 'heroContactBtn', 'heroRole', 'navAbout', 'navServices', 
-        'navCustomers', 'navLookingFor', 'navContact'
-    ];
-    topLevelFields.forEach(field => {
-        if (typeof result[field] === 'string' && result[field].trim() !== "") {
-            collectStringsToTranslate(result[field], stringsToTranslate);
+    // 1. Walk the entire object tree and collect all translatable strings with their paths
+    const entries: { path: (string | number)[]; text: string }[] = [];
+
+    function walk(obj: any, path: (string | number)[]) {
+        if (obj === null || obj === undefined || obj instanceof Date) return;
+
+        if (typeof obj === 'string') {
+            const trimmed = obj.trim();
+            if (trimmed === '') return;
+            // Skip URLs
+            if (/^(https?:\/\/|\/\/|supabase\.co|drive\.google\.com)/i.test(trimmed)) return;
+            // Skip database IDs (cuid format)
+            if (/^[c-z][a-z0-9]{24,}$/i.test(trimmed)) return;
+            // Skip pure numeric strings
+            if (!isNaN(Number(trimmed.replace(/[%+,.\s]/g, ''))) && trimmed.length < 20) return;
+            // Skip language codes like 'th', 'en', 'zh'
+            if (/^[a-z]{2}(-[a-z]{2})?$/i.test(trimmed)) return;
+
+            entries.push({ path: [...path], text: trimmed });
+            return;
         }
-    });
 
-    // Recursively collect from the whole object (for JSON fields like servicesData, etc.)
-    collectStringsToTranslate(result, stringsToTranslate);
-    
-    const uniqueTexts = Array.from(new Set(stringsToTranslate.map(s => s.text)));
+        if (Array.isArray(obj)) {
+            obj.forEach((item, i) => walk(item, [...path, i]));
+            return;
+        }
 
-    // 2. Perform batched AI translation (Chunked)
+        if (typeof obj === 'object') {
+            for (const key of Object.keys(obj)) {
+                walk(obj[key], [...path, key]);
+            }
+        }
+    }
+
+    walk(result, []);
+
+    if (entries.length === 0) return result;
+
+    // 2. Deduplicate texts for efficient batching
+    const uniqueTexts = Array.from(new Set(entries.map(e => e.text)));
+
+    // 3. Batch translate
     const translatedTexts = await googleTranslateBatch(uniqueTexts, targetLang, referer);
-    
+
     const translationMap: Record<string, string> = {};
     uniqueTexts.forEach((text, i) => {
         translationMap[text] = translatedTexts[i];
     });
 
-    // 3. Apply translations
-    const translated = applyTranslations(result, translationMap);
+    // 4. Apply translations back to the result object using exact paths
+    for (const entry of entries) {
+        let target: any = result;
+        for (let i = 0; i < entry.path.length - 1; i++) {
+            target = target[entry.path[i]];
+            if (target === null || target === undefined) break;
+        }
+        if (target !== null && target !== undefined) {
+            const lastKey = entry.path[entry.path.length - 1];
+            const translated = translationMap[entry.text];
+            if (translated) {
+                target[lastKey] = translated;
+            }
+        }
+    }
 
-    return translated;
+    return result;
 }
+
