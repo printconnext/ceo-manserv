@@ -49,9 +49,7 @@ export default function Hero({ data }: HeroProps) {
                     {/* Text Content */}
                     <div className="lg:col-span-7 text-center lg:text-left">
                         <div className="flex items-center justify-center lg:justify-start gap-3 mb-8">
-                            <div className="inline-flex items-center space-x-2 rounded-full bg-white px-5 py-2 text-sm font-bold text-[var(--color-primary)] shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-                                <span className="uppercase tracking-wider">{data.badge}</span>
-                            </div>
+
                             {data.lang && (
                                 <div className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white text-xs font-black uppercase tracking-tighter">
                                     {data.lang}

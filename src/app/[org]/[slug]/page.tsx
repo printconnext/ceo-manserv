@@ -156,7 +156,6 @@ export default async function ProfilePage({ params }: PageProps) {
     };
 
     const heroData = {
-        badge: pick(tRaw.heroBadge, defaultLabels.hero.badge),
         name: pick(tRaw.heroName, profile.fullName),
         title: pick(tRaw.heroTitle, profile.organization.name),
         quote: pick(tRaw.heroQuote, profile.title),

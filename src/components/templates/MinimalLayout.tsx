@@ -30,7 +30,7 @@ export default function MinimalLayout(props: ProfileLayoutProps) {
                             <div className="relative w-56 h-56 md:w-64 md:h-64 mx-auto mb-10 rounded-full overflow-hidden ring-4 ring-white shadow-2xl shadow-[var(--color-primary)]/10">
                                 <Image src={heroData.heroImage} alt={heroData.name} fill className="object-cover" priority unoptimized />
                             </div>
-                            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--color-primary)] mb-6">{heroData.badge}</p>
+
                             <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-gray-900 mb-6 leading-[1.1]">
                                 {heroData.name}
                             </h1>

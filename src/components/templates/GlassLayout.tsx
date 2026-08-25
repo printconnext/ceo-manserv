@@ -64,9 +64,6 @@ export default function GlassLayout(props: ProfileLayoutProps) {
                         <div className="container-custom mx-auto relative z-10">
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                                 <div className="lg:col-span-7 text-center lg:text-left">
-                                    <div className="inline-flex items-center rounded-full bg-white/10 backdrop-blur-md border border-white/20 px-5 py-2 text-sm font-bold text-white mb-8">
-                                        <span className="uppercase tracking-wider">{heroData.badge}</span>
-                                    </div>
                                     <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-white mb-4 drop-shadow-2xl">
                                         {heroData.name}
                                     </h1>

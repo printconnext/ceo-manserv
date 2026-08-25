@@ -45,9 +45,6 @@ export default function BentoLayout(props: ProfileLayoutProps) {
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
                                 <Image src={heroData.heroImage} alt={heroData.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" priority unoptimized />
                                 <div className="absolute bottom-0 left-0 p-8 z-20">
-                                    <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-4 py-1.5 text-xs font-bold text-white mb-3 uppercase tracking-wider border border-white/20">
-                                        {heroData.badge}
-                                    </div>
                                     <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg">{heroData.name}</h1>
                                     <h2 className="text-lg text-white/80 font-medium">{heroData.title}</h2>
                                 </div>

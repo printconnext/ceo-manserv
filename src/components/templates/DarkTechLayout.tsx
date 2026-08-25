@@ -44,11 +44,6 @@ export default function DarkTechLayout(props: ProfileLayoutProps) {
                         <div className="container-custom mx-auto relative z-10">
                             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                                 <div className="lg:col-span-7 text-center lg:text-left">
-                                    <div className="flex items-center justify-center lg:justify-start gap-3 mb-8">
-                                        <div className="inline-flex items-center space-x-2 rounded-none px-5 py-2 text-xs font-mono font-bold uppercase tracking-[0.3em] border" style={{ borderColor: neon, color: neon }}>
-                                            {heroData.badge}
-                                        </div>
-                                    </div>
                                     <h1 className="text-5xl lg:text-7xl font-black tracking-tight text-white mb-4 leading-[1.05]">
                                         {heroData.name}
                                     </h1>
