@@ -672,7 +672,7 @@ export default function UnifiedEditor({
                                 <div className="space-y-6">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-12 bg-gray-50 rounded-[3rem] border border-gray-100 shadow-sm">
 
-                                        <div className="space-y-4">
+                                        <div className="col-span-full space-y-4">
                                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest px-1">{labels.heroNameLabel || "ชื่อ-นามสกุล"}</label>
                                             <input type="text" value={content.heroName || ""} onChange={(e) => handleContentChange("heroName", e.target.value)} className="w-full text-gray-900 rounded-2xl border-none p-5 text-sm shadow-sm focus:ring-2 focus:ring-brand-blue" placeholder={labels.heroNamePlace || "เช่น สามารถ ไชยะ"} />
                                         </div>
