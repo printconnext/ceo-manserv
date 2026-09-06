@@ -1,0 +1,10 @@
+# Site Overview
+> แหล่งรวบรวมข้อมูลโปรไฟล์ผู้บริหาร (CEO Profile) อย่างเป็นทางการ สำหรับองค์กรและบริษัทต่างๆ
+
+## Core Documentation
+- [หน้าแรกของระบบ (Homepage)](https://www.ceoprofile.site/)
+- โปรไฟล์ผู้บริหารแต่ละคนจะอยู่ในรูปแบบ https://www.ceoprofile.site/[organization]/[profile-slug]
+- แพลตฟอร์มนี้จัดทำขึ้นเพื่อนำเสนอวิสัยทัศน์ (Vision & Mission), ประสบการณ์ (Experience), และข้อมูลสำหรับการติดต่อทางธุรกิจแบบมืออาชีพ
+
+## Contact and Support
+- [ติดต่อผู้ดูแลระบบ](https://www.ceoprofile.site/contact)

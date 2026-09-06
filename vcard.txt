@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:ไชยะ;สามารถ;;;
+FN:สามารถ ไชยะ
+ORG:บริษัท แมน แมนเนจเม้นท์ เซอร์วิส จำกัด
+TITLE:ประธานเจ้าหน้าที่บริหาร
+TEL;TYPE=CELL:+66937893259
+TEL;TYPE=WORK:+66937893259
+EMAIL;TYPE=WORK:samartch@manserv.co.th
+URL:https://www.ceoprofile.site/manserv/samarth-th
+END:VCARD

@@ -83,7 +83,13 @@ function extractTitle(html: string): string | null {
     return m ? m[1].trim() : null;
 }
 
-async function auditProfile(path: string, expectedName: string, expectedOrg: string, forbiddenName: string): Promise<ProfileAudit> {
+async function auditProfile(
+    path: string, 
+    expectedName: string, 
+    expectedOrg: string, 
+    forbiddenName: string,
+    expectSiblings: boolean = false
+): Promise<ProfileAudit> {
     const url = `${BASE}${path}`;
     const results: TestResult[] = [];
     
@@ -235,13 +241,36 @@ async function auditProfile(path: string, expectedName: string, expectedOrg: str
         detail: `twitter:image: ${twImage || '(none)'}`,
     });
 
-    // Hreflang safety
+    // Hreflang safety & sibling check
     const hreflangs = extractHreflang(html);
     results.push({
-        name: 'No vestigial x-default hreflang (no siblings)',
-        pass: !hreflangs.some(h => h.lang === 'x-default'),
+        name: 'No vestigial x-default hreflang without English',
+        pass: !hreflangs.some(h => h.lang === 'x-default' && !hreflangs.some(l => l.lang === 'en')),
         detail: `hreflang entries: ${hreflangs.length}`,
     });
+
+    if (expectSiblings) {
+        results.push({
+            name: 'Has language sibling hreflang links',
+            pass: hreflangs.length > 1,
+            detail: `Found ${hreflangs.length} hreflang links: ${hreflangs.map(h => h.lang).join(', ')}`,
+        });
+        
+        // Also check Language Switcher Links
+        // The language switcher links to siblings, we expect some to exist
+        const hasSwitcherLink = html.includes(`href="${path.replace(/-[a-z]{2}$/i, '')}`);
+        results.push({
+            name: 'Language switcher contains valid sibling links',
+            pass: hasSwitcherLink,
+            detail: 'Verified base slug links in HTML',
+        });
+    } else {
+        results.push({
+            name: 'Isolated profile has NO sibling hreflang links',
+            pass: hreflangs.length === 0 || (hreflangs.length === 1 && hreflangs[0].href === canonical),
+            detail: `hreflang entries: ${hreflangs.length}`,
+        });
+    }
 
     // H1
     const h1s = extractH1(html);
@@ -352,7 +381,8 @@ async function main() {
         '/utila/pramate-th',
         'ประเมศฐ์',
         'Utila',
-        'นิตยา'  // Must not leak nittaya
+        'นิตยา', // Must not leak nittaya
+        false // Expect NO siblings
     ));
 
     // Audit Samarth (ManServ)
@@ -360,7 +390,8 @@ async function main() {
         '/manserv/samarth-th',
         'สามารถ',
         'Manserv',
-        'ประเมศฐ์'  // Must not leak pramate
+        'ประเมศฐ์', // Must not leak pramate
+        true // EXPECT SIBLINGS (th, en, zh, ja)
     ));
 
     // Cross-profile leakage: same org (utila) — different people

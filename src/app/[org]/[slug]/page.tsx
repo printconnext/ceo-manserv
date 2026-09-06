@@ -92,15 +92,40 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const heroImage = toAbsoluteUrl(heroImageRaw);
     const canonicalUrl = `${BASE_URL}/${org}/${slug}`;
 
-    // Only emit hreflang alternates when verified sibling language variants exist.
-    // Since the schema has no person_id/profileGroupId, there are no reliable
-    // same-person siblings. Omit hreflang entirely to prevent cross-person linking.
+    // Get all published profiles for the org to find valid siblings
+    const allOrgProfiles = await prisma.profile.findMany({
+        where: { organization: { slug: org }, isPublished: true },
+        include: { translations: true }
+    });
+
+    const getBaseSlug = (s: string) => s.replace(/-[a-z]{2}$/i, '').toLowerCase();
+    const currentBaseSlug = getBaseSlug(slug);
+
+    const siblings = allOrgProfiles.filter(p => 
+        getBaseSlug(p.slug) === currentBaseSlug && 
+        p.slug.toLowerCase() !== slug.toLowerCase()
+    );
+
+    const languages: Record<string, string> = {};
+    if (siblings.length > 0) {
+        languages[translation?.lang || 'en'] = canonicalUrl;
+        siblings.forEach(s => {
+            if (s.translations[0]?.lang) {
+                languages[s.translations[0].lang] = `${BASE_URL}/${org}/${s.slug}`;
+            }
+        });
+        
+        if (languages['en']) {
+             languages['x-default'] = languages['en'];
+        }
+    }
 
     return {
         title: pageTitle,
         description: pageDesc,
         alternates: {
             canonical: canonicalUrl,
+            ...(Object.keys(languages).length > 0 && { languages })
         },
         openGraph: {
             title: pageTitle,
@@ -151,12 +176,21 @@ export default async function ProfilePage({ params }: PageProps) {
     }
     const resolvedLang = translation.lang;
 
-    // Since there's no reliable person/group ID in the schema,
-    // we omit sibling profiles to prevent incorrect cross-person linking.
-    const siblings: any[] = [];
+    // Get all published profiles for the org to find valid siblings
+    const allOrgProfiles = await prisma.profile.findMany({
+        where: { organization: { slug: org }, isPublished: true },
+        include: { translations: true }
+    });
+
+    const getBaseSlug = (s: string) => s.replace(/-[a-z]{2}$/i, '').toLowerCase();
+    const currentBaseSlug = getBaseSlug(slug);
+
+    const siblings = allOrgProfiles.filter(p => 
+        getBaseSlug(p.slug) === currentBaseSlug && 
+        p.slug.toLowerCase() !== slug.toLowerCase()
+    );
 
     // Construct the actual language links available for this person
-    // In the new system, we just link to the sibling.slug directly
     const availableLanguages = [
         { code: translation.lang.toUpperCase(), langCode: translation.lang, slug: profile.slug, isCurrent: true },
         ...siblings.map(s => {
