@@ -53,7 +53,7 @@ export default function Contact({ data }: ContactProps) {
                         {data.officePhoneValue && (
                             <div className="flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
                                 <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest mb-2">{data.officePhoneLabel || "Office Phone"}</h3>
-                                <a href={`tel:${data.officePhoneValue.replace(/[^0-9+]/g, '')}`} className="text-lg font-semibold text-brand-blue hover:text-brand-red transition-colors flex items-center justify-center gap-2">
+                                <a href={`tel:${data.officePhoneValue.replace(/[^0-9+]/g, '')}`} data-event="call_click" className="text-lg font-semibold text-brand-blue hover:text-brand-red transition-colors flex items-center justify-center gap-2">
                                     <span>{data.officePhoneValue}</span>
                                 </a>
                             </div>
@@ -63,7 +63,7 @@ export default function Contact({ data }: ContactProps) {
                         <div className="flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
                             <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest mb-2">{data.mobileLabel || "Mobile Phone"}</h3>
                             {data.mobileValue ? (
-                                <a href={`tel:${data.mobileValue.replace(/[^0-9+]/g, '')}`} className="text-lg font-semibold text-brand-blue hover:text-brand-red transition-colors flex items-center justify-center gap-2">
+                                <a href={`tel:${data.mobileValue.replace(/[^0-9+]/g, '')}`} data-event="call_click" className="text-lg font-semibold text-brand-blue hover:text-brand-red transition-colors flex items-center justify-center gap-2">
                                     <span>{data.mobileValue}</span>
                                 </a>
                             ) : (
@@ -75,7 +75,7 @@ export default function Contact({ data }: ContactProps) {
                         <div className="flex flex-col items-center justify-center p-6 bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow">
                             <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest mb-2">{data.emailLabel || "Email"}</h3>
                             {data.emailValue ? (
-                                <a href={`mailto:${data.emailValue}`} className="text-lg font-semibold text-brand-blue hover:text-brand-red transition-colors text-center break-all">
+                                <a href={`mailto:${data.emailValue}`} data-event="email_click" className="text-lg font-semibold text-brand-blue hover:text-brand-red transition-colors text-center break-all">
                                     {data.emailValue}
                                 </a>
                             ) : (
@@ -89,7 +89,7 @@ export default function Contact({ data }: ContactProps) {
                             {data.websites && data.websites.length > 0 ? (
                                 <div className="flex flex-col gap-2">
                                     {data.websites.map((url, idx) => (
-                                        <a key={idx} href={url.startsWith('http') ? url : `https://${url}`} target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-brand-blue hover:text-brand-red transition-colors text-center break-all">
+                                        <a key={idx} href={url.startsWith('http') ? url : `https://${url}`} data-event="website_click" target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-brand-blue hover:text-brand-red transition-colors text-center break-all">
                                             {url}
                                         </a>
                                     ))}
@@ -108,6 +108,7 @@ export default function Contact({ data }: ContactProps) {
                                 href={data.lineValue.startsWith('http') ? data.lineValue : `https://line.me/ti/p/~${data.lineValue.replace('@', '')}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                data-event="line_click"
                                 className="bg-white p-6 rounded-3xl shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300 group flex flex-col items-center"
                             >
                                 <div className="bg-white p-2 rounded-xl">
@@ -128,7 +129,7 @@ export default function Contact({ data }: ContactProps) {
 
                     {data.emailValue && (
                         <div className="mt-10 text-center text-sm text-gray-500">
-                            {data.preferEmail} <a href={`mailto:${data.emailValue}`} className="font-semibold text-blue-600 hover:text-blue-500">{data.emailValue}</a>
+                            {data.preferEmail} <a href={`mailto:${data.emailValue}`} data-event="email_click" className="font-semibold text-blue-600 hover:text-blue-500">{data.emailValue}</a>
                         </div>
                     )}
                 </div>

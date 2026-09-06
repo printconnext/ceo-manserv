@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 import prisma from "@/lib/prisma";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
@@ -19,8 +20,111 @@ import { layout as defaultLayout } from "@/config/layout";
 import { media as defaultMedia } from "@/config/media";
 import { brand as defaultBrand } from "@/config/brand";
 
+const BASE_URL = 'https://www.ceoprofile.site';
+
+function toAbsoluteUrl(url: string | undefined | null): string | undefined {
+    if (!url) return undefined;
+    if (url.startsWith('http')) return url;
+    return `${BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+}
+
 interface PageProps {
     params: Promise<{ org: string; slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+    const { org, slug } = await params;
+
+    const profile = await prisma.profile.findFirst({
+        where: {
+            slug: { equals: slug, mode: 'insensitive' },
+            organization: { slug: org },
+        },
+        include: {
+            organization: true,
+            translations: true,
+        },
+    });
+
+    if (!profile) {
+        return {
+            title: "Profile Not Found",
+        };
+    }
+
+    const translation = profile.translations[0];
+    const tRaw = (translation as any) || {};
+    
+    const name = (tRaw.heroName || profile.fullName || "").trim();
+    const company = (tRaw.heroTitle || profile.organization?.name || "").trim();
+    const role = (tRaw.heroRole || profile.title || "").trim();
+    
+    const servicesData = tRaw.servicesData || {};
+    const expertiseList = Array.isArray((servicesData as any)?.items) 
+        ? (servicesData as any).items.map((i: any) => i.title).filter(Boolean)
+        : [];
+    const expertiseText = expertiseList.length > 0 ? expertiseList.slice(0, 3).join(", ") : "Executive Leadership";
+    
+    const pageTitle = `${name} | ${role} ${company} | ${expertiseText}`.replace(/\s+/g, ' ').trim();
+    
+    let visionDesc = "";
+    if ((tRaw.aboutData as any)?.visionDesc1) {
+        visionDesc = String((tRaw.aboutData as any).visionDesc1).substring(0, 120);
+    }
+    const pageDesc = `${name}, ${role} at ${company}. Expertise: ${expertiseText}. ${visionDesc}`.trim();
+
+    const dbMediaConfig = (profile.mediaConfig as any) || {};
+    const heroImageRaw = dbMediaConfig.heroImage || dbMediaConfig.logo || "";
+    const heroImage = toAbsoluteUrl(heroImageRaw);
+    const canonicalUrl = `${BASE_URL}/${org}/${slug}`;
+
+    // Fetch sibling profiles for hreflang
+    const siblings = await prisma.profile.findMany({
+        where: {
+            orgId: profile.orgId,
+            OR: [
+                { fullName: profile.fullName },
+                ...(profile.email ? [{ email: profile.email }] : [])
+            ],
+            id: { not: profile.id }
+        },
+        include: { translations: { select: { lang: true } } }
+    });
+
+    const languages: Record<string, string> = {
+        'x-default': canonicalUrl,
+        [translation?.lang || 'en']: canonicalUrl,
+    };
+    for (const sib of siblings) {
+        const sibLang = sib.translations[0]?.lang;
+        if (sibLang) {
+            languages[sibLang] = `${BASE_URL}/${org}/${sib.slug}`;
+        }
+    }
+
+    return {
+        title: pageTitle,
+        description: pageDesc,
+        alternates: {
+            canonical: canonicalUrl,
+            languages,
+        },
+        openGraph: {
+            title: pageTitle,
+            description: pageDesc,
+            url: canonicalUrl,
+            siteName: "CEO Profile",
+            images: heroImage ? [{ url: heroImage, width: 800, height: 600 }] : [],
+            locale: translation?.lang || "en",
+            type: "profile",
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: pageTitle,
+            description: pageDesc,
+            images: heroImage ? [heroImage] : [],
+        }
+    };
 }
 
 export default async function ProfilePage({ params }: PageProps) {
@@ -246,26 +350,36 @@ export default async function ProfilePage({ params }: PageProps) {
         footerDataFormatted
     };
 
+    const canonicalUrl = `${BASE_URL}/${org}/${slug}`;
+    const sameAsLinks = [...(contactDataFormatted.websites || [])].map((url: string) => url.startsWith('http') ? url : `https://${url}`);
+    if (footerDataFormatted.linkedin) sameAsLinks.push(footerDataFormatted.linkedin);
+    if (footerDataFormatted.facebook) sameAsLinks.push(footerDataFormatted.facebook);
+    if (footerDataFormatted.twitter) sameAsLinks.push(footerDataFormatted.twitter);
+
     const schema = {
         "@context": "https://schema.org",
-        "@type": "ProfilePage",
-        "dateCreated": profile.createdAt.toISOString(),
-        "dateModified": profile.updatedAt.toISOString(),
-        "mainEntity": {
-            "@type": "Person",
-            "name": heroData.name,
-            "jobTitle": heroData.role || heroData.quote,
-            "image": heroData.heroImage || heroData.media.logo,
-            "url": `https://www.ceoprofile.site/${org}/${slug}`,
-            "email": contactDataFormatted.emailValue || undefined,
-            "telephone": contactDataFormatted.mobileValue || contactDataFormatted.officePhoneValue || undefined,
-            "worksFor": {
-                "@type": "Organization",
-                "name": heroData.title,
-                "logo": heroData.media.logo
-            }
-        }
+        "@type": "Person",
+        "@id": `${canonicalUrl}#person`,
+        "name": heroData.name,
+        "alternateName": profile.fullName !== heroData.name ? profile.fullName : undefined,
+        "description": aboutDataFormatted.visionDesc1 || heroData.quote || "",
+        "image": toAbsoluteUrl(heroData.heroImage || heroData.media.logo),
+        "url": canonicalUrl,
+        "jobTitle": heroData.role || heroData.quote,
+        "email": contactDataFormatted.emailValue || undefined,
+        "telephone": contactDataFormatted.mobileValue || contactDataFormatted.officePhoneValue || undefined,
+        "worksFor": {
+            "@type": "Organization",
+            "@id": `${BASE_URL}/${org}#organization`,
+            "name": headerData.companyName || heroData.title,
+            "url": `${BASE_URL}/${org}`,
+            "logo": toAbsoluteUrl(headerData.logo)
+        },
+        "knowsAbout": servicesDataFormatted.items.map((i: any) => i.title).filter(Boolean),
+        "sameAs": sameAsLinks.filter(Boolean)
     };
+
+    const machineIntro = `${heroData.name} ${heroData.role} ${headerData.companyName} Expertise: ${servicesDataFormatted.items.map((i: any) => i.title).slice(0, 4).join(", ")}. ${aboutDataFormatted.visionDesc1 ? String(aboutDataFormatted.visionDesc1).substring(0, 150) : ""}`;
 
     return (
         <>
@@ -273,6 +387,9 @@ export default async function ProfilePage({ params }: PageProps) {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
             />
+            <div className="sr-only" aria-hidden="false">
+                {machineIntro}
+            </div>
             {mergedThemeConfig.templateId === 'bento' && <BentoLayout {...layoutProps} />}
             {mergedThemeConfig.templateId === 'minimal' && <MinimalLayout {...layoutProps} />}
             {mergedThemeConfig.templateId === 'darktech' && <DarkTechLayout {...layoutProps} />}

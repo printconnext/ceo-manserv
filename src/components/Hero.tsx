@@ -26,6 +26,7 @@ export default function Hero({ data }: HeroProps) {
     return (
         <section
             id="hero"
+            data-event="profile_view"
             className="relative min-h-[90vh] flex items-center pt-24 pb-16 overflow-hidden bg-[var(--color-primary)]"
             style={data.media.backgroundPattern ? {
                 backgroundImage: `url(${data.media.backgroundPattern})`,
@@ -70,6 +71,7 @@ export default function Hero({ data }: HeroProps) {
                         <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6">
                             <Link
                                 href="#contact"
+                                data-event="hero_contact_click"
                                 className="w-full sm:w-auto rounded-full bg-white px-8 py-3.5 text-base font-bold text-[var(--color-primary)] shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] hover:bg-blue-50 transition-all hover:-translate-y-1"
                             >
                                 {data.contactButton}

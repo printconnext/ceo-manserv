@@ -1,0 +1,25 @@
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /api/admin
+Disallow: /api/debug-profiles
+Disallow: /api/dump-orgs
+Disallow: /api/dump-users
+Disallow: /api/restore-profile
+
+Sitemap: https://www.ceoprofile.site/sitemap.xml
