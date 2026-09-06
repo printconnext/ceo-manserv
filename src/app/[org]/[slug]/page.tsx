@@ -78,29 +78,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const heroImage = toAbsoluteUrl(heroImageRaw);
     const canonicalUrl = `${BASE_URL}/${org}/${slug}`;
 
-    // Fetch sibling profiles for hreflang
-    const siblings = await prisma.profile.findMany({
-        where: {
-            orgId: profile.orgId,
-            OR: [
-                { fullName: profile.fullName },
-                ...(profile.email ? [{ email: profile.email }] : [])
-            ],
-            id: { not: profile.id }
-        },
-        include: { translations: { select: { lang: true } } }
-    });
-
     const languages: Record<string, string> = {
         'x-default': canonicalUrl,
         [translation?.lang || 'en']: canonicalUrl,
     };
-    for (const sib of siblings) {
-        const sibLang = sib.translations[0]?.lang;
-        if (sibLang) {
-            languages[sibLang] = `${BASE_URL}/${org}/${sib.slug}`;
-        }
-    }
 
     return {
         title: pageTitle,
@@ -158,21 +139,9 @@ export default async function ProfilePage({ params }: PageProps) {
     }
     const resolvedLang = translation.lang;
 
-    // Fetch sibling profiles (same person in other languages) to populate language switcher
-    // We search by fullName OR email to handle cases where the name was translated
-    const siblings = await prisma.profile.findMany({
-        where: {
-            orgId: profile.orgId,
-            OR: [
-                { fullName: profile.fullName },
-                ...(profile.email ? [{ email: profile.email }] : [])
-            ],
-            id: { not: profile.id }
-        },
-        include: {
-            translations: { select: { lang: true } }
-        }
-    });
+    // Since there's no reliable person/group ID in the schema,
+    // we omit sibling profiles to prevent incorrect cross-person linking.
+    const siblings: any[] = [];
 
     // Construct the actual language links available for this person
     // In the new system, we just link to the sibling.slug directly
