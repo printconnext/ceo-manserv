@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import SetLang from "@/components/SetLang";
 import prisma from "@/lib/prisma";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
@@ -26,6 +27,19 @@ function toAbsoluteUrl(url: string | undefined | null): string | undefined {
     if (!url) return undefined;
     if (url.startsWith('http')) return url;
     return `${BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`;
+}
+
+/** Map short language codes to proper BCP-47 og:locale format */
+const LOCALE_MAP: Record<string, string> = {
+    th: 'th_TH', en: 'en_US', zh: 'zh_CN', jp: 'ja_JP', ja: 'ja_JP',
+    hi: 'hi_IN', fr: 'fr_FR', it: 'it_IT', es: 'es_ES', de: 'de_DE',
+    ru: 'ru_RU', fa: 'fa_IR', pt: 'pt_PT', br: 'pt_BR', vi: 'vi_VN',
+    lo: 'lo_LA', my: 'my_MM', tl: 'tl_PH', id: 'id_ID', km: 'km_KH',
+    ar: 'ar_SA', pa: 'pa_IN',
+};
+
+function toOgLocale(lang: string): string {
+    return LOCALE_MAP[lang.toLowerCase()] || lang;
 }
 
 interface PageProps {
@@ -78,17 +92,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const heroImage = toAbsoluteUrl(heroImageRaw);
     const canonicalUrl = `${BASE_URL}/${org}/${slug}`;
 
-    const languages: Record<string, string> = {
-        'x-default': canonicalUrl,
-        [translation?.lang || 'en']: canonicalUrl,
-    };
+    // Only emit hreflang alternates when verified sibling language variants exist.
+    // Since the schema has no person_id/profileGroupId, there are no reliable
+    // same-person siblings. Omit hreflang entirely to prevent cross-person linking.
 
     return {
         title: pageTitle,
         description: pageDesc,
         alternates: {
             canonical: canonicalUrl,
-            languages,
         },
         openGraph: {
             title: pageTitle,
@@ -96,7 +108,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
             url: canonicalUrl,
             siteName: "CEO Profile",
             images: heroImage ? [{ url: heroImage, width: 800, height: 600 }] : [],
-            locale: translation?.lang || "en",
+            locale: toOgLocale(translation?.lang || "en"),
             type: "profile",
         },
         twitter: {
@@ -325,18 +337,19 @@ export default async function ProfilePage({ params }: PageProps) {
     if (footerDataFormatted.facebook) sameAsLinks.push(footerDataFormatted.facebook);
     if (footerDataFormatted.twitter) sameAsLinks.push(footerDataFormatted.twitter);
 
-    const schema = {
+    const knowsAbout = servicesDataFormatted.items.map((i: any) => i.title).filter(Boolean);
+    const filteredSameAs = sameAsLinks.filter(Boolean);
+
+    // Build clean JSON-LD: omit empty/undefined fields to prevent invalid structured data
+    const schema: Record<string, any> = {
         "@context": "https://schema.org",
         "@type": "Person",
         "@id": `${canonicalUrl}#person`,
         "name": heroData.name,
-        "alternateName": profile.fullName !== heroData.name ? profile.fullName : undefined,
-        "description": aboutDataFormatted.visionDesc1 || heroData.quote || "",
+        "description": aboutDataFormatted.visionDesc1 || heroData.quote || undefined,
         "image": toAbsoluteUrl(heroData.heroImage || heroData.media.logo),
         "url": canonicalUrl,
-        "jobTitle": heroData.role || heroData.quote,
-        "email": contactDataFormatted.emailValue || undefined,
-        "telephone": contactDataFormatted.mobileValue || contactDataFormatted.officePhoneValue || undefined,
+        "jobTitle": heroData.role || heroData.quote || undefined,
         "worksFor": {
             "@type": "Organization",
             "@id": `${BASE_URL}/${org}#organization`,
@@ -344,20 +357,46 @@ export default async function ProfilePage({ params }: PageProps) {
             "url": `${BASE_URL}/${org}`,
             "logo": toAbsoluteUrl(headerData.logo)
         },
-        "knowsAbout": servicesDataFormatted.items.map((i: any) => i.title).filter(Boolean),
-        "sameAs": sameAsLinks.filter(Boolean)
     };
 
-    const machineIntro = `${heroData.name} ${heroData.role} ${headerData.companyName} Expertise: ${servicesDataFormatted.items.map((i: any) => i.title).slice(0, 4).join(", ")}. ${aboutDataFormatted.visionDesc1 ? String(aboutDataFormatted.visionDesc1).substring(0, 150) : ""}`;
+    // Only include fields that have real values
+    if (profile.fullName !== heroData.name && profile.fullName) {
+        schema["alternateName"] = profile.fullName;
+    }
+    if (contactDataFormatted.emailValue) {
+        schema["email"] = contactDataFormatted.emailValue;
+    }
+    if (contactDataFormatted.mobileValue || contactDataFormatted.officePhoneValue) {
+        schema["telephone"] = contactDataFormatted.mobileValue || contactDataFormatted.officePhoneValue;
+    }
+    if (knowsAbout.length > 0) {
+        schema["knowsAbout"] = knowsAbout;
+    }
+    if (filteredSameAs.length > 0) {
+        schema["sameAs"] = filteredSameAs;
+    }
+
+    // Structured machine-readable summary with clear labeled fields
+    const expertiseLabels = servicesDataFormatted.items.map((i: any) => i.title).filter(Boolean).slice(0, 4);
+    const machineLines = [
+        heroData.name,
+        heroData.role,
+        headerData.companyName,
+        expertiseLabels.length > 0 ? `Expertise: ${expertiseLabels.join(", ")}` : null,
+        aboutDataFormatted.visionDesc1 ? String(aboutDataFormatted.visionDesc1).substring(0, 150) : null,
+    ].filter(Boolean);
 
     return (
         <>
+            <SetLang lang={resolvedLang} />
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
             />
-            <div className="sr-only" aria-hidden="false">
-                {machineIntro}
+            <div className="sr-only">
+                {machineLines.map((line, idx) => (
+                    <span key={idx}>{line}{idx < machineLines.length - 1 ? ' | ' : ''}</span>
+                ))}
             </div>
             {mergedThemeConfig.templateId === 'bento' && <BentoLayout {...layoutProps} />}
             {mergedThemeConfig.templateId === 'minimal' && <MinimalLayout {...layoutProps} />}
